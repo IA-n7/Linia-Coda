@@ -3,7 +3,7 @@ import './App.css';
 // eslint-disable-next-line
 import * as firebase from 'firebase'
 // eslint-disable-next-line
-import db from './index.js'
+import db from './config/firebase.js'
 
 
 class App extends Component {
