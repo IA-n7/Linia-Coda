@@ -1,26 +1,58 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import User from "./User.js";
+import Graphic from './Graphic.js';
+import * as firebase from 'firebase';
 
 class App extends Component {
+  constructor() {
+    super();
+  }
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div>
+      HELLOOOOO
+      <Graphic />
 
-         {/* USER COMPONENT RENDERING */}
-        <User />
-
+      {/* USER COMPONENT RENDERING */}
+     <User />
       </div>
-    );
+
+      )
+    }
   }
-}
+
+ #  constructor() {
+ #    super();
+ #    this.state = {
+ #      user: "Nicholas"
+ #    };
+ #  }
+ #  componentDidMount() {
+ #    db.collection("users").add({
+ #      first: "Ada",
+ #      email: "ada@mail.com"
+ #    })
+ #    .then(function(docRef) {
+ #        console.log("Document written with ID: ", docRef.id);
+ #    })
+ #    .catch(function(error) {
+ #        console.error("Error adding document: ", error);
+ #    });
+ #    let usersRef = db.collection("users")
+
+ #    usersRef.get().then(function(results) {
+ #      if(results.empty) {
+ #        console.log("No documents found!");
+ #      } else {
+ #        results.forEach(function (doc) {
+ #          console.log("Document data:", doc.data().first);
+ #        });
+ #        console.log("Document data:", results.docs[0].data());
+ #      }
+ #    }).catch(function(error) {
+ #        console.log("Error getting documents:", error);
+ #    });
+ # }
 
 export default App;
