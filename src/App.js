@@ -4,6 +4,7 @@ import './App.css';
 import * as firebase from 'firebase'
 // eslint-disable-next-line
 import db from './config/firebase.js'
+import Landing from './Landing.js'
 import User from "./User.js";
 import Graphic from './Graphic.js';
 
@@ -14,11 +15,12 @@ class App extends Component {
   render() {
     return (
       <div>
-      HELLOOOOO
-      <Graphic />
+        HELLOOOOO
+        <Landing />
+        <Graphic />
 
-      {/* USER COMPONENT RENDERING */}
-     <User />
+        {/* USER COMPONENT RENDERING */}
+        <User />
       </div>
 
       )
