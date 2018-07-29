@@ -23,5 +23,59 @@
 }
 
 /* MAP PAGE */
+.column {
+  border: 1px solid blue;
+  border-radius: 15px;
+  float: left;
+}
+
+.left {
+  border: 1px solid blue;
+  border-radius: 15px;
+  width: 40%;
+}
+
+.right {
+  border: 1px solid blue;
+  border-radius: 15px;
+  width: 60%;
+}
+
+.row {
+  border: 1px solid blue;
+  border-radius: 15px;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.search {
+  border: 1px solid blue;
+  border-radius: 15px;
+  padding: 5px;
+  width: 200px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.info-title {
+  border: 1px solid blue;
+  border-radius: 15px;
+  font-weight: bold;
+  font-size: 10px;
+  padding: 5px;
+}
+
+.info-content {
+  border: 1px solid blue;
+  border-radius: 15px;
+  font-size: 10px;
+  padding: 5px;
+
+}
 
 /* QUEUE PAGE */

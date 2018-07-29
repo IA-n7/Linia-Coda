@@ -42,25 +42,6 @@ class App extends Component {
      // PRESERVING STATE OF CATEGORY SELECTION DISPLAY
      let preserveState = sessionStorage.getItem('categoryDisplay');
      this.setState({categoriesDisplay: preserveState});
-
-     document.onmouseover = function() {
-         //User's mouse is inside the page.
-         window.innerDocClick = true;
-     }
-
-     document.onmouseleave = function() {
-         //User's mouse has left the page.
-         window.innerDocClick = false;
-     }
-
-     window.onhashchange = function() {
-         if (window.innerDocClick) {
-             //Your own in-page mechanism triggered the hash change
-         } else {
-             //Browser back button was clicked
-             this.setState({categoriesDisplay: preserveState});
-         }
-     }
    }
 
   render() {
