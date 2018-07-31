@@ -11,6 +11,7 @@ import User from "./User.js";
 import Graphic from "./Graphic.js";
 import { createMuiTheme, MuiThemeProvider, getMuiTheme } from '@material-ui/core/styles';
 import { blueGrey, red } from '@material-ui/core/colors'
+import CenteredGrid from './gridLayout.js'
 
 const theme = createMuiTheme({
   palette: {
@@ -77,16 +78,18 @@ class App extends Component {
 
   render() {
     return (
+<<<<<<< HEAD
       <MuiThemeProvider theme={theme}>
 
       <div>
         HELLOOOOO
-        <Graphic />
-        {/* USER COMPONENT RENDERING */}
-        <User
-          changeCategoriesDisplay={this.changeCategoriesDisplay}
-          categoriesDisplay={this.state.categoriesDisplay}
-        />
+      <Graphic />
+      {/*<CenteredGrid />*/}
+
+      {/* USER COMPONENT RENDERING */}
+      <User
+       changeCategoriesDisplay={this.changeCategoriesDisplay}
+       categoriesDisplay={this.state.categoriesDisplay}/>
       </div>
 
       </MuiThemeProvider>

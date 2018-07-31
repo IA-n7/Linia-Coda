@@ -4,34 +4,35 @@ import {initFirestorter, Collection} from 'firestorter';
 import {observer} from 'mobx-react';
 import {Line} from 'react-chartjs-2';
 
-class Graphic extends Component {
+class GuestWeek extends Component {
   constructor(props){
     super(props)
     this.state = {
       user: "Nicholas",
       name: "WOOO",
       email: "",
-      hours: ""
+      hours: "",
+      days: ""
     }
   }
 
-  getName = () => {
-    db.collection('Business').doc('DxbucRUhcSzfvgSDML6J').get().then(doc => {
-      let name = doc.data().name;
-      this.setState({
-       name
-     });
-    });
-  }
+  // getName = () => {
+  //   db.collection('Business').doc('DxbucRUhcSzfvgSDML6J').get().then(doc => {
+  //     let name = doc.data().name;
+  //     this.setState({
+  //      name
+  //    });
+  //   });
+  // }
 
-  getEmail = () => {
-    db.collection("Users").doc("wpOGjvDtwpsE6C9DQblG").get().then(doc => {
-      let email = doc.data().email;
-      this.setState({
-       email
-     });
-    });
-  }
+  // getEmail = () => {
+  //   db.collection("Users").doc("wpOGjvDtwpsE6C9DQblG").get().then(doc => {
+  //     let email = doc.data().email;
+  //     this.setState({
+  //      email
+  //    });
+  //   });
+  // }
 
 
   // getHours = () => {
@@ -45,11 +46,11 @@ class Graphic extends Component {
   // }
 
 
-  getHours = () => {
+  getDays = () => {
     db.collection("Business").doc("DxbucRUhcSzfvgSDML6J").get().then(doc => {
-      let hours = doc.data().hours;
+      let days = doc.data().days;
       this.setState({
-       hours
+       days
      });
     });
   }
@@ -57,17 +58,17 @@ class Graphic extends Component {
 
 
   componentDidMount = () => {
-    this.getName();
-    this.getEmail();
-    this.getHours();
+    // this.getName();
+    // this.getEmail();
+    this.getDays();
   }
 
   render () {
     const data = {
-      labels: this.state.hours,
+      labels: this.state.days,
       datasets: [
         {
-          label: "Number of Guest Per Hour",
+          label: "Number of Guest Per Day",
           fill: true,
           // lineTension: 0.1,
           // backgroundColor: 'rgba(75,192,192,0.4)',
@@ -85,7 +86,7 @@ class Graphic extends Component {
           // pointHoverBorderWidth: 2,
           // pointRadius: 1,
           // pointHitRadius: 10,
-          data: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+          data: [4, 10, 18, 6, 5]
 
         }
       ]
@@ -104,4 +105,4 @@ class Graphic extends Component {
   }
 }
 
-export default Graphic
+export default GuestWeek
