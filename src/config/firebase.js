@@ -1,4 +1,3 @@
-
 const firebase = require("firebase");
 require("firebase/firestore");
 require("firebase/auth");
@@ -16,7 +15,6 @@ firebase.initializeApp(config);
 const settings = {
   timestampsInSnapshots: true
 };
-
 let db = firebase.firestore();
 db.settings(settings);
 

@@ -3,15 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^1.4.2",
+    "@material-ui/icons": "^2.0.0",
+    "@reach/router": "^1.1.1",
+    "chart.js": "^2.7.2",
     "firebase": "^5.3.0",
     "firebase-admin": "^5.13.1",
     "firestorter": "^0.14.2",
     "mobx": "^5.0.3",
     "mobx-react": "^5.2.3",
+    "moment": "^2.22.2",
     "react": "^16.4.1",
+    "react-chartjs-2": "^2.7.4",
     "react-dom": "^16.4.1",
     "react-scripts": "^1.1.4",
-    "react-vis": "^1.10.4"
+    "react-vis": "^1.10.4",
+    "safe-buffer": "^5.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
