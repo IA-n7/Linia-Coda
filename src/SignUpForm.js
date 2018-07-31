@@ -4,8 +4,6 @@ import * as firebase from "firebase";
 import { db, fire } from "./config/firebase.js";
 import GoogleButton from "react-google-button";
 
-let firebaseui = require("firebaseui");
-
 class SignUpForm extends Component {
   constructor(props) {
     super(props);

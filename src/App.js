@@ -11,6 +11,9 @@ import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { blueGrey, red } from "@material-ui/core/colors";
 import { Paper, Typography, TextField, Button } from "@material-ui/core";
 import ("./Landing.css");
+const auth = firebase.auth();
+let message;
+
 
 
 const theme = createMuiTheme({
@@ -33,78 +36,77 @@ class App extends Component {
     super();
 
     this.state = {
-      loggedUser: {}
+      loggedUser: null
     };
   }
 
-  componentDidMount() {
-    this.authListener();
-  }
   
-  authListener = () => {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        this.setState({ loggedUser: user });
-        console.log(this.loggedUser);
-      } else {
-        this.setState({ loggedUser: null });
-        console.log(this.loggedUser);        
-      }
-    });
-  };
+  // authListener = () => {
+  //   auth.onAuthStateChanged(user => {
+  //     if (user) {
+  //       this.setState({ loggedUser: user });
+  //       message = <p>Hi, you're logged in bigman</p>
+  //     } else {
+  //       // this.setState({ loggedUser: {} });
+  //       message = <p>You ain't, son</p>
+  //     }
+  //   });
+  // };
   
   signUpOnSubmit = e => {
     e.preventDefault();
-    const auth = firebase.auth();
     const fullName = document.getElementById("full-name-field");
     const email = document.getElementById("email-field");
     const password = document.getElementById("password-field");
     const passwordConfirm = document.getElementById("password-confirm-field");
-    if (password.value == passwordConfirm.value) {
+    if (password.value === passwordConfirm.value) {
       auth.createUserWithEmailAndPassword(
         email.value,
         password.value
       ).then((result) => {
-        this.state.loggedUser = result.user
-        console.log(this.state.loggedUser)
+        console.log(this.state.loggedUser);
       }).catch((e) => {
        console.log(e.message);
       });
     }
-    window.location.reload();
   };
-
+  
   signInOnSubmit = e => {
     e.preventDefault();
-    const auth = firebase.auth();
     const email = document.getElementById("email-field");
     const password = document.getElementById("password-field");
     auth.signInWithEmailAndPassword(
       email.value,
       password.value
     ).then((result) => {
-      this.state.loggedUser = result.user.uid
-      console.log(this.state.loggedUser)
+      console.log(this.state.loggedUser);
     }).catch((e) => {
       console.log(e.message);
     });
   };
-
+  
   logout = () => {
     firebase.auth().signOut();
   };
-
-  // componentDidMount() {
-  //   this.authListener();
-  //   console.log(this.user);
-  // }
+  
+  componentDidMount() {
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        this.setState({ loggedUser: user });
+        console.log(this.state.loggedUser)
+      } else {
+        this.setState({ loggedUser: null });
+        console.log(this.state.loggedUser)
+      }
+    });
+  }
 
   render() {
-    let message;
-    if (this.state.loggedUser) {
-      message = <p>Hi, you're logged in bigman</p>
-    } else {
+    
+    if (this.state.loggedUser == null) {
       message = <p>You ain't, son</p>
+    } else {
+      message = <p>Hi, you're logged in bigman</p>
     }
 
     return (
@@ -123,7 +125,7 @@ class App extends Component {
               id="full-name-field"
               onChange={this.handleChange}
               margin="normal"
-            />
+              />
             <br />
             <TextField
               name="email"
@@ -192,38 +194,5 @@ class App extends Component {
     );
   }
 }
-
-// constructor() {
-//      super();
-//      this.state = {
-//        user: "Nicholas"
-//      };
-//    }
-//    componentDidMount() {
-//      db.collection("users").add({
-//        first: "Ada",
-//        email: "ada@mail.com"
-//      })
-//      .then(function(docRef) {
-//          console.log("Document written with ID: ", docRef.id);
-//      })
-//      .catch(function(error) {
-//          console.error("Error adding document: ", error);
-//      });
-//      let usersRef = db.collection("users")
-
-//      usersRef.get().then(function(results) {
-//        if(results.empty) {
-//          console.log("No documents found!");
-//        } else {
-//          results.forEach(function (doc) {
-//            console.log("Document data:", doc.data().first);
-//          });
-//          console.log("Document data:", results.docs[0].data());
-//        }
-//      }).catch(function(error) {
-//          console.log("Error getting documents:", error);
-//      });
-//   }
 
 export default App;
