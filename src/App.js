@@ -33,11 +33,18 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-                  categoriesDisplay: "inline"
-                  };
+     categoriesDisplay: "inline",
+
+     currentLatLng: {
+        lat: 0,
+        lng: 0
+      },
+    }
 
     // BINDING FUNCTION TO SEND AS PROPS
     this.changeCategoriesDisplay = this.changeCategoriesDisplay.bind(this);
+    this.geocodeAddress = this.geocodeAddress.bind(this);
+
   }
 
   // CHANGES STATE OF THE CATEGORY SELECTION DISPLAY
@@ -52,6 +59,36 @@ class App extends Component {
       this.setState({categoriesDisplay: "inline"});
     }
   }
+
+   geocodeAddress(address) {
+
+    this.geocoder = new window.google.maps.Geocoder();
+
+
+    this.geocoder.geocode({ 'address': address }, this.handleResults.bind(this))
+
+  }
+
+
+  handleResults(results, status) {
+
+      if (status === window.google.maps.GeocoderStatus.OK) {
+
+          this.setState({
+            currentLatLng: {
+              lat: results[0].geometry.location.lat(),
+              lng: results[0].geometry.location.lng()
+            }
+          })
+
+        // this.map.setCenter(results[0].geometry.location);
+        // this.marker.setPosition(results[0].geometry.location);
+      } else {
+        console.log("Geocode was not successful for the following reason: " + status);
+      }
+
+    }
+
 
    componentDidMount() {
 
@@ -91,8 +128,9 @@ class App extends Component {
 
     <MuiThemeProvider theme={theme}>
       <div>
-        <NavBar />
-        <MapContainer />
+        <NavBar geocodeAddress={this.geocodeAddress.bind(this)} />
+        <MapContainer
+          currentLatLng={this.state.currentLatLng}/>
       </div>
       <div>
       {/*<CenteredGrid />*/}

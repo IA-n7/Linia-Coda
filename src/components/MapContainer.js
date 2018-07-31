@@ -10,21 +10,22 @@ class MapContainer extends Component {
   constructor(props){
     super(props)
     this.state = {
-      currentLatLng: {
-        lat: 0,
-        lng: 0
-      },
       isMarkerShown: false,
         businessInfo: {
           name: 'Walk-In Express',
           location: 'Sherbrooke'
-        }
+        },
+
+        currentLatLng: props.currentLatLng,
     }
   }
 
-  componentWillUpdate() {
-    this.getGeoLocation()
+  componentWillReceiveProps(props) {
+
+    this.setState({currentLatLng: props.currentLatLng})
+
   }
+
 
   componentDidMount() {
     this.showMarker()
@@ -74,6 +75,8 @@ class MapContainer extends Component {
 
   render() {
     return (
+
+
       <MapComponent
         isMarkerShown={this.state.isMarkerShown}
         onMarkerClick={this.handleMarkerClick}
