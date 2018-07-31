@@ -31,16 +31,16 @@ function CenteredGrid(props) {
           <Paper className={classes.paper}>NAV BAR GOES HERE</Paper>
         </Grid>
         <Grid item xs={6}>
-          <Paper className={classes.paper}><BusinessForm /></Paper>
+          <Paper className={classes.paper}> BusinessForm </Paper>
         </Grid>
         <Grid item xs={6}>
-          <Paper className={classes.paper}> <Graphic /> <FloatingActionButtons /></Paper>
+          <Paper className={classes.paper}> Graphic - FloatingActionButtons  </Paper>
         </Grid>
-        {<Grid item xs={6}>
-          <Paper className={classes.paper}><QueueSelect /></Paper>
-        </Grid>}
         <Grid item xs={6}>
-          <Paper className={classes.paper}> <GuestWeek /> <FloatingActionButtons /></Paper>
+          <Paper className={classes.paper}> QueueSelect </Paper>
+        </Grid>
+        <Grid item xs={6}>
+          <Paper className={classes.paper}> GuestWeek - FloatingActionButtons </Paper>
         </Grid>
       </Grid>
     </div>
