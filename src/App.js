@@ -66,13 +66,11 @@ class App extends Component {
   render() {
     return (
       <div>
-      HELLOOOOO
       <Graphic />
-
       {/* USER COMPONENT RENDERING */}
-     <User
+{/*     <User
        changeCategoriesDisplay={this.changeCategoriesDisplay}
-       categoriesDisplay={this.state.categoriesDisplay}/>
+       categoriesDisplay={this.state.categoriesDisplay}/>*/}
       </div>
 
       )
