@@ -1,28 +1,23 @@
 import React, { Component } from "react";
+import * as firebase from 'firebase'
+import db from './config/firebase.js'
 import "./Landing.css";
 import { Paper, Typography, TextField, Button } from "@material-ui/core";
 import SignUpForm from "./SignUpForm";
+const auth = firebase.auth();
 
 class Landing extends Component {
   constructor(props) {
     super(props);
   }
-  // componentDidMount() {
-  //   console.log(this.props.authListener)
-  // }
+
+  componentDidMount() {
+    this.props.authListener();
+  }
 
   render() {
     return (
-      <p>
-        {this.props.loggedUser == {} ? (
-          console.log("")
-        ) : (
-          <SignUpForm
-            loggedUser={this.props.loggedUser}
-            authListener={this.props.authListener}
-          />
-        )}
-      </p>
+      <SignUpForm loggedUser={this.props.loggedUser} authListener={this.props.authListener} />
     );
   }
 }

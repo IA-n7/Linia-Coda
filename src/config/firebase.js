@@ -11,7 +11,7 @@ var config = {
   messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID
 };
 
-const fire = firebase.initializeApp(config);
+firebase.initializeApp(config);
 
 const settings = {
   timestampsInSnapshots: true
@@ -19,6 +19,6 @@ const settings = {
 let db = firebase.firestore();
 db.settings(settings);
 
-export { db, fire }
+export default db
 
 
