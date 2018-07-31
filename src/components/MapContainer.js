@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
+import db from '../config/firebase.js';
+import { initFirestorter, Collection } from 'firestorter';
+import { observer } from 'mobx-react';
 import MapComponent from './MapComponent';
+import SearchBar from 'material-ui-search-bar';
+import FloatingActionButton from './FloatingActionButton';
 
 class MapContainer extends Component {
   constructor(props){
@@ -9,7 +14,11 @@ class MapContainer extends Component {
         lat: 0,
         lng: 0
       },
-      isMarkerShown: false
+      isMarkerShown: false,
+        businessInfo: {
+          name: 'Walk-In Express',
+          location: 'Sherbrooke'
+        }
     }
   }
 
@@ -18,19 +27,32 @@ class MapContainer extends Component {
   }
 
   componentDidMount() {
-    this.delayedShowMarker()
+    this.showMarker()
+    this.getData()
   }
 
-  delayedShowMarker = () => {
-    setTimeout(() => {
+  getData = () => {
+    db.collection('Business').doc('DxbucRUhcSzfvgSDML6J').get().then(doc => {
+      let name = doc.data().Name;
+      let location = "Montreal";
+
+      this.setState({
+        businessInfo: {
+          name,
+          location
+        }
+      })
+    })
+  }
+
+  showMarker = () => {
       this.getGeoLocation()
       this.setState({ isMarkerShown: true })
-    }, 5000)
   }
 
   handleMarkerClick = () => {
     this.setState({ isMarkerShown: false })
-    this.delayedShowMarker()
+    this.showMarker()
   }
 
   getGeoLocation = () => {
@@ -56,6 +78,8 @@ class MapContainer extends Component {
         isMarkerShown={this.state.isMarkerShown}
         onMarkerClick={this.handleMarkerClick}
         currentLocation={this.state.currentLatLng}
+        businessInfo={this.state.businessInfo}
+
       />
     )
   }

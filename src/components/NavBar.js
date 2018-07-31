@@ -6,7 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import SearchBar from 'material-ui-search-bar';
+import SearchBarContainer from './SearchBar.js';
 
 
 const styles = {
@@ -35,12 +35,7 @@ const NavBar = (props) => {
           <Button variant="contained" color="primary">LOGOUT</Button>
         </Toolbar>
       </AppBar>
-      <SearchBar className={classes.search}
-            onChange={() => console.log('onChange')}
-            onRequestSearch={() => console.log('onRequestSearch')}
-            onClear={() => console.log('onClear')}
-            style={{margin: '0 auto',maxWidth: 800}}
-      />
+      <SearchBarContainer />
     </div>
 
 

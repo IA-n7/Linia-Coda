@@ -4,9 +4,21 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^1.4.1",
+    "@material-ui/icons": "^2.0.0",
+    "firebase": "^5.3.0",
+    "firebase-admin": "^5.13.1",
+    "firestorter": "^0.14.2",
+    "googlemaps": "^1.12.0",
+    "lodash": "^4.17.10",
+    "material-ui-search-bar": "^1.0.0-beta.8",
+    "mobx": "^5.0.3",
+    "mobx-react": "^5.2.3",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
+    "react-google-maps": "^9.4.5",
     "react-scripts": "1.1.4",
+    "react-vis": "^1.10.4",
+    "safe-buffer": "^5.1.2",
     "typeface-roboto": "0.0.54"
   },
   "scripts": {
