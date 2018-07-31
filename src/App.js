@@ -100,9 +100,21 @@ class App extends Component {
 
   render() {
     let message;
+    let user;
+    let mapContainer;
+    let landing;
     if (this.state.loggedUser == null) {
+      landing = <Landing
+      authListener={this.authListener}
+      loggedUser={this.state.loggedUser}
+    />
       message = <p>You ain't, son</p>;
     } else {
+      user = <User
+      changeCategoriesDisplay={this.changeCategoriesDisplay}
+      categoriesDisplay={this.state.categoriesDisplay}
+    />
+      mapContainer = <MapContainer />
       message = <p>Hi, you're logged in bigman</p>;
     }
 
@@ -111,19 +123,13 @@ class App extends Component {
         <div>
           <NavBar authListener={this.authListener}/>
           {message}
-          <Landing
-            authListener={this.authListener}
-            loggedUser={this.state.loggedUser}
-          />
-          <MapContainer />
+          {landing}
+          {mapContainer}
         </div>
 
         <div>
           {/*<CenteredGrid />*/}
-          <User
-            changeCategoriesDisplay={this.changeCategoriesDisplay}
-            categoriesDisplay={this.state.categoriesDisplay}
-          />
+        {user}
         </div>
       </MuiThemeProvider>
     );

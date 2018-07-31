@@ -6,8 +6,11 @@
   padding-bottom: 20px;
 }
 
-#sign-up-submit {
-  background-color: #7F0000;
+/* #sign-up-submit {
+} */
+
+#sign-in-submit {
+  display: none;
 }
 
 
@@ -15,10 +18,13 @@
   color: black !important;
 }
 
-.form-title {
+#form-title {
   padding-top: 30px;
   padding-bottom: -30px;
-  color:black;
+}
+
+#switch-to-signup-submit {
+  display: none;
 }
 
 .sign-up-separator {

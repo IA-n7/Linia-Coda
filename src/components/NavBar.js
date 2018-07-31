@@ -46,7 +46,7 @@ class NavBar extends Component {
               LINIA CODA
             </Typography>
             <div className="test">
-              <Button variant="contained" color="primary" onClick={this.logout}>LOGOUT</Button>
+              <Button variant="contained" color="secondary" onClick={this.logout}>LOGOUT</Button>
             </div>
           </Toolbar>
         </AppBar>
