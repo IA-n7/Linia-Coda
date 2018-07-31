@@ -2,6 +2,7 @@
 .categories {
   border: 1px solid blue;
   border-radius: 15px;
+
   margin: auto;
   width: 50%;
   padding: 50px;
@@ -10,6 +11,7 @@
 .category {
   border: 1px solid blue;
   border-radius: 15px;
+
   margin: auto;
   padding: 20px;
 
@@ -23,22 +25,33 @@
 }
 
 /* MAP PAGE */
+#map {
+  width: 200px;
+  height: 200px;
+
+  border: 1px solid green;
+  border-radius: 15px;
+}
+
 .column {
   border: 1px solid blue;
   border-radius: 15px;
+
   float: left;
 }
 
 .left {
   border: 1px solid blue;
   border-radius: 15px;
-  width: 40%;
+
+  width: 35%;
 }
 
 .right {
   border: 1px solid blue;
   border-radius: 15px;
-  width: 60%;
+
+  width: 65%;
 }
 
 .row {
@@ -55,6 +68,7 @@
 .search {
   border: 1px solid blue;
   border-radius: 15px;
+
   padding: 5px;
   width: 200px;
   margin-top: 10px;
@@ -65,6 +79,7 @@
 .info-title {
   border: 1px solid blue;
   border-radius: 15px;
+
   font-weight: bold;
   font-size: 10px;
   padding: 5px;
@@ -73,9 +88,47 @@
 .info-content {
   border: 1px solid blue;
   border-radius: 15px;
+
   font-size: 10px;
   padding: 5px;
-
 }
 
 /* QUEUE PAGE */
+.queue-area {
+  border: 1px solid red;
+  border-radius: 15px;
+}
+
+.queue-number {
+  border: 1px solid blue;
+  border-radius: 15px;
+
+  padding: 10px;
+  margin-right: 50%;
+  margin-left: 50%;
+}
+
+.join-queue {
+  border: 1px solid blue;
+  border-radius: 15px;
+  margin-left: 400px;
+}
+
+.business-icon {
+  border: 1px solid blue;
+  border-radius: 15px;
+
+  margin: auto;
+  height: 50px;
+  width: 50px;
+}
+
+.business-info {
+  border: 1px solid blue;
+  border-radius: 15px;
+}
+
+.logo {
+  width: 150px;
+  height: 150px;
+}
