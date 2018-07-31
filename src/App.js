@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
+import NavBar from './components/NavBar';
+import MapContainer from './components/MapContainer.js';
+import { createMuiTheme, MuiThemeProvider, getMuiTheme } from '@material-ui/core/styles';
+import { blueGrey, red } from '@material-ui/core/colors';
 import './User.css'
 // eslint-disable-next-line
 import * as firebase from 'firebase'
@@ -8,6 +12,22 @@ import db from './config/firebase.js'
 import User from "./User.js";
 import Graphic from './Graphic.js';
 import CenteredGrid from './gridLayout.js'
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: blueGrey[300],
+      main: blueGrey[700],
+      dark: blueGrey[900],
+    },
+    secondary: {
+      light: red[500],
+      main: red[800],
+      dark: red[900],
+    }
+  },
+});
+
 
 class App extends Component {
   constructor(props) {
@@ -64,8 +84,16 @@ class App extends Component {
      }
    }
 
+
   render() {
+    console.log(window.google);
     return (
+
+    <MuiThemeProvider theme={theme}>
+      <div>
+        <NavBar />
+        <MapContainer />
+      </div>
       <div>
       {/*<CenteredGrid />*/}
       USER COMPONENT RENDERING
@@ -73,10 +101,11 @@ class App extends Component {
        changeCategoriesDisplay={this.changeCategoriesDisplay}
        categoriesDisplay={this.state.categoriesDisplay}/>
       </div>
+    </MuiThemeProvider>
+  );
+ }
+}
 
-      )
-    }
-  }
 
 //    constructor() {
 //      super();
@@ -110,5 +139,6 @@ class App extends Component {
 //          console.log("Error getting documents:", error);
 //      });
 //   }
+
 
 export default App;
