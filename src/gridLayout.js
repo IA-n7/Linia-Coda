@@ -37,7 +37,7 @@ function CenteredGrid(props) {
           <Paper className={classes.paper}> <Graphic /> <FloatingActionButtons /></Paper>
         </Grid>
         {<Grid item xs={6}>
-          <Paper className={classes.paper}><QueueSelect /></Paper>
+          <Paper className={classes.paper}> <QueueSelect /> </Paper>
         </Grid>}
         <Grid item xs={6}>
           <Paper className={classes.paper}> <GuestWeek /> <FloatingActionButtons /></Paper>

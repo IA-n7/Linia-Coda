@@ -1,54 +1,56 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import FloatingActionButtons from './button.js';
-import Graphic from "./Graphic.js";
-import BusinessForm from "./businessForm.js";
-import GuestWeek from "./GuestWeek.js";
-import QueueSelect from "./QueueSelect.js";
+// import PropTypes from 'prop-types';
+// import Grid from '@material-ui/core/Grid';
+import db from './config/firebase.js'
+// import Example from './Countdown.js'
+import Countdown from './Countdown'
+import PeopleCount from './PeopleCount'
 
 
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-  },
-  paper: {
-    padding: theme.spacing.unit * 2,
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
-});
+class QueueSelect extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      user: "Nicholas",
+      name: "WOOO",
+      email: "",
+      hours: ""
+    }
+  }
 
-function CenteredGrid(props) {
-  const { classes } = props;
+  getName = () => {
+    db.collection('Users').doc('wpOGjvDtwpsE6C9DQblG').get().then(doc => {
+      let name = doc.data().Name;
+      this.setState({
+       name
+     });
+    });
+  }
 
-  return (
-    <div className={classes.root}>
-      <Grid container spacing={24}>
-        <Grid item xs={12}>
-          <Paper className={classes.paper}>NAV BAR GOES HERE</Paper>
-        </Grid>
-        <Grid item xs={6}>
-          <Paper className={classes.paper}> BusinessForm </Paper>
-        </Grid>
-        <Grid item xs={6}>
-          <Paper className={classes.paper}> Graphic - FloatingActionButtons  </Paper>
-        </Grid>
-        <Grid item xs={6}>
-          <Paper className={classes.paper}> QueueSelect </Paper>
-        </Grid>
-        <Grid item xs={6}>
-          <Paper className={classes.paper}> GuestWeek - FloatingActionButtons </Paper>
-        </Grid>
-      </Grid>
-    </div>
-  );
+  componentDidMount = () => {
+    this.getName();
+  }
+
+  render() {
+    const currentDate = new Date();
+    const year = (currentDate.getMonth() === 11 && currentDate.getDate() > 23) ? currentDate.getFullYear() + 1 : currentDate.getFullYear();
+
+    return (
+      <div>
+    COUNTDOWN -->test connection to DB:   {this.state.name}
+        <Countdown date={`${year}-12-24T00:00:00`} />
+        <br/>
+        <br/>
+
+
+      PEOPLE COUNT
+        <PeopleCount  />
+      </div>
+    );
+  }
 }
 
-CenteredGrid.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
+export default QueueSelect;
 
-export default withStyles(styles)(CenteredGrid);
+
+

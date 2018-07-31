@@ -7,6 +7,8 @@ import ComplexGrid from './gridLayout.js';
 import Graphic from "./Graphic.js";
 import { createMuiTheme, MuiThemeProvider, getMuiTheme } from '@material-ui/core/styles';
 import { blueGrey, red } from '@material-ui/core/colors';
+import QueueSelect from "./QueueSelect.js";
+
 
 
 const theme = createMuiTheme({
@@ -29,7 +31,7 @@ class App extends Component {
    constructor() {
      super();
      this.state = {
-       user: "Nicholas",
+       user: "Beyonce",
        name:  "I sure love MnM"
      };
    }
@@ -41,11 +43,8 @@ class App extends Component {
   render() {
     return (
       <MuiThemeProvider theme={theme}>
-      <div>
       <ComplexGrid />
-      </div>
       </MuiThemeProvider>
-
       )
     }
 }
