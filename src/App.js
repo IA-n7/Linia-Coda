@@ -7,6 +7,7 @@ import * as firebase from 'firebase'
 import db from './config/firebase.js'
 import User from "./User.js";
 import Graphic from './Graphic.js';
+import CenteredGrid from './gridLayout.js'
 
 class App extends Component {
   constructor(props) {
@@ -66,9 +67,9 @@ class App extends Component {
   render() {
     return (
       <div>
-      <Graphic />
+      {/*<CenteredGrid />*/}
       USER COMPONENT RENDERING
-  <User
+      <User
        changeCategoriesDisplay={this.changeCategoriesDisplay}
        categoriesDisplay={this.state.categoriesDisplay}/>
       </div>
