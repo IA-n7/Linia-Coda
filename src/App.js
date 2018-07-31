@@ -67,10 +67,10 @@ class App extends Component {
     return (
       <div>
       <Graphic />
-      {/* USER COMPONENT RENDERING */}
-{/*     <User
+      USER COMPONENT RENDERING
+  <User
        changeCategoriesDisplay={this.changeCategoriesDisplay}
-       categoriesDisplay={this.state.categoriesDisplay}/>*/}
+       categoriesDisplay={this.state.categoriesDisplay}/>
       </div>
 
       )
