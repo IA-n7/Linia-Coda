@@ -5,6 +5,10 @@ import * as firebase from "firebase";
 import db from "./config/firebase.js";
 import {initFirestorter, Collection} from 'firestorter';
 import {observer} from 'mobx-react';
+import NavBar from './components/NavBar';
+import MapContainer from './components/MapContainer.js';
+import { createMuiTheme, MuiThemeProvider, getMuiTheme } from '@material-ui/core/styles';
+import { blueGrey, red } from '@material-ui/core/colors';
 import User from "./User.js";
 import Graphic from "./Graphic.js";
 import { createMuiTheme, MuiThemeProvider, getMuiTheme } from '@material-ui/core/styles';
@@ -94,10 +98,16 @@ class App extends Component {
   }
 
 
-  render() {
-    return (
-      <MuiThemeProvider theme={theme}>
 
+  render() {
+    console.log(window.google);
+    return (
+
+    <MuiThemeProvider theme={theme}>
+      <div>
+        <NavBar />
+        <MapContainer />
+      </div>
       <div>
         HELLOOOOO
       {/* <Graphic /> */}
@@ -107,10 +117,9 @@ class App extends Component {
        changeCategoriesDisplay={this.changeCategoriesDisplay}
        categoriesDisplay={this.state.categoriesDisplay}/>
       </div>
-
-      </MuiThemeProvider>
-    );
-  }
+    </MuiThemeProvider>
+  );
+ }
 }
 
 export default App;
