@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import "./User.css";
-// eslint-disable-next-line
 import * as firebase from "firebase";
-// eslint-disable-next-line
 import db from "./config/firebase.js";
 import {initFirestorter, Collection} from 'firestorter';
 import {observer} from 'mobx-react';
@@ -70,23 +68,41 @@ class App extends Component {
     }
 
     // PRESERVING STATE OF CATEGORY SELECTION DISPLAY
-    let preserveState = sessionStorage.getItem("categoryDisplay");
-    this.setState({ categoriesDisplay: preserveState });
+    let preservedState = sessionStorage.getItem("categoryDisplay");
+    this.setState({ categoriesDisplay: preservedState });
+
+    // BACK/FORWARD BUTTON HANDLER
+    document.onmouseover = function() {
+      // USER MOUSE WITHIN PAGE
+      window.innerDocClick = true;
+    }
+    document.onmouseleave = function() {
+      // USER MOUSE LEFT PAGE
+      window.innerDocClick = false;
+    }
+    window.onpopstate = function () {
+      if (!window.innerDocClick && window.location.pathname === "/") {
+        sessionStorage.setItem("categoryDisplay", "inline");
+        window.location.reload();
+      } else {
+        sessionStorage.setItem("categoryDisplay", "none")
+        window.location.reload();
+      }
+    }
 
     this.getData();
   }
 
+
   render() {
     return (
-<<<<<<< HEAD
       <MuiThemeProvider theme={theme}>
 
       <div>
         HELLOOOOO
-      <Graphic />
-      {/*<CenteredGrid />*/}
+      {/* <Graphic /> */}
+      {/* <CenteredGrid /> */}
 
-      {/* USER COMPONENT RENDERING */}
       <User
        changeCategoriesDisplay={this.changeCategoriesDisplay}
        categoriesDisplay={this.state.categoriesDisplay}/>
@@ -96,38 +112,5 @@ class App extends Component {
     );
   }
 }
-
-//    constructor() {
-//      super();
-//      this.state = {
-//        user: "Nicholas"
-//      };
-//    }
-//    componentDidMount() {
-//      db.collection("users").add({
-//        first: "Ada",
-//        email: "ada@mail.com"
-//      })
-//      .then(function(docRef) {
-//          console.log("Document written with ID: ", docRef.id);
-//      })
-//      .catch(function(error) {
-//          console.error("Error adding document: ", error);
-//      });
-//      let usersRef = db.collection("users")
-
-//      usersRef.get().then(function(results) {
-//        if(results.empty) {
-//          console.log("No documents found!");
-//        } else {
-//          results.forEach(function (doc) {
-//            console.log("Document data:", doc.data().first);
-//          });
-//          console.log("Document data:", results.docs[0].data());
-//        }
-//      }).catch(function(error) {
-//          console.log("Error getting documents:", error);
-//      });
-//   }
 
 export default App;
