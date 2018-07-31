@@ -1,6 +1,37 @@
 .paper-form {
+  background-color: #62727B !important;
+  text-align: center;
   width: 500px;
   margin-left: 50px;
-  padding-left: 20px;
   padding-bottom: 20px;
+}
+
+#sign-up-submit {
+  background-color: #7F0000;
+}
+
+
+.MuiFormLabel-focused-38 {
+  color: black !important;
+}
+
+.form-title {
+  padding-top: 30px;
+  padding-bottom: -30px;
+  color:black;
+}
+
+.sign-up-separator {
+  cursor: default;
+  text-decoration: none;
+  user-select: none;
+}
+
+.google-sign-in {
+  margin: auto;
+  margin-top: 20px;
+}
+
+#logout-submit {
+  margin-top: 15px;
 }

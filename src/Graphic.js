@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import db from './config/firebase.js'
+import { db } from './config/firebase.js'
 
 class Graphic extends Component {
   constructor() {

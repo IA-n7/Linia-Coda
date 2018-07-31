@@ -1,61 +1,30 @@
-import React, { Component } from 'react';
-import './Landing.css';
-import {
-  Paper,
-  Typography,
-  TextField,
-  Button 
-} from '@material-ui/core'
-
+import React, { Component } from "react";
+import "./Landing.css";
+import { Paper, Typography, TextField, Button } from "@material-ui/core";
+import SignUpForm from "./SignUpForm";
 
 class Landing extends Component {
-
-  constructor() {
-    super();
-
-    this.state = {
-    }
+  constructor(props) {
+    super(props);
   }
+  // componentDidMount() {
+  //   console.log(this.props.authListener)
+  // }
 
-  render(){
+  render() {
     return (
-      <Paper className="paper-form">
-        <h2>Sign Up</h2>
-        <form autoComplete="off">
-          <TextField
-            name='name'
-            label="Full Name"
-            onChange={this.handleChange}
-            margin='normal'
+      <p>
+        {this.props.loggedUser == {} ? (
+          console.log("")
+        ) : (
+          <SignUpForm
+            loggedUser={this.props.loggedUser}
+            authListener={this.props.authListener}
           />
-          <br/>
-          <TextField
-            name='email'
-            label="Email"
-            onChange={this.handleChange}
-            margin='normal'
-          />
-          <br/>
-          <TextField
-            name='Password'
-            label="Password"
-            type="password"
-            onChange={this.handleChange}
-            margin='normal'
-          />
-          <br/>
-          <Button
-            type='submit'
-            color='primary'
-            variant='raised'
-          >
-          Create
-        </Button>
-      </form>
-    </Paper>
-    )
+        )}
+      </p>
+    );
   }
-  
 }
 
-export default Landing
+export default Landing;
