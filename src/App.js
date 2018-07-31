@@ -11,8 +11,6 @@ import { createMuiTheme, MuiThemeProvider, getMuiTheme } from '@material-ui/core
 import { blueGrey, red } from '@material-ui/core/colors';
 import User from "./User.js";
 import Graphic from "./Graphic.js";
-import { createMuiTheme, MuiThemeProvider, getMuiTheme } from '@material-ui/core/styles';
-import { blueGrey, red } from '@material-ui/core/colors'
 import CenteredGrid from './gridLayout.js'
 
 const theme = createMuiTheme({
