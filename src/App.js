@@ -1,20 +1,22 @@
 import React, { Component } from "react";
 import "./App.css";
-import "./User.css";
-import * as firebase from "firebase";
-import db from "./config/firebase.js";
-import { initFirestorter, Collection } from "firestorter";
-import { observer } from "mobx-react";
 import NavBar from "./components/NavBar";
-import {
-  createMuiTheme,
-  MuiThemeProvider,
-  getMuiTheme
-} from "@material-ui/core/styles";
+import MapContainer from "./components/MapContainer.js";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import { Paper, Typography, TextField, Button } from "@material-ui/core";
 import { blueGrey, red } from "@material-ui/core/colors";
+import "./User.css";
+import {observer} from 'mobx-react';
+import * as firebase from "firebase";
+// eslint-disable-next-line
+import db from "./config/firebase.js";
+import {initFirestorter, Collection} from 'firestorter';
+import Landing from "./Landing.js";
 import User from "./User.js";
 import Graphic from "./Graphic.js";
 import CenteredGrid from "./gridLayout.js";
+import("./Landing.css");
+const auth = firebase.auth();
 
 const theme = createMuiTheme({
   palette: {
@@ -32,48 +34,152 @@ const theme = createMuiTheme({
 });
 
 class App extends Component {
+
   constructor(props) {
     super(props);
-    this.state = {};
+
+
+    this.state = {
+      loggedUser: null,
+      categoriesDisplay: "inline"
+    };
+    // BINDING FUNCTION TO SEND AS PROPS
+    this.changeCategoriesDisplay = this.changeCategoriesDisplay.bind(this);
   }
 
-  // getData = () => {
-  //   db.collection("Business")
-  //     .doc("DxbucRUhcSzfvgSDML6J")
-  //     .get()
-  //     .then(doc => {
-  //       let name = doc.data().Name;
-  //
-  //       this.setState({
-  //         name
-  //       });
-  //       return name;
-  //     });
-  // };
 
-  componentDidMount() {
-    // this.getData();
+  authListener = () =>
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        this.setState({ loggedUser: user });
+        console.log(this.state.loggedUser);
+      } else {
+        this.setState({ loggedUser: null });
+        console.log(this.state.loggedUser);
+      }
+    });
+
+  getData = () => {
+      db.collection('Business').doc('YYMc8S7qv2wPRfYWlqfP').get().then(doc => {
+        let name = doc.data().businessName
+
+        this.setState({
+           name
+          })
+        return name
+    })
   }
 
-  render() {
-    // console.log(window.google);
+
+  // CHANGES STATE OF THE CATEGORY SELECTION DISPLAY
+  // STORES STATE IN SESSION STORAGE FOR PRESERVATION
+  changeCategoriesDisplay = () => {
+    if (this.state.categoriesDisplay === "inline") {
+      sessionStorage.setItem("categoryDisplay", "none");
+      this.setState({ categoriesDisplay: "none" });
+    }
+    if (this.state.categoriesDisplay === "none") {
+      sessionStorage.setItem("categoryDisplay", "inline");
+      this.setState({ categoriesDisplay: "inline" });
+    }
+  }
+
+  componentDidMount(){
+
+    this.authListener();
+
+    // ENSURES ROOT WILL DISPLAY CATEGORIES TO LOGGED IN USER
+    if (window.location.pathname === "/") {
+      sessionStorage.setItem("categoryDisplay", "inline");
+    }
+
+
+    // PRESERVING STATE OF CATEGORY SELECTION DISPLAY
+    let preservedState = sessionStorage.getItem("categoryDisplay");
+    this.setState({ categoriesDisplay: preservedState });
+
+    // BACK/FORWARD BUTTON HANDLER
+    document.onmouseover = function() {
+      // USER MOUSE WITHIN PAGE
+      window.innerDocClick = true;
+    }
+    document.onmouseleave = function() {
+      // USER MOUSE LEFT PAGE
+      window.innerDocClick = false;
+    }
+    window.onpopstate = function () {
+      if (!window.innerDocClick && window.location.pathname === "/") {
+        sessionStorage.setItem("categoryDisplay", "inline");
+        window.location.reload();
+      } else {
+        sessionStorage.setItem("categoryDisplay", "none")
+        window.location.reload();
+      }
+    }
+
+    this.getData();
+
+    // PRESERVING STATE OF CATEGORY SELECTION DISPLAY
+    let preserveState = sessionStorage.getItem("categoryDisplay");
+    this.setState({ categoriesDisplay: preserveState });
+
+    document.onmouseover = function() {
+      //User's mouse is inside the page.
+      window.innerDocClick = true;
+    };
+
+    document.onmouseleave = function() {
+      //User's mouse has left the page.
+      window.innerDocClick = false;
+    };
+
+    window.onhashchange = function() {
+      if (window.innerDocClick) {
+        //Your own in-page mechanism triggered the hash change
+      } else {
+        //Browser back button was clicked
+        this.setState({ categoriesDisplay: preserveState });
+      }
+    }
+  }
+
+
+  render = () => {
+    let user;
+    let mapContainer;
+    let landing;
+    let navbar;
+    if (this.state.loggedUser == null) {
+      landing = <Landing
+      authListener={this.authListener}
+      loggedUser={this.state.loggedUser}
+    />
+    } else {
+      user = <User
+      changeCategoriesDisplay={this.changeCategoriesDisplay}
+      categoriesDisplay={this.state.categoriesDisplay}
+    />
+      mapContainer = <MapContainer />
+      navbar = <NavBar authListener={this.authListener}/>
+    }
+
     return (
       <MuiThemeProvider theme={theme}>
         <div>
-          <NavBar />
+          {navbar}
+          {landing}
+          {mapContainer}
         </div>
+
         <div>
-          HELLOOOOO
           {/* <Graphic /> */}
-          {/* <CenteredGrid /> */}
-          <User
-            changeCategoriesDisplay={this.changeCategoriesDisplay}
-            categoriesDisplay={this.state.categoriesDisplay}
-          />
+          {/*<CenteredGrid />*/}
+        {user}
         </div>
       </MuiThemeProvider>
     );
   }
 }
+
 
 export default App;

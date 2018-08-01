@@ -32,8 +32,8 @@ class MapContainer extends Component {
   }
 
   getData = () => {
-    db.collection('Business').doc('DxbucRUhcSzfvgSDML6J').get().then(doc => {
-      let name = doc.data().Name;
+    db.collection('Business').doc('YYMc8S7qv2wPRfYWlqfP').get().then(doc => {
+      let name = doc.data().businessName;
       let location = "Montreal";
 
       this.setState({
