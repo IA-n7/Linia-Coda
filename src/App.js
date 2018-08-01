@@ -1,43 +1,63 @@
 import React, { Component } from "react";
 import "./App.css";
+import NavBar from "./components/NavBar";
+import MapContainer from "./components/MapContainer.js";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import { Paper, Typography, TextField, Button } from "@material-ui/core";
+import { blueGrey, red } from "@material-ui/core/colors";
 import "./User.css";
+import {observer} from 'mobx-react';
 import * as firebase from "firebase";
+// eslint-disable-next-line
 import db from "./config/firebase.js";
 import {initFirestorter, Collection} from 'firestorter';
-import {observer} from 'mobx-react';
-import NavBar from './components/NavBar';
-import MapContainer from './components/MapContainer.js';
-import { createMuiTheme, MuiThemeProvider, getMuiTheme } from '@material-ui/core/styles';
-import { blueGrey, red } from '@material-ui/core/colors';
+import Landing from "./Landing.js";
 import User from "./User.js";
 import Graphic from "./Graphic.js";
-import CenteredGrid from './gridLayout.js'
+import CenteredGrid from "./gridLayout.js";
+import("./Landing.css");
+const auth = firebase.auth();
 
 const theme = createMuiTheme({
   palette: {
     primary: {
       light: blueGrey[300],
       main: blueGrey[700],
-      dark: blueGrey[900],
+      dark: blueGrey[900]
     },
     secondary: {
       light: red[500],
       main: red[800],
-      dark: red[900],
+      dark: red[900]
     }
-  },
+  }
 });
 
 class App extends Component {
+
   constructor(props) {
     super(props);
+
+
     this.state = {
+      loggedUser: null,
       categoriesDisplay: "inline"
     };
-
     // BINDING FUNCTION TO SEND AS PROPS
     this.changeCategoriesDisplay = this.changeCategoriesDisplay.bind(this);
   }
+}
+
+  authListener = () =>
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        this.setState({ loggedUser: user });
+        console.log(this.state.loggedUser);
+      } else {
+        this.setState({ loggedUser: null });
+        console.log(this.state.loggedUser);
+      }
+    });
 
   getData = () => {
       db.collection('Business').doc('DxbucRUhcSzfvgSDML6J').get().then(doc => {
@@ -49,6 +69,7 @@ class App extends Component {
         return name
     })
   }
+
 
   // CHANGES STATE OF THE CATEGORY SELECTION DISPLAY
   // STORES STATE IN SESSION STORAGE FOR PRESERVATION
@@ -64,10 +85,13 @@ class App extends Component {
   }
 
   componentDidMount() {
+    this.authListener();
+
     // ENSURES ROOT WILL DISPLAY CATEGORIES TO LOGGED IN USER
     if (window.location.pathname === "/") {
       sessionStorage.setItem("categoryDisplay", "inline");
     }
+
 
     // PRESERVING STATE OF CATEGORY SELECTION DISPLAY
     let preservedState = sessionStorage.getItem("categoryDisplay");
@@ -96,28 +120,66 @@ class App extends Component {
   }
 
 
+    // PRESERVING STATE OF CATEGORY SELECTION DISPLAY
+    let preserveState = sessionStorage.getItem("categoryDisplay");
+    this.setState({ categoriesDisplay: preserveState });
+
+    document.onmouseover = function() {
+      //User's mouse is inside the page.
+      window.innerDocClick = true;
+    };
+
+    document.onmouseleave = function() {
+      //User's mouse has left the page.
+      window.innerDocClick = false;
+    };
+
+    window.onhashchange = function() {
+      if (window.innerDocClick) {
+        //Your own in-page mechanism triggered the hash change
+      } else {
+        //Browser back button was clicked
+        this.setState({ categoriesDisplay: preserveState });
+      }
+    };
+  }
 
   render() {
-    console.log(window.google);
+    let user;
+    let mapContainer;
+    let landing;
+    let navbar;
+    if (this.state.loggedUser == null) {
+      landing = <Landing
+      authListener={this.authListener}
+      loggedUser={this.state.loggedUser}
+    />
+    } else {
+      user = <User
+      changeCategoriesDisplay={this.changeCategoriesDisplay}
+      categoriesDisplay={this.state.categoriesDisplay}
+    />
+      mapContainer = <MapContainer />
+      navbar = <NavBar authListener={this.authListener}/>
+    }
+
     return (
+      <MuiThemeProvider theme={theme}>
+        <div>
+          {navbar}
+          {landing}
+          {mapContainer}
+        </div>
 
-    <MuiThemeProvider theme={theme}>
-      <div>
-        <NavBar />
-        <MapContainer />
-      </div>
-      <div>
-        HELLOOOOO
-      {/* <Graphic /> */}
-      {/* <CenteredGrid /> */}
+        <div>
+          {/* <Graphic /> */}
+          {/*<CenteredGrid />*/}
+        {user}
+        </div>
+      </MuiThemeProvider>
+    );
+  }
 
-      <User
-       changeCategoriesDisplay={this.changeCategoriesDisplay}
-       categoriesDisplay={this.state.categoriesDisplay}/>
-      </div>
-    </MuiThemeProvider>
-  );
- }
 }
 
 export default App;

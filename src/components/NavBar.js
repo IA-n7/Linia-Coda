@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles} from '@material-ui/core/styles';
+import * as firebase from 'firebase'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -21,32 +22,45 @@ const styles = {
    },
 };
 
-const NavBar = (props) => {
-  const {classes} = props;
-  return (
-    <div className={classes.container}>
-      <AppBar position="static" className={classes.appbar}>
-        <Toolbar>
-          <IconButton color="inherit" aria-label="Menu">
-          </IconButton>
-          <Typography variant="title" color="inherit" className={classes.flex}>
-            LINIA CODA
-          </Typography>
-          <Button variant="contained" color="primary">LOGOUT</Button>
-        </Toolbar>
-      </AppBar>
-      <SearchBarContainer />
-    </div>
+class NavBar extends Component {
+  constructor(props) {
+    super(props)
+  }
 
+  logout = () => {
+    firebase.auth().signOut();
+  };
 
+  componentDidMount() {
+    this.props.authListener
+  }
 
-  );
+  render() {
+    return (
+      <div>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton color="inherit" aria-label="Menu">
+            </IconButton>
+            <Typography variant="title" color="inherit">
+              LINIA CODA
+            </Typography>
+            <div className="test">
+              <Button variant="contained" color="secondary" onClick={this.logout}>LOGOUT</Button>
+            </div>
+          </Toolbar>
+        </AppBar>
+        <SearchBarContainer />
+      </div>
+    );
+  }
 }
 
-NavBar.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
+
+// NavBar.propTypes = {
+//   classes: PropTypes.object.isRequired,
+// };
 
 
 
-export default withStyles(styles)(NavBar);
+export default NavBar;
