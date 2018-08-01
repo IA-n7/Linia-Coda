@@ -124,10 +124,10 @@ class MapPage extends Component {
 
   getData = () => {
     db.collection("Business")
-      .doc("DxbucRUhcSzfvgSDML6J")
+      .doc("YYMc8S7qv2wPRfYWlqfP")
       .get()
       .then(doc => {
-        let name = doc.data().Name;
+        let name = doc.data().businessName;
 
         this.setState({
           name

@@ -46,7 +46,7 @@ class App extends Component {
     // BINDING FUNCTION TO SEND AS PROPS
     this.changeCategoriesDisplay = this.changeCategoriesDisplay.bind(this);
   }
-}
+
 
   authListener = () =>
     auth.onAuthStateChanged(user => {
@@ -60,8 +60,8 @@ class App extends Component {
     });
 
   getData = () => {
-      db.collection('Business').doc('DxbucRUhcSzfvgSDML6J').get().then(doc => {
-        let name = doc.data().Name
+      db.collection('Business').doc('YYMc8S7qv2wPRfYWlqfP').get().then(doc => {
+        let name = doc.data().businessName
 
         this.setState({
            name
@@ -73,7 +73,7 @@ class App extends Component {
 
   // CHANGES STATE OF THE CATEGORY SELECTION DISPLAY
   // STORES STATE IN SESSION STORAGE FOR PRESERVATION
-  changeCategoriesDisplay() {
+  changeCategoriesDisplay = () => {
     if (this.state.categoriesDisplay === "inline") {
       sessionStorage.setItem("categoryDisplay", "none");
       this.setState({ categoriesDisplay: "none" });
@@ -84,7 +84,8 @@ class App extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
+    
     this.authListener();
 
     // ENSURES ROOT WILL DISPLAY CATEGORIES TO LOGGED IN USER
@@ -117,7 +118,7 @@ class App extends Component {
     }
 
     this.getData();
-  }
+  
 
 
     // PRESERVING STATE OF CATEGORY SELECTION DISPLAY
@@ -141,10 +142,11 @@ class App extends Component {
         //Browser back button was clicked
         this.setState({ categoriesDisplay: preserveState });
       }
-    };
+    }
   }
+  
 
-  render() {
+  render = () => {
     let user;
     let mapContainer;
     let landing;
@@ -179,7 +181,7 @@ class App extends Component {
       </MuiThemeProvider>
     );
   }
-
 }
+
 
 export default App;
