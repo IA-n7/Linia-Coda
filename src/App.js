@@ -40,11 +40,8 @@ class App extends Component {
 
 
     this.state = {
-      loggedUser: null,
-      categoriesDisplay: "inline"
+      loggedUser: null
     };
-    // BINDING FUNCTION TO SEND AS PROPS
-    this.changeCategoriesDisplay = this.changeCategoriesDisplay.bind(this);
   }
 
 
@@ -71,79 +68,6 @@ class App extends Component {
   }
 
 
-  // CHANGES STATE OF THE CATEGORY SELECTION DISPLAY
-  // STORES STATE IN SESSION STORAGE FOR PRESERVATION
-  changeCategoriesDisplay = () => {
-    if (this.state.categoriesDisplay === "inline") {
-      sessionStorage.setItem("categoryDisplay", "none");
-      this.setState({ categoriesDisplay: "none" });
-    }
-    if (this.state.categoriesDisplay === "none") {
-      sessionStorage.setItem("categoryDisplay", "inline");
-      this.setState({ categoriesDisplay: "inline" });
-    }
-  }
-
-  componentDidMount(){
-    
-    this.authListener();
-
-    // ENSURES ROOT WILL DISPLAY CATEGORIES TO LOGGED IN USER
-    if (window.location.pathname === "/") {
-      sessionStorage.setItem("categoryDisplay", "inline");
-    }
-
-
-    // PRESERVING STATE OF CATEGORY SELECTION DISPLAY
-    let preservedState = sessionStorage.getItem("categoryDisplay");
-    this.setState({ categoriesDisplay: preservedState });
-
-    // BACK/FORWARD BUTTON HANDLER
-    document.onmouseover = function() {
-      // USER MOUSE WITHIN PAGE
-      window.innerDocClick = true;
-    }
-    document.onmouseleave = function() {
-      // USER MOUSE LEFT PAGE
-      window.innerDocClick = false;
-    }
-    window.onpopstate = function () {
-      if (!window.innerDocClick && window.location.pathname === "/") {
-        sessionStorage.setItem("categoryDisplay", "inline");
-        window.location.reload();
-      } else {
-        sessionStorage.setItem("categoryDisplay", "none")
-        window.location.reload();
-      }
-    }
-
-    this.getData();
-  
-    // PRESERVING STATE OF CATEGORY SELECTION DISPLAY
-    let preserveState = sessionStorage.getItem("categoryDisplay");
-    this.setState({ categoriesDisplay: preserveState });
-
-    document.onmouseover = function() {
-      //User's mouse is inside the page.
-      window.innerDocClick = true;
-    };
-
-    document.onmouseleave = function() {
-      //User's mouse has left the page.
-      window.innerDocClick = false;
-    };
-
-    window.onhashchange = function() {
-      if (window.innerDocClick) {
-        //Your own in-page mechanism triggered the hash change
-      } else {
-        //Browser back button was clicked
-        this.setState({ categoriesDisplay: preserveState });
-      }
-    }
-  }
-  
-
   render = () => {
     let user;
     let mapContainer;
@@ -155,20 +79,15 @@ class App extends Component {
       loggedUser={this.state.loggedUser}
     />
     } else {
-      user = <User
-      changeCategoriesDisplay={this.changeCategoriesDisplay}
-      categoriesDisplay={this.state.categoriesDisplay}
-    />
-      mapContainer = <MapContainer />
+      user = <User/>
       navbar = <NavBar authListener={this.authListener}/>
     }
-    
+
     return (
       <MuiThemeProvider theme={theme}>
         <div>
           {navbar}
           {landing}
-          {mapContainer}
         </div>
 
         <div>
