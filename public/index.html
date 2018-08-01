@@ -22,6 +22,7 @@
     <link rel="stylesheet" href=“https://fonts.googleapis.com/css?family=Roboto:400,500">
     <link rel="stylesheet" href=“https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgEhsdvD_39T0FWsxHIHX6H5kob8MEBwA"></script>
+    
 
     <title>React App</title>
   </head>
@@ -29,6 +30,14 @@
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.1&appId=1986055014771876&autoLogAppEvents=1';
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
     <div id="root"></div>
     <!--
       This HTML file is a template.
@@ -38,6 +47,13 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <!-- <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+            google_ad_client: "ca-pub-5914722351247340",
+            enable_page_level_ads: true
+      });
+    </script> -->
     <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
   </body>
 </html>

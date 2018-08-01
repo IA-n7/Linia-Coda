@@ -99,30 +99,28 @@ class App extends Component {
   }
 
   render() {
-    let message;
     let user;
     let mapContainer;
     let landing;
+    let navbar;
     if (this.state.loggedUser == null) {
       landing = <Landing
       authListener={this.authListener}
       loggedUser={this.state.loggedUser}
     />
-      message = <p>You ain't, son</p>;
     } else {
       user = <User
       changeCategoriesDisplay={this.changeCategoriesDisplay}
       categoriesDisplay={this.state.categoriesDisplay}
     />
       mapContainer = <MapContainer />
-      message = <p>Hi, you're logged in bigman</p>;
+      navbar = <NavBar authListener={this.authListener}/>
     }
 
     return (
       <MuiThemeProvider theme={theme}>
         <div>
-          <NavBar authListener={this.authListener}/>
-          {message}
+          {navbar}
           {landing}
           {mapContainer}
         </div>

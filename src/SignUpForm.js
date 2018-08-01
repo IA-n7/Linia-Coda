@@ -3,6 +3,7 @@ import { Paper, Typography, TextField, Button } from "@material-ui/core";
 import * as firebase from "firebase";
 import db from "./config/firebase.js";
 import GoogleButton from "react-google-button";
+import FacebookLogin from 'react-facebook-login';
 const auth = firebase.auth();
 
 class SignUpForm extends Component {
@@ -20,6 +21,27 @@ class SignUpForm extends Component {
     let provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(provider).then(function(result) {
       // This gives you a Google Access Token. You can use it to access the Google API.
+      var token = result.credential.accessToken;
+      // The signed-in user info.
+      var user = result.user;
+      // ...
+    }).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log(errorMessage)
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+      // ...
+    });
+  }
+
+  signInWithFacebook = () => {
+    let provider = new firebase.auth.FacebookAuthProvider();
+    firebase.auth().signInWithPopup(provider).then(function(result) {
+      // This gives you a Facebook Access Token. You can use it to access the Facebook API.
       var token = result.credential.accessToken;
       // The signed-in user info.
       var user = result.user;
@@ -83,6 +105,7 @@ class SignUpForm extends Component {
 
   switchToSignIn = e => {
     e.preventDefault();
+    const paperForm = document.getElementById("paper-form");
     const formTitle = document.getElementById("form-title");
     const fullName = document.getElementById("full-name-field");
     const phoneNumber = document.getElementById("phone-number-field");
@@ -105,10 +128,12 @@ class SignUpForm extends Component {
     signInButton.style.display = "inline";
     switchToSignIn.style.display = "none";
     switchToSignUp.style.display = "inline";
+    paperForm.style.marginTop = "100px"
   }
 
   switchToSignUp = e => {
     e.preventDefault();
+    const paperForm = document.getElementById("paper-form")
     const formTitle = document.getElementById("form-title");
     const fullName = document.getElementById("full-name-field");
     const phoneNumber = document.getElementById("phone-number-field");
@@ -131,6 +156,7 @@ class SignUpForm extends Component {
     signInButton.style.display = "none";
     switchToSignIn.style.display = "inline";
     switchToSignUp.style.display = "none";
+    paperForm.style.marginTop = "40px"
   }
 
   logout = () => {
@@ -144,7 +170,7 @@ class SignUpForm extends Component {
   render() {
     return (
       <div>
-      <Paper className="paper-form">
+      <Paper id="paper-form" elevation="20">
       <Typography id="form-title" component="h2" variant="display1">Sign Up</Typography>
       <form autoComplete="off">
         <TextField
@@ -232,6 +258,11 @@ class SignUpForm extends Component {
       <span className="sign-up-separator">___________________</span>
       <br/>
       <GoogleButton className="google-sign-in" onClick={this.signInWithGoogle}/>
+      <span className="sign-up-separator">___________________</span>
+      <br/>
+      <br/>
+      <div className="fb-login-button" onClick={this.signInWithFacebook} data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
+      
     </Paper>
       </div>
     );
