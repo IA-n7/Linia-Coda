@@ -1,14 +1,46 @@
 import React, { Component } from "react";
 import "./Landing.css";
 import SignUpForm from "./SignUpForm";
+import BusinessSignUp from "./BusinessSignup.js";
 import { Paper, Typography, TextField, Button, Grid } from "@material-ui/core";
 
 class Landing extends Component {
+
+  constructor(props){
+    super(props)
+
+    this.state = {
+      isBusiness: false
+    }
+  }
+
+  businessFormToTrue = (event, checked) => {
+    this.setState({ isBusiness: checked })
+  }
+
   componentDidMount() {
     this.props.authListener();
   }
-  
+
   render() {
+
+    let businessForm;
+    let userForm;
+
+    if ( this.state.isBusiness === true ) {
+      businessForm = ( <BusinessSignUp /> )
+    } else {
+
+      userForm = (
+            <SignUpForm
+              className="landing-form"
+              loggedUser={this.props.loggedUser}
+              businessFormToTrue={this.businessFormToTrue}
+              authListener={this.props.authListener}
+              />
+            )
+      }
+
     return (
       <div>
       <div className="landing-everything">
@@ -32,11 +64,8 @@ class Landing extends Component {
             </div>
           </Grid>
           <Grid item xs>
-            <SignUpForm
-              className="landing-form"
-              loggedUser={this.props.loggedUser}
-              authListener={this.props.authListener}
-              />
+            {businessForm}
+            {userForm}
           </Grid>
         </Grid>
       </div>

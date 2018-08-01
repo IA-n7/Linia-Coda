@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Paper, Typography, TextField, Button } from "@material-ui/core";
+import { Paper, Typography, TextField, Button, Switch } from "@material-ui/core";
 import * as firebase from "firebase";
 import db from "./config/firebase.js";
 import GoogleButton from "react-google-button";
@@ -215,6 +215,10 @@ class SignUpForm extends Component {
           margin="normal"
         />
         <br />
+        <p>Want to register your business?</p>
+        <Switch color="secondary" onChange={this.props.businessFormToTrue}/>
+
+        <br />
         <Button
           type="submit"
           color="secondary"
@@ -262,7 +266,7 @@ class SignUpForm extends Component {
       <br/>
       <br/>
       <div className="fb-login-button" onClick={this.signInWithFacebook} data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
-      
+
     </Paper>
       </div>
     );
