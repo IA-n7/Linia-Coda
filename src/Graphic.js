@@ -16,8 +16,8 @@ class Graphic extends Component {
   }
 
   getName = () => {
-    db.collection('Business').doc('DxbucRUhcSzfvgSDML6J').get().then(doc => {
-      let name = doc.data().name;
+    db.collection('Users').doc('zLOG0J18c6VvlVlnLKLxD8Qphp93').get().then(doc => {
+      let name = doc.data().fullName;
       this.setState({
        name
      });
@@ -25,7 +25,7 @@ class Graphic extends Component {
   }
 
   getEmail = () => {
-    db.collection("Users").doc("wpOGjvDtwpsE6C9DQblG").get().then(doc => {
+    db.collection("Users").doc("zLOG0J18c6VvlVlnLKLxD8Qphp93").get().then(doc => {
       let email = doc.data().email;
       this.setState({
        email
@@ -46,11 +46,11 @@ class Graphic extends Component {
 
 
   getHours = () => {
-    db.collection("Business").doc("DxbucRUhcSzfvgSDML6J").get().then(doc => {
+    db.collection("Business").doc("UyeqsdZi2hX0bU4gJw7V").get().then(doc => {
       let hours = doc.data().hours;
-      this.setState({
-       hours
-     });
+     //  this.setState({
+     //   hours
+     // });
     });
   }
 

@@ -84,6 +84,22 @@ class App extends Component {
     }
 
     return (
+
+ //    <MuiThemeProvider theme={theme}>
+ //      <div>
+ //        {/*<NavBar />*/}
+ //        {/*<MapContainer />*/}
+ //      </div>
+ //      <div>
+ //      <CenteredGrid />
+ //      USER COMPONENT RENDERING
+ //      <User
+ //       changeCategoriesDisplay={this.changeCategoriesDisplay}
+ //       categoriesDisplay={this.state.categoriesDisplay}/>
+ //      </div>
+ //    </MuiThemeProvider>
+ //  );
+ // }
       <MuiThemeProvider theme={theme}>
         <div>
           {navbar}

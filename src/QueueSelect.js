@@ -19,7 +19,7 @@ class QueueSelect extends Component {
   }
 
   getName = () => {
-    db.collection('Users').doc('wpOGjvDtwpsE6C9DQblG').get().then(doc => {
+    db.collection('Users').doc('zLOG0J18c6VvlVlnLKLxD8Qphp93').get().then(doc => {
       let name = doc.data().Name;
       this.setState({
        name
