@@ -84,7 +84,7 @@ class App extends Component {
     }
   }
 
-  componentDidMount = () => {
+  componentDidMount(){
     
     this.authListener();
 
@@ -119,8 +119,6 @@ class App extends Component {
 
     this.getData();
   
-
-
     // PRESERVING STATE OF CATEGORY SELECTION DISPLAY
     let preserveState = sessionStorage.getItem("categoryDisplay");
     this.setState({ categoriesDisplay: preserveState });
@@ -164,7 +162,7 @@ class App extends Component {
       mapContainer = <MapContainer />
       navbar = <NavBar authListener={this.authListener}/>
     }
-
+    
     return (
       <MuiThemeProvider theme={theme}>
         <div>
