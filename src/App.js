@@ -91,11 +91,11 @@ class App extends Component {
 
     <MuiThemeProvider theme={theme}>
       <div>
-        <NavBar />
-        <MapContainer />
+        {/*<NavBar />*/}
+        {/*<MapContainer />*/}
       </div>
       <div>
-      {/*<CenteredGrid />*/}
+      <CenteredGrid />
       USER COMPONENT RENDERING
       <User
        changeCategoriesDisplay={this.changeCategoriesDisplay}
