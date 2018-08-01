@@ -6,9 +6,11 @@ import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { Paper, Typography, TextField, Button } from "@material-ui/core";
 import { blueGrey, red } from "@material-ui/core/colors";
 import "./User.css";
+import {observer} from 'mobx-react';
 import * as firebase from "firebase";
 // eslint-disable-next-line
 import db from "./config/firebase.js";
+import {initFirestorter, Collection} from 'firestorter';
 import Landing from "./Landing.js";
 import User from "./User.js";
 import Graphic from "./Graphic.js";
@@ -32,8 +34,10 @@ const theme = createMuiTheme({
 });
 
 class App extends Component {
-  constructor() {
-    super();
+
+  constructor(props) {
+    super(props);
+
 
     this.state = {
       loggedUser: null,
@@ -42,6 +46,7 @@ class App extends Component {
     // BINDING FUNCTION TO SEND AS PROPS
     this.changeCategoriesDisplay = this.changeCategoriesDisplay.bind(this);
   }
+}
 
   authListener = () =>
     auth.onAuthStateChanged(user => {
@@ -53,6 +58,18 @@ class App extends Component {
         console.log(this.state.loggedUser);
       }
     });
+
+  getData = () => {
+      db.collection('Business').doc('DxbucRUhcSzfvgSDML6J').get().then(doc => {
+        let name = doc.data().Name
+
+        this.setState({
+           name
+          })
+        return name
+    })
+  }
+
 
   // CHANGES STATE OF THE CATEGORY SELECTION DISPLAY
   // STORES STATE IN SESSION STORAGE FOR PRESERVATION
@@ -69,10 +86,39 @@ class App extends Component {
 
   componentDidMount() {
     this.authListener();
+
     // ENSURES ROOT WILL DISPLAY CATEGORIES TO LOGGED IN USER
     if (window.location.pathname === "/") {
       sessionStorage.setItem("categoryDisplay", "inline");
     }
+
+
+    // PRESERVING STATE OF CATEGORY SELECTION DISPLAY
+    let preservedState = sessionStorage.getItem("categoryDisplay");
+    this.setState({ categoriesDisplay: preservedState });
+
+    // BACK/FORWARD BUTTON HANDLER
+    document.onmouseover = function() {
+      // USER MOUSE WITHIN PAGE
+      window.innerDocClick = true;
+    }
+    document.onmouseleave = function() {
+      // USER MOUSE LEFT PAGE
+      window.innerDocClick = false;
+    }
+    window.onpopstate = function () {
+      if (!window.innerDocClick && window.location.pathname === "/") {
+        sessionStorage.setItem("categoryDisplay", "inline");
+        window.location.reload();
+      } else {
+        sessionStorage.setItem("categoryDisplay", "none")
+        window.location.reload();
+      }
+    }
+
+    this.getData();
+  }
+
 
     // PRESERVING STATE OF CATEGORY SELECTION DISPLAY
     let preserveState = sessionStorage.getItem("categoryDisplay");
@@ -126,12 +172,14 @@ class App extends Component {
         </div>
 
         <div>
+          {/* <Graphic /> */}
           {/*<CenteredGrid />*/}
         {user}
         </div>
       </MuiThemeProvider>
     );
   }
+
 }
 
 export default App;
