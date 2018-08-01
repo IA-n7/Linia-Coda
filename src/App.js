@@ -1,144 +1,201 @@
-import React, { Component } from 'react';
-import './App.css';
-import NavBar from './components/NavBar';
-import MapContainer from './components/MapContainer.js';
-import { createMuiTheme, MuiThemeProvider, getMuiTheme } from '@material-ui/core/styles';
-import { blueGrey, red } from '@material-ui/core/colors';
-import './User.css'
+import React, { Component } from "react";
+import "./App.css";
+import NavBar from "./components/NavBar";
+import MapContainer from "./components/MapContainer.js";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import { Paper, Typography, TextField, Button } from "@material-ui/core";
+import { blueGrey, red } from "@material-ui/core/colors";
+import "./User.css";
+import {observer} from 'mobx-react';
+import * as firebase from "firebase";
 // eslint-disable-next-line
-import * as firebase from 'firebase'
-// eslint-disable-next-line
-import db from './config/firebase.js'
+import db from "./config/firebase.js";
+import {initFirestorter, Collection} from 'firestorter';
+import Landing from "./Landing.js";
 import User from "./User.js";
-import Graphic from './Graphic.js';
-import CenteredGrid from './gridLayout.js'
+import Graphic from "./Graphic.js";
+import CenteredGrid from "./gridLayout.js";
+import("./Landing.css");
+const auth = firebase.auth();
 
 const theme = createMuiTheme({
   palette: {
     primary: {
       light: blueGrey[300],
       main: blueGrey[700],
-      dark: blueGrey[900],
+      dark: blueGrey[900]
     },
     secondary: {
       light: red[500],
       main: red[800],
-      dark: red[900],
+      dark: red[900]
     }
-  },
+  }
 });
 
-
 class App extends Component {
+
   constructor(props) {
     super(props);
-    this.state = {
-                  categoriesDisplay: "inline"
-                  };
 
+
+    this.state = {
+      loggedUser: null,
+      categoriesDisplay: "inline"
+    };
     // BINDING FUNCTION TO SEND AS PROPS
     this.changeCategoriesDisplay = this.changeCategoriesDisplay.bind(this);
   }
 
+
+  authListener = () =>
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        this.setState({ loggedUser: user });
+        console.log(this.state.loggedUser);
+      } else {
+        this.setState({ loggedUser: null });
+        console.log(this.state.loggedUser);
+      }
+    });
+
+  getData = () => {
+      db.collection('Business').doc('YYMc8S7qv2wPRfYWlqfP').get().then(doc => {
+        let name = doc.data().businessName
+
+        this.setState({
+           name
+          })
+        return name
+    })
+  }
+
+
   // CHANGES STATE OF THE CATEGORY SELECTION DISPLAY
   // STORES STATE IN SESSION STORAGE FOR PRESERVATION
-  changeCategoriesDisplay() {
-    if(this.state.categoriesDisplay === "inline") {
-      sessionStorage.setItem('categoryDisplay', 'none');
-      this.setState({categoriesDisplay: "none"});
+  changeCategoriesDisplay = () => {
+    if (this.state.categoriesDisplay === "inline") {
+      sessionStorage.setItem("categoryDisplay", "none");
+      this.setState({ categoriesDisplay: "none" });
     }
-    if(this.state.categoriesDisplay === "none") {
-      sessionStorage.setItem('categoryDisplay', 'inline');
-      this.setState({categoriesDisplay: "inline"});
+    if (this.state.categoriesDisplay === "none") {
+      sessionStorage.setItem("categoryDisplay", "inline");
+      this.setState({ categoriesDisplay: "inline" });
     }
   }
 
-   componentDidMount() {
+  componentDidMount(){
 
-     // ENSURES ROOT WILL DISPLAY CATEGORIES TO LOGGED IN USER
-     if(window.location.pathname === "/") {
-       sessionStorage.setItem('categoryDisplay', 'inline');
-     }
+    this.authListener();
 
-     // PRESERVING STATE OF CATEGORY SELECTION DISPLAY
-     let preserveState = sessionStorage.getItem('categoryDisplay');
-     this.setState({categoriesDisplay: preserveState});
-
-     document.onmouseover = function() {
-         //User's mouse is inside the page.
-         window.innerDocClick = true;
-     }
-
-     document.onmouseleave = function() {
-         //User's mouse has left the page.
-         window.innerDocClick = false;
-     }
-
-     window.onhashchange = function() {
-         if (window.innerDocClick) {
-             //Your own in-page mechanism triggered the hash change
-         } else {
-             //Browser back button was clicked
-             this.setState({categoriesDisplay: preserveState});
-         }
-     }
-   }
+    // ENSURES ROOT WILL DISPLAY CATEGORIES TO LOGGED IN USER
+    if (window.location.pathname === "/") {
+      sessionStorage.setItem("categoryDisplay", "inline");
+    }
 
 
-  render() {
-    console.log(window.google);
+    // PRESERVING STATE OF CATEGORY SELECTION DISPLAY
+    let preservedState = sessionStorage.getItem("categoryDisplay");
+    this.setState({ categoriesDisplay: preservedState });
+
+    // BACK/FORWARD BUTTON HANDLER
+    document.onmouseover = function() {
+      // USER MOUSE WITHIN PAGE
+      window.innerDocClick = true;
+    }
+    document.onmouseleave = function() {
+      // USER MOUSE LEFT PAGE
+      window.innerDocClick = false;
+    }
+    window.onpopstate = function () {
+      if (!window.innerDocClick && window.location.pathname === "/") {
+        sessionStorage.setItem("categoryDisplay", "inline");
+        window.location.reload();
+      } else {
+        sessionStorage.setItem("categoryDisplay", "none")
+        window.location.reload();
+      }
+    }
+
+    this.getData();
+
+    // PRESERVING STATE OF CATEGORY SELECTION DISPLAY
+    let preserveState = sessionStorage.getItem("categoryDisplay");
+    this.setState({ categoriesDisplay: preserveState });
+
+    document.onmouseover = function() {
+      //User's mouse is inside the page.
+      window.innerDocClick = true;
+    };
+
+    document.onmouseleave = function() {
+      //User's mouse has left the page.
+      window.innerDocClick = false;
+    };
+
+    window.onhashchange = function() {
+      if (window.innerDocClick) {
+        //Your own in-page mechanism triggered the hash change
+      } else {
+        //Browser back button was clicked
+        this.setState({ categoriesDisplay: preserveState });
+      }
+    }
+  }
+
+
+  render = () => {
+    let user;
+    let mapContainer;
+    let landing;
+    let navbar;
+    if (this.state.loggedUser == null) {
+      landing = <Landing
+      authListener={this.authListener}
+      loggedUser={this.state.loggedUser}
+    />
+    } else {
+      user = <User
+      changeCategoriesDisplay={this.changeCategoriesDisplay}
+      categoriesDisplay={this.state.categoriesDisplay}
+    />
+      mapContainer = <MapContainer />
+      navbar = <NavBar authListener={this.authListener}/>
+    }
+
     return (
 
-    <MuiThemeProvider theme={theme}>
-      <div>
-        {/*<NavBar />*/}
-        {/*<MapContainer />*/}
-      </div>
-      <div>
-      <CenteredGrid />
-      USER COMPONENT RENDERING
-      <User
-       changeCategoriesDisplay={this.changeCategoriesDisplay}
-       categoriesDisplay={this.state.categoriesDisplay}/>
-      </div>
-    </MuiThemeProvider>
-  );
- }
+ //    <MuiThemeProvider theme={theme}>
+ //      <div>
+ //        {/*<NavBar />*/}
+ //        {/*<MapContainer />*/}
+ //      </div>
+ //      <div>
+ //      <CenteredGrid />
+ //      USER COMPONENT RENDERING
+ //      <User
+ //       changeCategoriesDisplay={this.changeCategoriesDisplay}
+ //       categoriesDisplay={this.state.categoriesDisplay}/>
+ //      </div>
+ //    </MuiThemeProvider>
+ //  );
+ // }
+      <MuiThemeProvider theme={theme}>
+        <div>
+          {navbar}
+          {landing}
+          {mapContainer}
+        </div>
+
+        <div>
+          {/* <Graphic /> */}
+          {/*<CenteredGrid />*/}
+        {user}
+        </div>
+      </MuiThemeProvider>
+    );
+  }
 }
-
-
-//    constructor() {
-//      super();
-//      this.state = {
-//        user: "Nicholas"
-//      };
-//    }
-//    componentDidMount() {
-//      db.collection("users").add({
-//        first: "Ada",
-//        email: "ada@mail.com"
-//      })
-//      .then(function(docRef) {
-//          console.log("Document written with ID: ", docRef.id);
-//      })
-//      .catch(function(error) {
-//          console.error("Error adding document: ", error);
-//      });
-//      let usersRef = db.collection("users")
-
-//      usersRef.get().then(function(results) {
-//        if(results.empty) {
-//          console.log("No documents found!");
-//        } else {
-//          results.forEach(function (doc) {
-//            console.log("Document data:", doc.data().first);
-//          });
-//          console.log("Document data:", results.docs[0].data());
-//        }
-//      }).catch(function(error) {
-//          console.log("Error getting documents:", error);
-//      });
-//   }
 
 
 export default App;

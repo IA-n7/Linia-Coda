@@ -39,5 +39,11 @@
   background-color: #B71C1C !important;
 }
 
+.test {
+  float: right !important;
+  position: absolute !important;
+  right: 20px !important;
+}
+
 
 
