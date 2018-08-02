@@ -1,0 +1,22 @@
+.modal-background {
+  background-color: rgba(0,0,0,0.7);
+  height: 100%;
+  width: 100%;
+  display: flex;
+  position: absolute;
+  top: 0;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.modal {
+  background-color: #e4ecf2;
+  position: relative;
+  justify-content: space-around;
+  width: 1000px;
+  height: 600px;
+  text-align: center;
+  padding: 20px;
+  border-radius: 2px;
+}

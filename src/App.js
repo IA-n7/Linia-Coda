@@ -2,20 +2,22 @@ import React, { Component } from "react";
 import "./App.css";
 import NavBar from "./components/NavBar";
 import MapContainer from "./components/MapContainer.js";
+import QueueModal from "./components/QueueModal";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { Paper, Typography, TextField, Button } from "@material-ui/core";
 import { blueGrey, red } from "@material-ui/core/colors";
 import "./User.css";
-import {observer} from 'mobx-react';
+import { observer } from "mobx-react";
 import * as firebase from "firebase";
 // eslint-disable-next-line
 import db from "./config/firebase.js";
-import {initFirestorter, Collection} from 'firestorter';
+import { initFirestorter, Collection } from "firestorter";
 import Landing from "./Landing.js";
 import User from "./User.js";
 import Graphic from "./Graphic.js";
 import CenteredGrid from "./gridLayout.js";
 import("./Landing.css");
+const loadingSpinner = require('./img/lg.palette-rotating-ring-loader.gif')
 const auth = firebase.auth();
 
 const theme = createMuiTheme({
@@ -34,42 +36,47 @@ const theme = createMuiTheme({
 });
 
 class App extends Component {
-
   constructor(props) {
     super(props);
 
-
     this.state = {
-      loggedUser: null,
-      categoriesDisplay: "inline"
+      loading: true,
+      categoriesDisplay: "inline",
+      modalShow: false
     };
     // BINDING FUNCTION TO SEND AS PROPS
     this.changeCategoriesDisplay = this.changeCategoriesDisplay.bind(this);
   }
 
+  authListener = () => {
+    return new Promise((resolve, reject) => {
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          this.setState({ loggedUser: user });
+          console.log(this.state.loggedUser);
+          this.setState({ loading: false })
 
-  authListener = () =>
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        this.setState({ loggedUser: user });
-        console.log(this.state.loggedUser);
-      } else {
-        this.setState({ loggedUser: null });
-        console.log(this.state.loggedUser);
-      }
-    });
+        } else {
+          this.setState({ loggedUser: null });
+          console.log(this.state.loggedUser);
+        }
+      })  
+    })
+  };
 
   getData = () => {
-      db.collection('Business').doc('YYMc8S7qv2wPRfYWlqfP').get().then(doc => {
-        let name = doc.data().businessName
+    db.collection("Business")
+      .doc("YYMc8S7qv2wPRfYWlqfP")
+      .get()
+      .then(doc => {
+        let name = doc.data().businessName;
 
         this.setState({
-           name
-          })
-        return name
-    })
-  }
-
+          name
+        });
+        return name;
+      });
+  };
 
   // CHANGES STATE OF THE CATEGORY SELECTION DISPLAY
   // STORES STATE IN SESSION STORAGE FOR PRESERVATION
@@ -82,17 +89,15 @@ class App extends Component {
       sessionStorage.setItem("categoryDisplay", "inline");
       this.setState({ categoriesDisplay: "inline" });
     }
-  }
-
-  componentDidMount(){
-    
+  };
+  
+  componentDidMount() {
     this.authListener();
 
     // ENSURES ROOT WILL DISPLAY CATEGORIES TO LOGGED IN USER
     if (window.location.pathname === "/") {
       sessionStorage.setItem("categoryDisplay", "inline");
     }
-
 
     // PRESERVING STATE OF CATEGORY SELECTION DISPLAY
     let preservedState = sessionStorage.getItem("categoryDisplay");
@@ -102,23 +107,23 @@ class App extends Component {
     document.onmouseover = function() {
       // USER MOUSE WITHIN PAGE
       window.innerDocClick = true;
-    }
+    };
     document.onmouseleave = function() {
       // USER MOUSE LEFT PAGE
       window.innerDocClick = false;
-    }
-    window.onpopstate = function () {
+    };
+    window.onpopstate = function() {
       if (!window.innerDocClick && window.location.pathname === "/") {
         sessionStorage.setItem("categoryDisplay", "inline");
         window.location.reload();
       } else {
-        sessionStorage.setItem("categoryDisplay", "none")
+        sessionStorage.setItem("categoryDisplay", "none");
         window.location.reload();
       }
-    }
+    };
 
     this.getData();
-  
+
     // PRESERVING STATE OF CATEGORY SELECTION DISPLAY
     let preserveState = sessionStorage.getItem("categoryDisplay");
     this.setState({ categoriesDisplay: preserveState });
@@ -140,46 +145,76 @@ class App extends Component {
         //Browser back button was clicked
         this.setState({ categoriesDisplay: preserveState });
       }
-    }
+    };
+  }
+
+  toggleModal = e => {
+    this.setState({
+      modalShow: !this.state.modalShow
+    })
   }
   
-
   render = () => {
+
+    let loading;
     let user;
     let mapContainer;
     let landing;
     let navbar;
-    if (this.state.loggedUser == null) {
-      landing = <Landing
-      authListener={this.authListener}
-      loggedUser={this.state.loggedUser}
-    />
+    let modal;
+    let modalButton;
+    if (this.state.loading == false) {
+      if (this.state.loggedUser != null) {
+        user = (
+          <User
+            changeCategoriesDisplay={this.changeCategoriesDisplay}
+            categoriesDisplay={this.state.categoriesDisplay}
+          />
+        );
+        mapContainer = <MapContainer />;
+        navbar = <NavBar />;
+        modalButton = <Button
+                        color="secondary"
+                        variant="raised" 
+                        onClick={this.toggleModal}>
+                        Toggle Modal
+                        </Button>
+        if (this.state.modalShow === true) {
+          modal = <QueueModal />
+        }
+  
+      } else {
+        landing = (
+          <Landing
+            loggedUser={this.state.loggedUser}
+          />
+        );
+      } 
     } else {
-      user = <User
-      changeCategoriesDisplay={this.changeCategoriesDisplay}
-      categoriesDisplay={this.state.categoriesDisplay}
-    />
-      mapContainer = <MapContainer />
-      navbar = <NavBar authListener={this.authListener}/>
-    }
-    
+      loading = <img src={loadingSpinner} style={{position:"absolute", left:"40%", top:"35%"}} alt=""/>
+    } 
+
+
     return (
       <MuiThemeProvider theme={theme}>
         <div>
+          {loading}
           {navbar}
+          {modalButton}
+          {modal}
+          
           {landing}
-          {mapContainer}
+          {/* {mapContainer} */}
         </div>
 
         <div>
           {/* <Graphic /> */}
           {/*<CenteredGrid />*/}
-        {user}
+          {user}
         </div>
       </MuiThemeProvider>
     );
-  }
+  };
 }
-
 
 export default App;

@@ -31,10 +31,6 @@ class NavBar extends Component {
     firebase.auth().signOut();
   };
 
-  componentDidMount() {
-    this.props.authListener
-  }
-
   render() {
     return (
       <div>
