@@ -12,11 +12,11 @@ import {
 const styles = theme => ({
   root: {
     width: "100%",
-    maxWidth: 360,
+    maxWidth: 300,
     backgroundColor: theme.palette.background.paper,
     position: "relative",
-    overflow: "auto",
-    maxHeight: 300
+    overflow: "auto"
+    // maxHeight: 300
   },
   listSection: {
     backgroundColor: "inherit"

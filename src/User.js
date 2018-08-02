@@ -26,6 +26,19 @@ import { initFirestorter, Collection } from "firestorter";
 import { observer } from "mobx-react";
 import MapContainer from "./components/MapContainer.js";
 import BusinessList from "./user/BusinessList.js";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+
+const styles = theme => ({
+  root: {
+    width: 200,
+    // maxWidth: 300,
+    backgroundColor: theme.palette.background.paper,
+    position: "relative",
+    overflow: "auto"
+    // maxHeight: 300
+  }
+});
 
 const theme = createMuiTheme({
   palette: {
@@ -60,6 +73,7 @@ class User extends Component {
     };
   }
 
+  // DATA FETCHER
   getData = () => {
     const allCities = db
       .collection("Business")
@@ -85,6 +99,7 @@ class User extends Component {
     return categories;
   };
 
+  // OPENS/CLOSES GROW-MENU ON CATEGORIES SELECT
   handleToggle = () => {
     if (this.state.viewable === "inline") {
       this.setState({ viewable: "none" });
@@ -94,6 +109,7 @@ class User extends Component {
     this.setState(state => ({ open: !state.open }));
   };
 
+  // CLOSES GROW-MENU ON CLICK-AWAY
   handleClose = event => {
     if (this.anchorEl.contains(event.target)) {
       return;
@@ -107,16 +123,39 @@ class User extends Component {
   };
 
   componentDidMount() {
+    // RETRIEVE ALL BUSINESS DATA
     this.getData();
   }
 
   render() {
     const { open } = this.state;
+    const { classes } = this.props;
+
+    User.propTypes = {
+      classes: PropTypes.object.isRequired
+    };
 
     return (
       <MuiThemeProvider theme={theme}>
         <div className="drawer-container">
-          <Drawer className="business-pane" variant="permanent" anchor="left">
+          <Drawer
+            className={classes.root}
+            variant="permanent"
+            anchor="left"
+            style={
+              this.state.color === "blue"
+                ? {
+                    "--background-start": "#2196F3",
+                    "--background-end": "#21CBF3",
+                    "--box-shadow": "rgba(33, 203, 243, .3)"
+                  }
+                : {
+                    "--background-start": "#FE6B8B",
+                    "--background-end": "#FF8E53",
+                    "--box-shadow": "rgba(255, 105, 135, .3)"
+                  }
+            }
+          >
             {/* CATEGORIES DROPDOWN */}
             <Button
               buttonRef={node => {
@@ -170,4 +209,6 @@ class User extends Component {
   }
 }
 
-export default User;
+export default withStyles(styles)(User);
+
+// export default User;
