@@ -47,9 +47,43 @@ class User extends Component {
     super(props);
     this.state = {
       open: false,
-      viewable: "inline"
+      viewable: "inline",
+      categories: [
+        "Clinics",
+        "Bakery",
+        "Restaurant",
+        "RAMQ",
+        "Bank",
+        "Emergency"
+      ],
+      businesses: []
     };
   }
+
+  getData = () => {
+    const allCities = db
+      .collection("Business")
+      .get()
+      .then(businesses => {
+        businesses.forEach(doc => {
+          // console.log(doc.id, "=>", doc.data().businessName);
+          this.setState({
+            businesses: [...this.state.businesses, doc.data()]
+          });
+          // console.log("BUSINESSES", this.state.businesses);
+        });
+      })
+      .catch(err => {
+        console.log("Error getting documents", err);
+      });
+  };
+
+  populateCategories = () => {
+    let categories = this.state.categories.map(category => {
+      return <MenuItem onClick={this.handleClose}>{category}</MenuItem>;
+    });
+    return categories;
+  };
 
   handleToggle = () => {
     if (this.state.viewable === "inline") {
@@ -72,7 +106,9 @@ class User extends Component {
     this.setState({ open: false });
   };
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.getData();
+  }
 
   render() {
     const { open } = this.state;
@@ -110,12 +146,7 @@ class User extends Component {
                   <Paper>
                     <ClickAwayListener onClickAway={this.handleClose}>
                       <MenuList className="categories">
-                        <MenuItem onClick={this.handleClose}>Hello</MenuItem>
-                        <MenuItem onClick={this.handleClose}>I</MenuItem>
-                        <MenuItem onClick={this.handleClose}>Will</MenuItem>
-                        <MenuItem onClick={this.handleClose}>Be</MenuItem>
-                        <MenuItem onClick={this.handleClose}>A</MenuItem>
-                        <MenuItem onClick={this.handleClose}>Category</MenuItem>
+                        {this.populateCategories()}
                       </MenuList>
                     </ClickAwayListener>
                   </Paper>
@@ -125,7 +156,7 @@ class User extends Component {
 
             {/* BUSINESS LIST */}
             <div style={{ display: this.state.viewable }}>
-              <BusinessList />
+              <BusinessList businesses={this.state.businesses} />
             </div>
           </Drawer>
         </div>

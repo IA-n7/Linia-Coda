@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles} from '@material-ui/core/styles';
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
 import {
   Divider,
   List,
@@ -11,42 +11,51 @@ import {
 
 const styles = theme => ({
   root: {
-    width: '100%',
+    width: "100%",
     maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
-    position: 'relative',
-    overflow: 'auto',
-    maxHeight: 300,
+    position: "relative",
+    overflow: "auto",
+    maxHeight: 300
   },
   listSection: {
-    backgroundColor: 'inherit',
+    backgroundColor: "inherit"
   },
   ul: {
-    backgroundColor: 'inherit',
-    padding: 0,
-  },
+    backgroundColor: "inherit",
+    padding: 0
+  }
 });
 
-const BusinessList = (props) => {
-  const {classes} = props;
+const BusinessList = props => {
+  const populateBusinesses = () => {
+    let businesses = props.businesses.map(business => {
+      // console.log("BUSINESSES", business);
+
+      return (
+        <ListItem button>
+          <ListItemText primary={business.businessName} />
+          <ListItemText primary={business.businessLocation._lat} />
+          <ListItemText primary={business.businessLocation._long} />
+        </ListItem>
+      );
+    });
+    return businesses;
+  };
+
+  const { classes } = props;
   return (
-        // className="business-list"
-      <List className={classes.root} subheader={<li />} component="nav">
-        <li className={classes.listSection}>
-          <ul className={classes.ul}>
-              <ListItem button>
-                <ListItemText primary="business-1" />
-              </ListItem>
-          </ul>
-        </li>
+    // className="business-list"
+    <List className={classes.root} subheader={<li />} component="nav">
+      <li className={classes.listSection}>
+        <ul className={classes.ul}>{populateBusinesses()}</ul>
+      </li>
     </List>
   );
-}
-
-BusinessList.propTypes = {
-  classes: PropTypes.object.isRequired,
 };
 
-
+BusinessList.propTypes = {
+  classes: PropTypes.object.isRequired
+};
 
 export default withStyles(styles)(BusinessList);
