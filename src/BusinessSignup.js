@@ -2,35 +2,62 @@ import React, { Component } from "react";
 import { Paper, Typography, TextField, Button, Switch } from "@material-ui/core";
 import * as firebase from "firebase";
 import db from "./config/firebase.js";
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 const auth = firebase.auth();
 
 class BusinessSignUp extends Component {
-    constructor(props) {
-      super(props)
-    }
+  constructor(props){
+    super(props)
+    this.state = {
+      businessName: "",
+      businessAddress: "",
+      businessPhoneNumber: "",
+      businessEmail: "",
+      openingHours: "",
+      closingHours: ""
+    };
+  }
+
+  handleOpening = event => {
+    this.setState({
+      openingHours: event.target.value
+    });
+  };
+
+  handleClosing = event => {
+    this.setState({
+      closingHours: event.target.value
+    });
+  };
 
   signUpBusiness = e => {
     e.preventDefault();
-    const fullName = document.getElementById("full-name-field");
-    const email = document.getElementById("email-field");
-    const phoneNumber = document.getElementById("phone-number-field")
-    const password = document.getElementById("password-field");
-    const passwordConfirm = document.getElementById("password-confirm-field");
-    if (password.value === passwordConfirm.value) {
+    const businessName = document.getElementById("business-full-name-field");
+    const businessAddress = document.getElementById("business-full-name-field");
+    const businessPhoneNumber = document.getElementById("business-phone-number-field");
+    const businessEmail = document.getElementById("business-email-field");
+    const businessPassword = document.getElementById('business-password-field');
+    const businessConfirmPassword = document.getElementById('business-password-confirm-field');
+    const openingHours = document.getElementById("business-opening-hours-field");
+    const closingHours = document.getElementById("business-closing-hours-field");
+
+
+    if (businessPassword.value === businessConfirmPassword.value) {
       auth.createUserWithEmailAndPassword(
-        email.value,
-        password.value
+        businessEmail.value,
+        businessPassword.value
       ).then((result) => {
-        db.collection("Business").doc(result.user.uid).set({
-          fullName: fullName.value,
-          email: email.value,
-          phoneNumber: phoneNumber.value
+        db.collection("business").doc(result.user.uid).set({
+          businessName: businessName.value,
+          businessAddress: businessAddress.value,
+          businessPhoneNumber: businessPhoneNumber.value,
+          businessEmail: businessEmail.value,
+          openingHours: openingHours.value,
+          closingHours: closingHours.value
         })
-        fullName.value = "";
-        email.value = "";
-        password.value = "";
-        passwordConfirm.value = "";
-        phoneNumber.value = "";
+        businessPassword.value = "";
+        businessConfirmPassword.value = "";
       }).catch((e) => {
        console.log(e.message);
       });
@@ -46,7 +73,15 @@ class BusinessSignUp extends Component {
         <TextField
           name="name"
           label= "Business Name"
-          id="full-name-field"
+          id="business-full-name-field"
+          onChange={this.handleChange}
+          margin="normal"
+          />
+          <br />
+         <TextField
+          name="name"
+          label= "Business Address"
+          id="business-full-name-field"
           onChange={this.handleChange}
           margin="normal"
           />
@@ -54,7 +89,7 @@ class BusinessSignUp extends Component {
         <TextField
           name="phoneNumber"
           label= "Phone Number"
-          id="phone-number-field"
+          id="business-phone-number-field"
           onChange={this.handleChange}
           margin="normal"
         />
@@ -62,7 +97,7 @@ class BusinessSignUp extends Component {
         <TextField
           name="email"
           label="Email"
-          id="email-field"
+          id="business-email-field"
           onChange={this.handleChange}
           margin="normal"
         />
@@ -71,7 +106,7 @@ class BusinessSignUp extends Component {
           name="Password"
           label="Password"
           type="password"
-          id="password-field"
+          id="business-password-field"
           onChange={this.handleChange}
           margin="normal"
         />
@@ -80,15 +115,82 @@ class BusinessSignUp extends Component {
           name="Password-confirm"
           label= "Password Confirm"
           type="password"
-          id="password-confirm-field"
+          id="business-password-confirm-field"
           onChange={this.handleChange}
           margin="normal"
         />
+<Select
+            value={this.state.openingHours}
+            id='business-opening-hours-field'
+            onChange={this.handleOpening}
+            displayEmpty
+            name="Opening Hours"
+          >
+            <MenuItem>
+              <em>Opening Hours</em>
+            </MenuItem>
+            <MenuItem value={1}>1am</MenuItem>
+            <MenuItem value={2}>2am</MenuItem>
+            <MenuItem value={3}>3am</MenuItem>
+            <MenuItem value={4}>4am</MenuItem>
+            <MenuItem value={5}>5am</MenuItem>
+            <MenuItem value={6}>6am</MenuItem>
+            <MenuItem value={7}>7am</MenuItem>
+            <MenuItem value={8}>8am</MenuItem>
+            <MenuItem value={9}>9am</MenuItem>
+            <MenuItem value={10}>10am</MenuItem>
+            <MenuItem value={11}>11am</MenuItem>
+            <MenuItem value={12}>12pm</MenuItem>
+            <MenuItem value={13}>1pm</MenuItem>
+            <MenuItem value={14}>2pm</MenuItem>
+            <MenuItem value={15}>3pm</MenuItem>
+            <MenuItem value={16}>4pm</MenuItem>
+            <MenuItem value={17}>5pm</MenuItem>
+            <MenuItem value={18}>6pm</MenuItem>
+            <MenuItem value={19}>7pm</MenuItem>
+            <MenuItem value={20}>8pm</MenuItem>
+            <MenuItem value={21}>9pm</MenuItem>
+            <MenuItem value={22}>10pm</MenuItem>
+            <MenuItem value={23}>11pm</MenuItem>
+            <MenuItem value={24}>12pm</MenuItem>
+          </Select>
+          <Select
+            value={this.state.closingHours}
+            id='business-closing-hours-field'
+            onChange={this.handleClosing}
+            name="Closing Hours"
+          >
+            <MenuItem>
+              <em>Closing Hours</em>
+            </MenuItem>
+            <MenuItem value={1}>1am</MenuItem>
+            <MenuItem value={2}>2am</MenuItem>
+            <MenuItem value={3}>3am</MenuItem>
+            <MenuItem value={4}>4am</MenuItem>
+            <MenuItem value={5}>5am</MenuItem>
+            <MenuItem value={6}>6am</MenuItem>
+            <MenuItem value={7}>7am</MenuItem>
+            <MenuItem value={8}>8am</MenuItem>
+            <MenuItem value={9}>9am</MenuItem>
+            <MenuItem value={10}>10am</MenuItem>
+            <MenuItem value={11}>11am</MenuItem>
+            <MenuItem value={12}>12pm</MenuItem>
+            <MenuItem value={13}>1pm</MenuItem>
+            <MenuItem value={14}>2pm</MenuItem>
+            <MenuItem value={15}>3pm</MenuItem>
+            <MenuItem value={16}>4pm</MenuItem>
+            <MenuItem value={17}>5pm</MenuItem>
+            <MenuItem value={18}>6pm</MenuItem>
+            <MenuItem value={19}>7pm</MenuItem>
+            <MenuItem value={20}>8pm</MenuItem>
+            <MenuItem value={21}>9pm</MenuItem>
+            <MenuItem value={22}>10pm</MenuItem>
+            <MenuItem value={23}>11pm</MenuItem>
+            <MenuItem value={24}>12pm</MenuItem>
+          </Select>
 
 {/*. DONT FORGET THE LCOAITON nchajcsk */}
-
         <br />
-        <p>Want to register your business?</p>
         <Switch color="secondary" checked="true" onChange={this.props.businessFormToTrue}/>
 
         <br />

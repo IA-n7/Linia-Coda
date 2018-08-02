@@ -11,6 +11,8 @@ import Select from '@material-ui/core/Select';
 import db from './config/firebase.js';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+import * as firebase from "firebase";
+const auth = firebase.auth();
 
 const styles = theme => ({
   container: {
@@ -73,6 +75,7 @@ class BusinessForm extends React.Component {
 
   saveButton = e => {
     e.preventDefault();
+    console.log('thiis', e)
     const businessName = document.getElementById("businessName");
     const businessAddress = document.getElementById("businessAddress");
     const businessPhoneNumber = document.getElementById("businessPhoneNumber");
@@ -80,8 +83,9 @@ class BusinessForm extends React.Component {
     const openingHours = document.getElementById("openingHours");
     const closingHours = document.getElementById("closingHours");
 
-    // let currentBusiness = current business somehow
-    db.collection('Business').doc('UyeqsdZi2hX0bU4gJw7V').set({
+    const user = firebase.auth().currentUser;
+
+    db.collection('business').doc(user.uid).set({
       businessName: businessName.value,
       businessAddress: businessAddress.value,
       businessPhoneNumber: businessPhoneNumber.value,
@@ -109,10 +113,10 @@ class BusinessForm extends React.Component {
             id='openingHours'
             onChange={this.handleOpening}
             displayEmpty
-            name="age"
+            name="Opening Hours"
             className={classes.selectEmpty}
           >
-            <MenuItem id='openingHours'>
+            <MenuItem>
               <em>Opening Hours</em>
             </MenuItem>
             <MenuItem value={1}>1am</MenuItem>
@@ -144,10 +148,10 @@ class BusinessForm extends React.Component {
             value={this.state.closingHours}
             id='closingHours'
             onChange={this.handleClosing}
-            name="age"
+            name="Closing Hours"
             className={classes.selectEmpty}
           >
-            <MenuItem value="">
+            <MenuItem>
               <em>Closing Hours</em>
             </MenuItem>
             <MenuItem value={1}>1am</MenuItem>
@@ -185,15 +189,6 @@ class BusinessForm extends React.Component {
           margin="normal"
         />
         <TextField
-          id="businessName"
-          label="Business Name"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
           id="businessAddress"
           label="Business Address"
           InputLabelProps={{
@@ -213,7 +208,7 @@ class BusinessForm extends React.Component {
         />
         <TextField
           id="businessEmail"
-          label="Business Email (optional)"
+          label="Business Email"
           InputLabelProps={{
             shrink: true,
           }}

@@ -8,7 +8,6 @@ import { blueGrey, red } from "@material-ui/core/colors";
 import "./User.css";
 import {observer} from 'mobx-react';
 import * as firebase from "firebase";
-// eslint-disable-next-line
 import db from "./config/firebase.js";
 import {initFirestorter, Collection} from 'firestorter';
 import Landing from "./Landing.js";
@@ -143,12 +142,12 @@ class App extends Component {
     }
   }
 
-
   render = () => {
     let user;
     let mapContainer;
     let landing;
     let navbar;
+    let businessPage;
     if (this.state.loggedUser == null) {
       landing = <Landing
       authListener={this.authListener}
@@ -161,40 +160,28 @@ class App extends Component {
     />
       mapContainer = <MapContainer />
       navbar = <NavBar authListener={this.authListener}/>
+      businessPage = <div>
+      <Graphic loggedUser={this.state.loggedUser}/>
+      <CenteredGrid loggedUser={this.state.loggedUser}/>
+      </div>
     }
 
     return (
-
- //    <MuiThemeProvider theme={theme}>
- //      <div>
- //        {/*<NavBar />*/}
- //        {/*<MapContainer />*/}
- //      </div>
- //      <div>
- //      <CenteredGrid />
- //      USER COMPONENT RENDERING
- //      <User
- //       changeCategoriesDisplay={this.changeCategoriesDisplay}
- //       categoriesDisplay={this.state.categoriesDisplay}/>
- //      </div>
- //    </MuiThemeProvider>
- //  );
- // }
       <MuiThemeProvider theme={theme}>
         <div>
           {navbar}
           {landing}
-          {mapContainer}
+          {/* {mapContainer} */}
         </div>
 
         <div>
-          {/* <Graphic /> */}
-          {/*<CenteredGrid />*/}
-        {user}
+          <Graphic />
+          <CenteredGrid />
+          {user}
         </div>
       </MuiThemeProvider>
     );
-  }
+  };
 }
 
 

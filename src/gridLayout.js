@@ -8,6 +8,7 @@ import Graphic from "./Graphic.js";
 import BusinessForm from "./businessForm.js";
 import GuestWeek from "./GuestWeek.js";
 import QueueSelect from "./QueueSelect.js";
+import db from "./config/firebase.js";
 
 
 const styles = theme => ({
@@ -24,24 +25,29 @@ const styles = theme => ({
 function CenteredGrid(props) {
   const { classes } = props;
 
-  return (
-    <div className={classes.root}>
-      <Grid container spacing={24}>
-        <Grid item xs={6}>
-          <Paper className={classes.paper}><BusinessForm /></Paper>
+  const getBusinessID = () => {
+    db.collection("business").doc(this.props.loggedUser.uid).get().then(doc => {
+      console.log(doc.data().businessName)
+    });
+  }
+    return (
+      <div className={classes.root}>
+        <Grid container spacing={24}>
+          <Grid item xs={6}>
+            <Paper className={classes.paper}><BusinessForm /></Paper>
+          </Grid>
+          <Grid item xs={6}>
+            <Paper className={classes.paper}> <Graphic /> <FloatingActionButtons /></Paper>
+          </Grid>
+          {<Grid item xs={6}>
+            <Paper className={classes.paper}> <QueueSelect /> </Paper>
+          </Grid>}
+          <Grid item xs={6}>
+            <Paper className={classes.paper}> <GuestWeek /> <FloatingActionButtons /></Paper>
+          </Grid>
         </Grid>
-        <Grid item xs={6}>
-          <Paper className={classes.paper}> <Graphic /> <FloatingActionButtons /></Paper>
-        </Grid>
-        {<Grid item xs={6}>
-          <Paper className={classes.paper}> <QueueSelect /> </Paper>
-        </Grid>}
-        <Grid item xs={6}>
-          <Paper className={classes.paper}> <GuestWeek /> <FloatingActionButtons /></Paper>
-        </Grid>
-      </Grid>
-    </div>
-  );
+      </div>
+    );
 }
 
 CenteredGrid.propTypes = {

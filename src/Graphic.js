@@ -11,7 +11,9 @@ class Graphic extends Component {
       user: "Nicholas",
       name: "WOOO",
       email: "",
-      hours: ""
+      openingHours: 0,
+      closingHours: 0
+
     }
   }
 
@@ -45,12 +47,21 @@ class Graphic extends Component {
   // }
 
 
-  getHours = () => {
-    db.collection("Business").doc("UyeqsdZi2hX0bU4gJw7V").get().then(doc => {
-      let hours = doc.data().hours;
-     //  this.setState({
-     //   hours
-     // });
+  getOpeningHours = () => {
+    db.collection("business").doc("WICq27Zd4kT0GkiHu2rUkmHdUzu2").get().then(doc => {
+      let openingHours = doc.data().openingHours;
+      this.setState({
+       openingHours
+     });
+    });
+  }
+
+  getClosingHours = () => {
+    db.collection("business").doc("WICq27Zd4kT0GkiHu2rUkmHdUzu2").get().then(doc => {
+      let getClosingHours = doc.data().getClosingHours;
+      this.setState({
+       getClosingHours
+     });
     });
   }
 
@@ -59,7 +70,8 @@ class Graphic extends Component {
   componentDidMount = () => {
     this.getName();
     this.getEmail();
-    this.getHours();
+    this.getOpeningHours();
+    this.getClosingHours();
   }
 
   render () {
