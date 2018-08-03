@@ -1,28 +1,13 @@
-.business-pane {
-  position: 'relative';
-  width: 200px;
-}
-
-.business-list {
-  word-wrap: auto;
-}
-
 .map {
-  margin-left: 200px;
-  line-height: 200px;
+  margin-left: 300px;
+  /* line-height: 200px; */
   height: 100%;
 }
 
-.categories {
-  width: 100px;
-
+.MuiPaper-elevation0-265 {
+  margin-top: 65px;
 }
 
-.drawer-container {
-  flex-grow: 1;
-  height: 430;
-  z-index: 1;
-  overflow: 'hidden';
-  position: 'relative';
-  display: 'flex';
+#menu-list-grow {
+  width: 200px;
 }
