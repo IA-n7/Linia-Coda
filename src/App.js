@@ -38,11 +38,46 @@ class App extends Component {
     super(props);
 
     this.state = {
-      loggedUser: null
-    };
+     categoriesDisplay: "inline",
+     loggedUser: null,
+
+     currentLatLng: {
+        lat: 0,
+        lng: 0
+      },
+    }
+
+    // BINDING FUNCTION TO SEND AS PROPS
+    // this.changeCategoriesDisplay = this.changeCategoriesDisplay.bind(this);
+    // this.geocodeAddress = this.geocodeAddress.bind(this);
+
   }
 
-  authListener = () =>
+   geocodeAddress = (address) => {
+    this.geocoder = new window.google.maps.Geocoder();
+    this.geocoder.geocode({ 'address': address }, this.handleResults.bind(this))
+  }
+
+  handleResults(results, status) {
+
+      if (status === window.google.maps.GeocoderStatus.OK) {
+
+          this.setState({
+            currentLatLng: {
+              lat: results[0].geometry.location.lat(),
+              lng: results[0].geometry.location.lng()
+            }
+          })
+
+        // this.map.setCenter(results[0].geometry.location);
+        // this.marker.setPosition(results[0].geometry.location);
+      } else {
+        console.log("Geocode was not successful for the following reason: " + status);
+      }
+
+    }
+
+    authListener = () => {
     auth.onAuthStateChanged(user => {
       if (user) {
         this.setState({ loggedUser: user });
@@ -52,20 +87,13 @@ class App extends Component {
         console.log(this.state.loggedUser);
       }
     });
+  }
+    
+  componentDidMount() {
 
-  getData = () => {
-    db.collection("Business")
-      .doc("YYMc8S7qv2wPRfYWlqfP")
-      .get()
-      .then(doc => {
-        let name = doc.data().businessName;
+    this.authListener();
 
-        this.setState({
-          name
-        });
-        return name;
-      });
-  };
+}
 
   render = () => {
     let user;
@@ -80,29 +108,15 @@ class App extends Component {
         />
       );
     } else {
-      user = <User loggedUser={this.state.loggedUser} />;
-      navbar = <NavBar authListener={this.authListener} />;
+      
+      user = <User currentLatLng={this.state.currentLatLng} loggedUser={this.state.loggedUser}/>
+      navbar = <NavBar authListener={this.authListener}/>
     }
 
     return (
-      //    <MuiThemeProvider theme={theme}>
-      //      <div>
-      //        {/*<NavBar />*/}
-      //        {/*<MapContainer />*/}
-      //      </div>
-      //      <div>
-      //      <CenteredGrid />
-      //      USER COMPONENT RENDERING
-      //      <User
-      //       changeCategoriesDisplay={this.changeCategoriesDisplay}
-      //       categoriesDisplay={this.state.categoriesDisplay}/>
-      //      </div>
-      //    </MuiThemeProvider>
-      //  );
-      // }
       <MuiThemeProvider theme={theme}>
         <div>
-          {navbar}
+          <NavBar geocodeAddress={this.geocodeAddress.bind(this)} />
           {landing}
         </div>
 
@@ -112,8 +126,10 @@ class App extends Component {
           {user}
         </div>
       </MuiThemeProvider>
-    );
-  };
+
+
+  );
+ }
 }
 
 export default App;

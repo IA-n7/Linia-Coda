@@ -281,7 +281,7 @@ class User extends Component {
 
         {/* MAP */}
         <Paper className="map">
-          <MapContainer />
+          <MapContainer currentLatLng={this.props.currentLatLng} />
         </Paper>
       </MuiThemeProvider>
     );
