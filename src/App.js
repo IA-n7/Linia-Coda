@@ -38,12 +38,49 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-
     this.state = {
-      loggedUser: null
-    };
+     categoriesDisplay: "inline",
+     loggedUser: null,
+
+     currentLatLng: {
+        lat: 0,
+        lng: 0
+      },
+    }
+
+    // BINDING FUNCTION TO SEND AS PROPS
+    this.changeCategoriesDisplay = this.changeCategoriesDisplay.bind(this);
+    this.geocodeAddress = this.geocodeAddress.bind(this);
+
   }
 
+   geocodeAddress(address) {
+    this.geocoder = new window.google.maps.Geocoder();
+    this.geocoder.geocode({ 'address': address }, this.handleResults.bind(this))
+  }
+
+
+  handleResults(results, status) {
+
+      if (status === window.google.maps.GeocoderStatus.OK) {
+
+          this.setState({
+            currentLatLng: {
+              lat: results[0].geometry.location.lat(),
+              lng: results[0].geometry.location.lng()
+            }
+          })
+
+        // this.map.setCenter(results[0].geometry.location);
+        // this.marker.setPosition(results[0].geometry.location);
+      } else {
+        console.log("Geocode was not successful for the following reason: " + status);
+      }
+
+    }
+
+
+  componentDidMount() {
 
   authListener = () =>
     auth.onAuthStateChanged(user => {
@@ -56,16 +93,17 @@ class App extends Component {
       }
     });
 
-  getData = () => {
-      db.collection('Business').doc('YYMc8S7qv2wPRfYWlqfP').get().then(doc => {
-        let name = doc.data().businessName
+  // getData = () => {
+  //     db.collection('Business').doc('YYMc8S7qv2wPRfYWlqfP').get().then(doc => {
+  //       let name = doc.data().businessName
 
-        this.setState({
-           name
-          })
-        return name
-    })
-  }
+  //       this.setState({
+  //          name
+  //         })
+  //       return name
+  //   })
+  // }
+}
 
 
   render = () => {
@@ -85,7 +123,7 @@ class App extends Component {
 
     return (
 
- //    <MuiThemeProvider theme={theme}>
+//    <MuiThemeProvider theme={theme}>
  //      <div>
  //        {/*<NavBar />*/}
  //        {/*<MapContainer />*/}
@@ -102,7 +140,8 @@ class App extends Component {
  // }
       <MuiThemeProvider theme={theme}>
         <div>
-          {navbar}
+          <NavBar geocodeAddress={this.geocodeAddress.bind(this)} />
+          <MapContainer currentLatLng={this.state.currentLatLng} />
           {landing}
         </div>
 
@@ -112,8 +151,9 @@ class App extends Component {
         {user}
         </div>
       </MuiThemeProvider>
-    );
-  }
+
+  );
+ }
 }
 
 
