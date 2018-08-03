@@ -49,12 +49,12 @@ class App extends Component {
     }
 
     // BINDING FUNCTION TO SEND AS PROPS
-    this.changeCategoriesDisplay = this.changeCategoriesDisplay.bind(this);
-    this.geocodeAddress = this.geocodeAddress.bind(this);
+    // this.changeCategoriesDisplay = this.changeCategoriesDisplay.bind(this);
+    // this.geocodeAddress = this.geocodeAddress.bind(this);
 
   }
 
-   geocodeAddress(address) {
+   geocodeAddress = (address) => {
     this.geocoder = new window.google.maps.Geocoder();
     this.geocoder.geocode({ 'address': address }, this.handleResults.bind(this))
   }
@@ -79,10 +79,7 @@ class App extends Component {
 
     }
 
-
-  componentDidMount() {
-
-  authListener = () =>
+    authListener = () => {
     auth.onAuthStateChanged(user => {
       if (user) {
         this.setState({ loggedUser: user });
@@ -92,6 +89,13 @@ class App extends Component {
         console.log(this.state.loggedUser);
       }
     });
+  }
+
+
+
+  componentDidMount() {
+
+    this.authListener();
 
   // getData = () => {
   //     db.collection('Business').doc('YYMc8S7qv2wPRfYWlqfP').get().then(doc => {
@@ -117,7 +121,7 @@ class App extends Component {
       loggedUser={this.state.loggedUser}
     />
     } else {
-      user = <User/>
+      user = <User currentLatLng={this.state.currentLatLng}/>
       navbar = <NavBar authListener={this.authListener}/>
     }
 
@@ -141,7 +145,6 @@ class App extends Component {
       <MuiThemeProvider theme={theme}>
         <div>
           <NavBar geocodeAddress={this.geocodeAddress.bind(this)} />
-          <MapContainer currentLatLng={this.state.currentLatLng} />
           {landing}
         </div>
 

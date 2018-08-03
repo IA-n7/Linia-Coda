@@ -19,7 +19,7 @@ class MapContainer extends Component {
                   businessLongitude: []
                 }],
 
-        currentLatLng: props.currentLatLng,
+        currentLatLng: this.props.currentLatLng,
         infoWindowOpen: false
     }
     this.getGeoLocation();
@@ -106,31 +106,3 @@ export default MapContainer;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
->>>>>>> master
