@@ -20,6 +20,9 @@ const styles = {
    appbar: {
     marginBottom: 30,
    },
+   nav: {
+     zIndex: 1,
+   }
 };
 
 class NavBar extends Component {
@@ -36,6 +39,11 @@ class NavBar extends Component {
   }
 
   render() {
+    const { classes } = this.props;
+
+    NavBar.propTypes = {
+      classes: PropTypes.object.isRequired,
+    };
     return (
       <div>
         <AppBar position="static">
@@ -56,10 +64,6 @@ class NavBar extends Component {
   }
 }
 
+export default withStyles(styles)(NavBar);
 
-// NavBar.propTypes = {
-//   classes: PropTypes.object.isRequired,
-// };
-
-
-export default NavBar;
+// export default NavBar;

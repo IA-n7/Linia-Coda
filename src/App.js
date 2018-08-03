@@ -6,11 +6,11 @@ import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { Paper, Typography, TextField, Button } from "@material-ui/core";
 import { blueGrey, red } from "@material-ui/core/colors";
 import "./User.css";
-import {observer} from 'mobx-react';
+import { observer } from "mobx-react";
 import * as firebase from "firebase";
 // eslint-disable-next-line
 import db from "./config/firebase.js";
-import {initFirestorter, Collection} from 'firestorter';
+import { initFirestorter, Collection } from "firestorter";
 import Landing from "./Landing.js";
 import User from "./User.js";
 import Graphic from "./Graphic.js";
@@ -34,16 +34,13 @@ const theme = createMuiTheme({
 });
 
 class App extends Component {
-
   constructor(props) {
     super(props);
-
 
     this.state = {
       loggedUser: null
     };
   }
-
 
   authListener = () =>
     auth.onAuthStateChanged(user => {
@@ -57,16 +54,18 @@ class App extends Component {
     });
 
   getData = () => {
-      db.collection('Business').doc('YYMc8S7qv2wPRfYWlqfP').get().then(doc => {
-        let name = doc.data().businessName
+    db.collection("Business")
+      .doc("YYMc8S7qv2wPRfYWlqfP")
+      .get()
+      .then(doc => {
+        let name = doc.data().businessName;
 
         this.setState({
-           name
-          })
-        return name
-    })
-  }
-
+          name
+        });
+        return name;
+      });
+  };
 
   render = () => {
     let user;
@@ -74,32 +73,33 @@ class App extends Component {
     let landing;
     let navbar;
     if (this.state.loggedUser == null) {
-      landing = <Landing
-      authListener={this.authListener}
-      loggedUser={this.state.loggedUser}
-    />
+      landing = (
+        <Landing
+          authListener={this.authListener}
+          loggedUser={this.state.loggedUser}
+        />
+      );
     } else {
-      user = <User/>
-      navbar = <NavBar authListener={this.authListener}/>
+      user = <User loggedUser={this.state.loggedUser} />;
+      navbar = <NavBar authListener={this.authListener} />;
     }
 
     return (
-
- //    <MuiThemeProvider theme={theme}>
- //      <div>
- //        {/*<NavBar />*/}
- //        {/*<MapContainer />*/}
- //      </div>
- //      <div>
- //      <CenteredGrid />
- //      USER COMPONENT RENDERING
- //      <User
- //       changeCategoriesDisplay={this.changeCategoriesDisplay}
- //       categoriesDisplay={this.state.categoriesDisplay}/>
- //      </div>
- //    </MuiThemeProvider>
- //  );
- // }
+      //    <MuiThemeProvider theme={theme}>
+      //      <div>
+      //        {/*<NavBar />*/}
+      //        {/*<MapContainer />*/}
+      //      </div>
+      //      <div>
+      //      <CenteredGrid />
+      //      USER COMPONENT RENDERING
+      //      <User
+      //       changeCategoriesDisplay={this.changeCategoriesDisplay}
+      //       categoriesDisplay={this.state.categoriesDisplay}/>
+      //      </div>
+      //    </MuiThemeProvider>
+      //  );
+      // }
       <MuiThemeProvider theme={theme}>
         <div>
           {navbar}
@@ -109,12 +109,11 @@ class App extends Component {
         <div>
           {/* <Graphic /> */}
           {/*<CenteredGrid />*/}
-        {user}
+          {user}
         </div>
       </MuiThemeProvider>
     );
-  }
+  };
 }
-
 
 export default App;

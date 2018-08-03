@@ -28,28 +28,64 @@ const styles = theme => ({
 });
 
 const BusinessList = props => {
+  let onModal = event => {
+    console.log("heglawegjnrelkgnalrekngjkl")
+  };
+
   const populateBusinesses = () => {
     let businesses = props.businesses.map(business => {
-      // business.businessLocation._lat + business.businessLocation._long
+      let hours = "";
+      let minutes = "";
+      let openingHours = business.openingHours;
+
+      if (business.openingHours.length === 3) {
+        hours = business.openingHours.slice(0, 1);
+        minutes = business.openingHours.slice(1, 3);
+        openingHours = hours + ":" + minutes;
+      }
+      if (business.openingHours.length === 4) {
+        hours = business.openingHours.slice(0, 2);
+        minutes = business.openingHours.slice(2, 4);
+        openingHours = hours + ":" + minutes;
+      }
+
       if (props.currentCategory === business.category) {
         return (
           <div>
-            <CardContent>
-              <Typography className={classes.item} align="center">{business.businessName}</Typography>
-              <Typography className={classes.item} color="textSecondary" align="center">
+            <CardContent onClick={onModal}>
+              <Typography className={classes.item} align="center">
+                {business.businessName}
+              </Typography>
+              <Typography
+                className={classes.item}
+                color="textSecondary"
+                align="center"
+              >
                 {"Open " +
-                  business.openingHours +
+                  openingHours +
                   "am - Closes " +
                   (business.closingHours - 12) +
                   "pm"}
               </Typography>
-              <Typography className={classes.item} color="textSecondary" align="center">
+              <Typography
+                className={classes.item}
+                color="textSecondary"
+                align="center"
+              >
                 {business.businessEmail}
               </Typography>
-              <Typography className={classes.item} color="textSecondary" align="center">
+              <Typography
+                className={classes.item}
+                color="textSecondary"
+                align="center"
+              >
                 {business.businessPhoneNumber}
               </Typography>
-              <Typography className={classes.item} color="textSecondary" align="center">
+              <Typography
+                className={classes.item}
+                color="textSecondary"
+                align="center"
+              >
                 {"Average Wait - " + business.averageWait + " minutes"}
               </Typography>
             </CardContent>
@@ -60,22 +96,40 @@ const BusinessList = props => {
       if (props.currentCategory === "") {
         return (
           <div>
-            <CardContent>
-              <Typography className={classes.item} align="center">{business.businessName}</Typography>
-              <Typography className={classes.item} color="textSecondary" align="center">
+            <CardContent onClick={onModal}>
+              <Typography className={classes.item} align="center">
+                {business.businessName}
+              </Typography>
+              <Typography
+                className={classes.item}
+                color="textSecondary"
+                align="center"
+              >
                 {"Open " +
-                  business.openingHours +
+                  openingHours +
                   "am - Closes " +
                   (business.closingHours - 12) +
                   "pm"}
               </Typography>
-              <Typography className={classes.item} color="textSecondary" align="center">
+              <Typography
+                className={classes.item}
+                color="textSecondary"
+                align="center"
+              >
                 {business.businessEmail}
               </Typography>
-              <Typography className={classes.item} color="textSecondary" align="center">
+              <Typography
+                className={classes.item}
+                color="textSecondary"
+                align="center"
+              >
                 {business.businessPhoneNumber}
               </Typography>
-              <Typography className={classes.item} color="textSecondary" align="center">
+              <Typography
+                className={classes.item}
+                color="textSecondary"
+                align="center"
+              >
                 {"Average Wait - " + business.averageWait + " minutes"}
               </Typography>
             </CardContent>
@@ -88,8 +142,8 @@ const BusinessList = props => {
   };
 
   const { classes } = props;
+
   return (
-    // className="business-list"
     <Card className={classes.root} component="nav" button>
       {populateBusinesses()}
     </Card>

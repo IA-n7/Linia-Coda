@@ -4,7 +4,6 @@ import {
   Drawer,
   ClickAwayListener,
   MenuItem,
-  Typography,
   MenuList,
   Popper,
   Grow,
@@ -32,24 +31,33 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
   root: {
-    // width: 200,
-    // width: "100%",
-    // backgroundColor: theme.palette.background.paper,
-    // position: "relative",
-    // overflow: "auto"
-    // maxHeight: 300
-    // display: "flex"
+    backgroundColor: theme.palette.background.paper,
+    position: "relative",
+    overflow: "auto",
+    marginTop: 50
   },
   button: {
-    width: 280
+    width: 280,
+
   },
   menu: {
-    width: 280
+    width: 280,
+    marginTop: 50
+
   },
-  menuItems: {
-    textAlign: "center"
+  drawer: {
+    width: 200
   }
 });
+// root: {
+// width: 200,
+// width: "100%",
+// backgroundColor: theme.palette.background.paper,
+// position: "relative",
+// overflow: "auto"
+// maxHeight: 300
+// display: "flex"
+// },
 
 const theme = createMuiTheme({
   palette: {
@@ -79,7 +87,8 @@ class User extends Component {
         "RAMQ",
         "Bank",
         "Emergency",
-        "Hairdressers"
+        "Hairdressers",
+        ""
       ],
       currentCategory: "",
       businesses: []
@@ -93,11 +102,11 @@ class User extends Component {
       .get()
       .then(businesses => {
         businesses.forEach(doc => {
-          // console.log(doc.id, "=>", doc.data().businessName);
           this.setState({
             businesses: [...this.state.businesses, doc.data()]
           });
-          // console.log("BUSINESSES", this.state.businesses);
+
+          this.sortBusinesses();
         });
       })
       .catch(err => {
@@ -105,9 +114,54 @@ class User extends Component {
       });
   };
 
-  populateCategories = (classes) => {
+  toRadians = degree => {
+    return degree * (Math.PI / 180);
+  };
+
+  compare = (a, b) => {
+    return a.distance - b.distance;
+    return 0;
+  };
+
+  sortBusinesses = () => {
+    let sortedBusinesses = [];
+    this.state.businesses.map(business => {
+      // console.log("PROPS: ", this.props.loggedUser)
+      // console.log("LATITUDE, BUSINESS: ", business.businessLocation._lat)
+      // console.log("LONGITUDE, BUSINESS: ", business.businessLocation._long)
+      let lat1 = business.businessLocation._lat;
+      let lon1 = business.businessLocation._long;
+
+      // HARDCODED, CHANGE TO LOGGEDUSER VALUES
+      let lat2 = 45.496761799999994;
+      let lon2 = -73.5703049;
+
+      let R = 6371e3; // metres
+      let φ1 = this.toRadians(lat1);
+      let φ2 = this.toRadians(lat2);
+      let Δφ = this.toRadians(lat2 - lat1);
+      let Δλ = this.toRadians(lon2 - lon1);
+
+      let a =
+        Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+        Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+      let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+      let d = R * c;
+
+      business["distance"] = d;
+    });
+
+    this.state.businesses.sort(this.compare);
+  };
+
+  populateCategories = () => {
     let categories = this.state.categories.map(category => {
-      return <MenuItem><Typography className={classes.menuItems} onClick={this.handleClose}>{category}</Typography></MenuItem>;
+      return (
+        <MenuItem className="business" onClick={this.handleClose}>
+          {category}
+        </MenuItem>
+      );
     });
     return categories;
   };
@@ -124,13 +178,10 @@ class User extends Component {
 
   // OPENS/CLOSES GROW-MENU ON CATEGORIES SELECT
   handleClose = event => {
-    // console.log(event.currentTarget.textContent);
     if (event.currentTarget.textContent === null) {
     } else {
       this.setState({ currentCategory: event.currentTarget.textContent });
     }
-
-    // console.log( this.state.currentCategory )
 
     if (this.anchorEl.contains(event.target)) {
       return;
@@ -143,18 +194,16 @@ class User extends Component {
     this.setState({ open: false });
   };
 
-  renderQueueModal = event => {
-
-  }
+  renderQueueModal = event => {};
 
   componentDidMount() {
     // RETRIEVE ALL BUSINESS DATA
     this.getData();
+    setTimeout(() => {}, 2000);
   }
 
   render() {
     const { open } = this.state;
-    // console.log("SEE MEEEEEEEE", this.props)
     const { classes } = this.props;
 
     User.propTypes = {
@@ -163,9 +212,9 @@ class User extends Component {
 
     return (
       <MuiThemeProvider theme={theme}>
-        <div className={classes.root}>
+        <div className={classes.drawer}>
           <Drawer
-
+            className={classes.root}
             variant="permanent"
             anchor="left"
             style={
@@ -209,11 +258,9 @@ class User extends Component {
                       placement === "bottom" ? "center top" : "center bottom"
                   }}
                 >
-                  <Paper className={classes.menu}>
+                  <Paper classes={{docked: classes.menu}}>
                     <ClickAwayListener onClickAway={this.handleClose}>
-                      <MenuList>
-                        {this.populateCategories(classes)}
-                      </MenuList>
+                      <MenuList>{this.populateCategories()}</MenuList>
                     </ClickAwayListener>
                   </Paper>
                 </Grow>
@@ -226,6 +273,7 @@ class User extends Component {
                 businesses={this.state.businesses}
                 currentCategory={this.state.currentCategory}
                 renderQueueModal={this.renderQueueModal}
+                logguedUser={this.props.loggedUser}
               />
             </div>
           </Drawer>
