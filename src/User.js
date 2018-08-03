@@ -4,6 +4,7 @@ import {
   Drawer,
   ClickAwayListener,
   MenuItem,
+  Typography,
   MenuList,
   Popper,
   Grow,
@@ -31,12 +32,22 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
   root: {
-    width: 200,
-    // maxWidth: 300,
-    backgroundColor: theme.palette.background.paper,
-    position: "relative",
-    overflow: "auto"
+    // width: 200,
+    // width: "100%",
+    // backgroundColor: theme.palette.background.paper,
+    // position: "relative",
+    // overflow: "auto"
     // maxHeight: 300
+    // display: "flex"
+  },
+  button: {
+    width: 280
+  },
+  menu: {
+    width: 280
+  },
+  menuItems: {
+    textAlign: "center"
   }
 });
 
@@ -67,16 +78,18 @@ class User extends Component {
         "Restaurant",
         "RAMQ",
         "Bank",
-        "Emergency"
+        "Emergency",
+        "Hairdressers"
       ],
+      currentCategory: "",
       businesses: []
     };
+    this.renderQueueModal = this.renderQueueModal.bind(this);
   }
 
   // DATA FETCHER
   getData = () => {
-    const allCities = db
-      .collection("Business")
+    db.collection("Business")
       .get()
       .then(businesses => {
         businesses.forEach(doc => {
@@ -92,15 +105,15 @@ class User extends Component {
       });
   };
 
-  populateCategories = () => {
+  populateCategories = (classes) => {
     let categories = this.state.categories.map(category => {
-      return <MenuItem onClick={this.handleClose}>{category}</MenuItem>;
+      return <MenuItem><Typography className={classes.menuItems} onClick={this.handleClose}>{category}</Typography></MenuItem>;
     });
     return categories;
   };
 
-  // OPENS/CLOSES GROW-MENU ON CATEGORIES SELECT
-  handleToggle = () => {
+  // CLOSES GROW-MENU ON CLICK-AWAY
+  handleToggle = event => {
     if (this.state.viewable === "inline") {
       this.setState({ viewable: "none" });
     } else {
@@ -109,8 +122,16 @@ class User extends Component {
     this.setState(state => ({ open: !state.open }));
   };
 
-  // CLOSES GROW-MENU ON CLICK-AWAY
+  // OPENS/CLOSES GROW-MENU ON CATEGORIES SELECT
   handleClose = event => {
+    // console.log(event.currentTarget.textContent);
+    if (event.currentTarget.textContent === null) {
+    } else {
+      this.setState({ currentCategory: event.currentTarget.textContent });
+    }
+
+    // console.log( this.state.currentCategory )
+
     if (this.anchorEl.contains(event.target)) {
       return;
     }
@@ -122,6 +143,10 @@ class User extends Component {
     this.setState({ open: false });
   };
 
+  renderQueueModal = event => {
+
+  }
+
   componentDidMount() {
     // RETRIEVE ALL BUSINESS DATA
     this.getData();
@@ -129,6 +154,7 @@ class User extends Component {
 
   render() {
     const { open } = this.state;
+    // console.log("SEE MEEEEEEEE", this.props)
     const { classes } = this.props;
 
     User.propTypes = {
@@ -137,9 +163,9 @@ class User extends Component {
 
     return (
       <MuiThemeProvider theme={theme}>
-        <div className="drawer-container">
+        <div className={classes.root}>
           <Drawer
-            className={classes.root}
+
             variant="permanent"
             anchor="left"
             style={
@@ -164,6 +190,7 @@ class User extends Component {
               aria-owns={open ? "menu-list-grow" : null}
               aria-haspopup="true"
               onClick={this.handleToggle}
+              className={classes.button}
             >
               Categories
             </Button>
@@ -182,10 +209,10 @@ class User extends Component {
                       placement === "bottom" ? "center top" : "center bottom"
                   }}
                 >
-                  <Paper>
+                  <Paper className={classes.menu}>
                     <ClickAwayListener onClickAway={this.handleClose}>
-                      <MenuList className="categories">
-                        {this.populateCategories()}
+                      <MenuList>
+                        {this.populateCategories(classes)}
                       </MenuList>
                     </ClickAwayListener>
                   </Paper>
@@ -195,7 +222,11 @@ class User extends Component {
 
             {/* BUSINESS LIST */}
             <div style={{ display: this.state.viewable }}>
-              <BusinessList businesses={this.state.businesses} />
+              <BusinessList
+                businesses={this.state.businesses}
+                currentCategory={this.state.currentCategory}
+                renderQueueModal={this.renderQueueModal}
+              />
             </div>
           </Drawer>
         </div>
