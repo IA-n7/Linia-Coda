@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { withScriptjs, withGoogleMap, GoogleMap } from 'react-google-maps';
+//import { withScriptjs, withGoogleMap, GoogleMap } from 'react-google-maps';
 import SearchBar from 'material-ui-search-bar';
 import FloatingActionButton from './FloatingActionButton';
+import Grid from '@material-ui/core/Grid';
 
 
 class SearchBarContainer extends Component {
@@ -39,14 +40,24 @@ class SearchBarContainer extends Component {
 
   render() {
     return (
+     <div>
       <form className="form-inline" onSubmit={this.handleFormSubmit}>
-        <SearchBar
-         placeholder="Search for services near you..."
-         style={{margin: '0 auto', maxWidth: 800}}
-         onChange={this.handleChange}
-         required />
-        <FloatingActionButton />
+        <Grid container spacing={0}>
+
+          <Grid item xs>
+            <SearchBar
+              placeholder="Search for services near you..."
+              style={{marginLeft: '20%', marginRight: '1%', maxWidth: 800}}
+              onChange={this.handleChange}
+              required
+            />
+          </Grid>
+          <Grid item xs={3}>
+          <FloatingActionButton />
+          </Grid>
+        </Grid>
       </form>
+    </div>
     )
   }
 }

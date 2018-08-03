@@ -7,17 +7,23 @@ import SearchBar from 'material-ui-search-bar';
 import FloatingActionButton from './FloatingActionButton';
 
 class MapContainer extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
     this.state = {
-      isMarkerShown: false,
-        businessInfo: {
-          name: 'Walk-In Express',
-          location: 'Sherbrooke'
-        },
+      loading: true,
+      isMarkerShown: true,
+        businessInfo: [
+          {
+                  businessName: 'Walk-In Express',
+                  businessLatitude: [],
+                  businessLongitude: []
+                }],
 
         currentLatLng: props.currentLatLng,
+        infoWindowOpen: false
     }
+    this.getGeoLocation();
+    this.getLocationsForMap = this.getLocationsForMap.bind(this);
   }
 
   componentWillReceiveProps(props) {
@@ -26,41 +32,52 @@ class MapContainer extends Component {
 
   }
 
-
   componentDidMount() {
     this.showMarker()
-    this.getData()
+    this.getLocationsForMap()
   }
 
-  getData = () => {
-    db.collection('Business').doc('DxbucRUhcSzfvgSDML6J').get().then(doc => {
-      let name = doc.data().Name;
-      let location = "Montreal";
+  getLocationsForMap() {
 
-      this.setState({
-        businessInfo: {
-          name,
-          location
+    let allBusinesses = [];
+   const self = this;
+
+
+    db.collection('Business').get().then(function(querySnapshot) {
+      querySnapshot.forEach(function(doc) {
+
+       let businessInfo = {
+          id: doc.id,
+          name: doc.data().businessName,
+          latitude: doc.data().businessLocation.latitude,
+          longitude: doc.data().businessLocation.longitude,
+          address: doc.data().businessAddress,
+          phoneNumber: doc.data().businessPhoneNumber,
+          category: doc.data().category,
+          queueInfo: doc.data().QueueBoiArray.length,
+          averageWait: doc.data().averageWait,
         }
-      })
-    })
-  }
+
+        allBusinesses.push(businessInfo);
+
+      });
+
+    self.setState({
+        loading: false,
+        allBusinesses: allBusinesses
+      });
+    });
+
+   }
 
   showMarker = () => {
-      this.getGeoLocation()
       this.setState({ isMarkerShown: true })
-  }
-
-  handleMarkerClick = () => {
-    this.setState({ isMarkerShown: false })
-    this.showMarker()
   }
 
   getGeoLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         position => {
-          console.log(position.coords);
           this.setState(prevState => ({
             currentLatLng: {
               ...prevState.currentLatLng,
@@ -75,20 +92,21 @@ class MapContainer extends Component {
 
   render() {
     return (
+      this.state.loading ? <p>loading...</p> : <MapComponent
+       isMarkerShown={this.state.isMarkerShown}
+       currentLocation={this.state.currentLatLng}
+       businessInfo={this.state.businessInfo}
+       allBusinesses={this.state.allBusinesses}
 
-
-      <MapComponent
-        isMarkerShown={this.state.isMarkerShown}
-        onMarkerClick={this.handleMarkerClick}
-        currentLocation={this.state.currentLatLng}
-        businessInfo={this.state.businessInfo}
-
-      />
-    )
+     />
+     )
   }
 }
 
 export default MapContainer;
+
+
+
 
 
 
