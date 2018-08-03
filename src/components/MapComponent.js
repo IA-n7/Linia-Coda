@@ -22,10 +22,12 @@ const MapComponent = compose(withStateHandlers(() => ({
   withGoogleMap
   )((props) => {
 
+    const currentLocation = props.currentLocation;
+    console.log(currentLocation)
     return (
       <GoogleMap
         defaultZoom={14}
-        center={{ lat: props.currentLocation.lat, lng: props.currentLocation.lng }}
+        center={currentLocation}
       >
 
       {props.isMarkerShown && props.allBusinesses.map((business, index) => {

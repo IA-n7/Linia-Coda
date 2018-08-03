@@ -4,7 +4,7 @@ import { withStyles} from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, Button, IconButton } from '@material-ui/core';
 import SearchBarContainer from './SearchBarContainer.js';
 import * as firebase from 'firebase'
-import SearchBarContainer from './SearchBar.js';
+//import SearchBarContainer from './SearchBar.js';
 
 
 
@@ -48,7 +48,7 @@ class NavBar extends Component {
             </div>
           </Toolbar>
         </AppBar>
-        <SearchBarContainer geocodeAddress={props.geocodeAddress}/>
+        <SearchBarContainer geocodeAddress={this.props.geocodeAddress}/>
       </div>
     );
   }
