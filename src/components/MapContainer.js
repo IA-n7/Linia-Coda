@@ -42,7 +42,6 @@ class MapContainer extends Component {
     let allBusinesses = [];
    const self = this;
 
-
     db.collection('Business').get().then(function(querySnapshot) {
       querySnapshot.forEach(function(doc) {
 
@@ -132,3 +131,6 @@ export default MapContainer;
 
 
 
+
+=======
+>>>>>>> master
