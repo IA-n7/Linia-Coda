@@ -32,10 +32,7 @@ const MapComponent = compose(withStateHandlers(() => ({
         const onClick = props.onToggleOpen.bind(this, business)
         const position = { lat: business.latitude, lng: business.longitude }
         return (
-          <MarkerInfoWindow key={index} position={position} infoWindowContent={business.name}
-                            businessAddress={business.address} businessNumber={business.phoneNumber}
-                            businessCategory={business.category} queueInfo={business.queueInfo}
-                            averageWait={business.averageWait}
+          <MarkerInfoWindow key={index} position={position} business={business}
           />
         )
       })}
