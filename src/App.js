@@ -42,7 +42,8 @@ class App extends Component {
     this.state = {
       loading: true,
       categoriesDisplay: "inline",
-      modalShow: false
+      modalShow: false,
+      inQueue: false
     };
     // BINDING FUNCTION TO SEND AS PROPS
     this.changeCategoriesDisplay = this.changeCategoriesDisplay.bind(this);
@@ -59,8 +60,12 @@ class App extends Component {
         console.log(this.state.loggedUser);
       }
       this.setState({ loading: false })
-    })  
+    })
   };
+
+  toggleQueue = () => {
+    this.setState({ inQueue: !this.state.inQueue })
+  }
 
   getData = () => {
     db.collection("Business")
@@ -88,7 +93,7 @@ class App extends Component {
       this.setState({ categoriesDisplay: "inline" });
     }
   };
-  
+
   componentDidMount() {
     this.authListener();
 
@@ -102,15 +107,15 @@ class App extends Component {
     this.setState({ categoriesDisplay: preservedState });
 
     // BACK/FORWARD BUTTON HANDLER
-    document.onmouseover = function() {
+    document.onmouseover = function () {
       // USER MOUSE WITHIN PAGE
       window.innerDocClick = true;
     };
-    document.onmouseleave = function() {
+    document.onmouseleave = function () {
       // USER MOUSE LEFT PAGE
       window.innerDocClick = false;
     };
-    window.onpopstate = function() {
+    window.onpopstate = function () {
       if (!window.innerDocClick && window.location.pathname === "/") {
         sessionStorage.setItem("categoryDisplay", "inline");
         window.location.reload();
@@ -126,17 +131,17 @@ class App extends Component {
     let preserveState = sessionStorage.getItem("categoryDisplay");
     this.setState({ categoriesDisplay: preserveState });
 
-    document.onmouseover = function() {
+    document.onmouseover = function () {
       //User's mouse is inside the page.
       window.innerDocClick = true;
     };
 
-    document.onmouseleave = function() {
+    document.onmouseleave = function () {
       //User's mouse has left the page.
       window.innerDocClick = false;
     };
 
-    window.onhashchange = function() {
+    window.onhashchange = function () {
       if (window.innerDocClick) {
         //Your own in-page mechanism triggered the hash change
       } else {
@@ -151,7 +156,7 @@ class App extends Component {
       modalShow: !this.state.modalShow
     })
   }
-  
+
   render = () => {
 
     let loading;
@@ -172,25 +177,25 @@ class App extends Component {
         mapContainer = <MapContainer />;
         navbar = <NavBar />;
         modalButton = <Button
-                        color="secondary"
-                        variant="raised" 
-                        onClick={this.toggleModal}>
-                        Toggle Modal
+          color="secondary"
+          variant="raised"
+          onClick={this.toggleModal}>
+          Toggle Modal
                         </Button>
         if (this.state.modalShow === true) {
-          modal = <QueueModal toggleModal={this.toggleModal} loggedUser={this.state.loggedUser}/>
+          modal = <QueueModal inQueue={this.state.inQueue} toggleQueue={this.toggleQueue} toggleModal={this.toggleModal} loggedUser={this.state.loggedUser} />
         }
-  
+
       } else {
         landing = (
           <Landing
             loggedUser={this.state.loggedUser}
           />
         );
-      } 
+      }
     } else {
-      loading = <img src={loadingSpinner} style={{position:"absolute", left:"40%", top:"35%"}} alt=""/>
-    } 
+      loading = <img src={loadingSpinner} style={{ position: "absolute", left: "40%", top: "35%" }} alt="" />
+    }
 
 
     return (
@@ -200,7 +205,7 @@ class App extends Component {
           {navbar}
           {modalButton}
           {modal}
-          
+
           {landing}
           {/* {mapContainer} */}
         </div>
