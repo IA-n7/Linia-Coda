@@ -38,7 +38,6 @@ class App extends Component {
     super(props);
 
     this.state = {
-     categoriesDisplay: "inline",
      loggedUser: null,
 
      currentLatLng: {
@@ -46,11 +45,6 @@ class App extends Component {
         lng: 0
       },
     }
-
-    // BINDING FUNCTION TO SEND AS PROPS
-    // this.changeCategoriesDisplay = this.changeCategoriesDisplay.bind(this);
-    // this.geocodeAddress = this.geocodeAddress.bind(this);
-
   }
 
    geocodeAddress = (address) => {
@@ -88,11 +82,9 @@ class App extends Component {
       }
     });
   }
-    
+
   componentDidMount() {
-
     this.authListener();
-
 }
 
   render = () => {
@@ -108,16 +100,16 @@ class App extends Component {
         />
       );
     } else {
-      
+
       user = <User currentLatLng={this.state.currentLatLng} loggedUser={this.state.loggedUser}/>
-      navbar = <NavBar authListener={this.authListener}/>
+      navbar = <NavBar authListener={this.authListener} geocodeAddress={this.geocodeAddress.bind(this)} />
     }
 
     return (
       <MuiThemeProvider theme={theme}>
         <div>
-          <NavBar geocodeAddress={this.geocodeAddress.bind(this)} />
           {landing}
+          {navbar}
         </div>
 
         <div>

@@ -82,13 +82,10 @@ class User extends Component {
       viewable: "inline",
       categories: [
         "Clinics",
-        "Bakery",
-        "Restaurant",
-        "RAMQ",
-        "Bank",
-        "Emergency",
+        "Restaurants",
+        "Banks",
         "Hairdressers",
-        ""
+        "SAAQ",
       ],
       currentCategory: "",
       businesses: []
@@ -281,7 +278,7 @@ class User extends Component {
 
         {/* MAP */}
         <Paper className="map">
-          <MapContainer currentLatLng={this.props.currentLatLng} />
+          <MapContainer currentCategory={this.state.currentCategory} currentLatLng={this.props.currentLatLng} />
         </Paper>
       </MuiThemeProvider>
     );
