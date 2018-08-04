@@ -41,14 +41,49 @@ class App extends Component {
 
     this.state = {
       loading: true,
-      categoriesDisplay: "inline",
       modalShow: false,
       inQueue: false
-    };
+
+     currentLatLng: {
+        lat: 0,
+        lng: 0
+      },
+    }
+
     // BINDING FUNCTION TO SEND AS PROPS
-    this.changeCategoriesDisplay = this.changeCategoriesDisplay.bind(this);
+    // this.changeCategoriesDisplay = this.changeCategoriesDisplay.bind(this);
+    // this.geocodeAddress = this.geocodeAddress.bind(this);
+
   }
 
+   toggleQueue = () => {
+    this.setState({ inQueue: !this.state.inQueue })
+  }
+    
+   geocodeAddress = (address) => {
+    this.geocoder = new window.google.maps.Geocoder();
+    this.geocoder.geocode({ 'address': address }, this.handleResults.bind(this))
+  }
+
+  handleResults(results, status) {
+
+      if (status === window.google.maps.GeocoderStatus.OK) {
+
+          this.setState({
+            currentLatLng: {
+              lat: results[0].geometry.location.lat(),
+              lng: results[0].geometry.location.lng()
+            }
+          })
+
+        // this.map.setCenter(results[0].geometry.location);
+        // this.marker.setPosition(results[0].geometry.location);
+      } else {
+        console.log("Geocode was not successful for the following reason: " + status);
+      }
+
+    }
+    
   authListener = () => {
     auth.onAuthStateChanged((user) => {
       if (user) {
@@ -63,92 +98,10 @@ class App extends Component {
     })
   };
 
-  toggleQueue = () => {
-    this.setState({ inQueue: !this.state.inQueue })
-  }
-
-  getData = () => {
-    db.collection("Business")
-      .doc("YYMc8S7qv2wPRfYWlqfP")
-      .get()
-      .then(doc => {
-        let name = doc.data().businessName;
-
-        this.setState({
-          name
-        });
-        return name;
-      });
-  };
-
-  // CHANGES STATE OF THE CATEGORY SELECTION DISPLAY
-  // STORES STATE IN SESSION STORAGE FOR PRESERVATION
-  changeCategoriesDisplay = () => {
-    if (this.state.categoriesDisplay === "inline") {
-      sessionStorage.setItem("categoryDisplay", "none");
-      this.setState({ categoriesDisplay: "none" });
-    }
-    if (this.state.categoriesDisplay === "none") {
-      sessionStorage.setItem("categoryDisplay", "inline");
-      this.setState({ categoriesDisplay: "inline" });
-    }
-  };
-
-  componentDidMount() {
-    this.authListener();
-
-    // ENSURES ROOT WILL DISPLAY CATEGORIES TO LOGGED IN USER
-    if (window.location.pathname === "/") {
-      sessionStorage.setItem("categoryDisplay", "inline");
-    }
-
-    // PRESERVING STATE OF CATEGORY SELECTION DISPLAY
-    let preservedState = sessionStorage.getItem("categoryDisplay");
-    this.setState({ categoriesDisplay: preservedState });
-
-    // BACK/FORWARD BUTTON HANDLER
-    document.onmouseover = function () {
-      // USER MOUSE WITHIN PAGE
-      window.innerDocClick = true;
-    };
-    document.onmouseleave = function () {
-      // USER MOUSE LEFT PAGE
-      window.innerDocClick = false;
-    };
-    window.onpopstate = function () {
-      if (!window.innerDocClick && window.location.pathname === "/") {
-        sessionStorage.setItem("categoryDisplay", "inline");
-        window.location.reload();
-      } else {
-        sessionStorage.setItem("categoryDisplay", "none");
-        window.location.reload();
-      }
-    };
-
-    this.getData();
-
-    // PRESERVING STATE OF CATEGORY SELECTION DISPLAY
-    let preserveState = sessionStorage.getItem("categoryDisplay");
-    this.setState({ categoriesDisplay: preserveState });
-
-    document.onmouseover = function () {
-      //User's mouse is inside the page.
-      window.innerDocClick = true;
-    };
-
-    document.onmouseleave = function () {
-      //User's mouse has left the page.
-      window.innerDocClick = false;
-    };
-
-    window.onhashchange = function () {
-      if (window.innerDocClick) {
-        //Your own in-page mechanism triggered the hash change
-      } else {
-        //Browser back button was clicked
-        this.setState({ categoriesDisplay: preserveState });
-      }
-    };
+  toggleModal = e => {
+    this.setState({
+      modalShow: !this.state.modalShow
+    })
   }
 
   toggleModal = e => {
@@ -156,6 +109,16 @@ class App extends Component {
       modalShow: !this.state.modalShow
     })
   }
+
+    });
+  }
+    
+  componentDidMount() {
+
+    this.authListener();
+
+}
+
 
   render = () => {
 
@@ -169,13 +132,10 @@ class App extends Component {
     if (this.state.loading == false) {
       if (this.state.loggedUser != null) {
         user = (
-          <User
-            changeCategoriesDisplay={this.changeCategoriesDisplay}
-            categoriesDisplay={this.state.categoriesDisplay}
-          />
+          <User currentLatLng={this.state.currentLatLng} loggedUser={this.state.loggedUser}/>
         );
         mapContainer = <MapContainer />;
-        navbar = <NavBar />;
+        navbar = <NavBar authListener={this.authListener} geocodeAddress={this.geocodeAddress.bind(this)}/>
         modalButton = <Button
           color="secondary"
           variant="raised"
@@ -197,7 +157,6 @@ class App extends Component {
       loading = <img src={loadingSpinner} style={{ position: "absolute", left: "40%", top: "35%" }} alt="" />
     }
 
-
     return (
       <MuiThemeProvider theme={theme}>
         <div>
@@ -208,6 +167,7 @@ class App extends Component {
 
           {landing}
           {/* {mapContainer} */}
+
         </div>
 
         <div>
@@ -219,5 +179,6 @@ class App extends Component {
     );
   };
 }
+
 
 export default App;

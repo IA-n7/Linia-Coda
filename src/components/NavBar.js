@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles} from '@material-ui/core/styles';
+import { AppBar, Toolbar, Typography, Button, IconButton } from '@material-ui/core';
+import SearchBarContainer from './SearchBarContainer.js';
 import * as firebase from 'firebase'
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import SearchBarContainer from './SearchBar.js';
+//import SearchBarContainer from './SearchBar.js';
+
 
 
 const styles = {
@@ -20,6 +18,9 @@ const styles = {
    appbar: {
     marginBottom: 30,
    },
+   nav: {
+     zIndex: 1,
+   }
 };
 
 class NavBar extends Component {
@@ -32,6 +33,11 @@ class NavBar extends Component {
   };
 
   render() {
+    const { classes } = this.props;
+
+    NavBar.propTypes = {
+      classes: PropTypes.object.isRequired,
+    };
     return (
       <div>
         <AppBar position="static">
@@ -46,17 +52,13 @@ class NavBar extends Component {
             </div>
           </Toolbar>
         </AppBar>
-        <SearchBarContainer />
+        <SearchBarContainer geocodeAddress={this.props.geocodeAddress}/>
       </div>
     );
   }
+
 }
 
+export default withStyles(styles)(NavBar);
 
-// NavBar.propTypes = {
-//   classes: PropTypes.object.isRequired,
-// };
-
-
-
-export default NavBar;
+// export default NavBar;

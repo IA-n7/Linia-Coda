@@ -47,11 +47,11 @@ class GuestWeek extends Component {
 
 
   getDays = () => {
-    db.collection("Business").doc("DxbucRUhcSzfvgSDML6J").get().then(doc => {
+    db.collection("Business").doc("UyeqsdZi2hX0bU4gJw7V").get().then(doc => {
       let days = doc.data().days;
-      this.setState({
-       days
-     });
+     //  this.setState({
+     //   days
+     // });
     });
   }
 
