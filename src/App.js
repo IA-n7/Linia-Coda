@@ -42,48 +42,44 @@ class App extends Component {
     this.state = {
       loading: true,
       modalShow: false,
-      inQueue: false
+      inQueue: false,
 
-     currentLatLng: {
+      currentLatLng: {
         lat: 0,
         lng: 0
       },
     }
-
-    // BINDING FUNCTION TO SEND AS PROPS
-    // this.changeCategoriesDisplay = this.changeCategoriesDisplay.bind(this);
-    // this.geocodeAddress = this.geocodeAddress.bind(this);
-
   }
 
-   toggleQueue = () => {
+  toggleQueue = () => {
     this.setState({ inQueue: !this.state.inQueue })
   }
-    
-   geocodeAddress = (address) => {
+
+  geocodeAddress = (address) => {
     this.geocoder = new window.google.maps.Geocoder();
     this.geocoder.geocode({ 'address': address }, this.handleResults.bind(this))
   }
 
   handleResults(results, status) {
 
-      if (status === window.google.maps.GeocoderStatus.OK) {
+    if (status === window.google.maps.GeocoderStatus.OK) {
 
-          this.setState({
-            currentLatLng: {
-              lat: results[0].geometry.location.lat(),
-              lng: results[0].geometry.location.lng()
-            }
-          })
+      this.setState({
+        currentLatLng: {
+          lat: results[0].geometry.location.lat(),
+          lng: results[0].geometry.location.lng()
+        }
+      })
 
-        // this.map.setCenter(results[0].geometry.location);
-        // this.marker.setPosition(results[0].geometry.location);
-      } else {
-        console.log("Geocode was not successful for the following reason: " + status);
-      }
-
+      // this.map.setCenter(results[0].geometry.location);
+      // this.marker.setPosition(results[0].geometry.location);
+    } else {
+      console.log("Geocode was not successful for the following reason: " + status);
     }
-    
+  }
+
+
+
   authListener = () => {
     auth.onAuthStateChanged((user) => {
       if (user) {
@@ -104,20 +100,11 @@ class App extends Component {
     })
   }
 
-  toggleModal = e => {
-    this.setState({
-      modalShow: !this.state.modalShow
-    })
-  }
-
-    });
-  }
-    
   componentDidMount() {
 
     this.authListener();
 
-}
+  }
 
 
   render = () => {
@@ -132,10 +119,10 @@ class App extends Component {
     if (this.state.loading == false) {
       if (this.state.loggedUser != null) {
         user = (
-          <User currentLatLng={this.state.currentLatLng} loggedUser={this.state.loggedUser}/>
+          <User currentLatLng={this.state.currentLatLng} loggedUser={this.state.loggedUser} />
         );
         mapContainer = <MapContainer />;
-        navbar = <NavBar authListener={this.authListener} geocodeAddress={this.geocodeAddress.bind(this)}/>
+        navbar = <NavBar authListener={this.authListener} geocodeAddress={this.geocodeAddress.bind(this)} />
         modalButton = <Button
           color="secondary"
           variant="raised"
