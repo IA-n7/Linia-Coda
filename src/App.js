@@ -49,19 +49,17 @@ class App extends Component {
   }
 
   authListener = () => {
-    return new Promise((resolve, reject) => {
-      auth.onAuthStateChanged((user) => {
-        if (user) {
-          this.setState({ loggedUser: user });
-          console.log(this.state.loggedUser);
-          this.setState({ loading: false })
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ loggedUser: user });
+        console.log(this.state.loggedUser);
 
-        } else {
-          this.setState({ loggedUser: null });
-          console.log(this.state.loggedUser);
-        }
-      })  
-    })
+      } else {
+        this.setState({ loggedUser: null });
+        console.log(this.state.loggedUser);
+      }
+      this.setState({ loading: false })
+    })  
   };
 
   getData = () => {
@@ -180,7 +178,7 @@ class App extends Component {
                         Toggle Modal
                         </Button>
         if (this.state.modalShow === true) {
-          modal = <QueueModal />
+          modal = <QueueModal toggleModal={this.toggleModal} loggedUser={this.state.loggedUser}/>
         }
   
       } else {
