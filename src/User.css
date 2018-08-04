@@ -2,6 +2,7 @@
   margin-left: 300px;
   /* line-height: 200px; */
   height: 100%;
+  z-index: 0;
 }
 
 .MuiPaper-elevation0-265 {

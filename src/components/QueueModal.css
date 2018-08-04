@@ -7,6 +7,7 @@
   top: 0;
   justify-content: center;
   align-items: center;
+  z-index: 0;
 }
 
 .circle {
@@ -24,7 +25,7 @@
 .circle-information {
   position: absolute;
   left: 230px;
-  top: 80px;
+  top: 95px;
 }
 
 @-webkit-keyframes rotation {
@@ -39,13 +40,13 @@
 #join-queue-button {
   position: absolute;
   top: 285px;
-  left: 250px;
+  left: 230px;
 }
 
 #leave-queue-button {
   position: absolute;
   top: 285px;
-  left: 250px;
+  left: 230px;
 }
 
 #number-in-queue {
@@ -61,11 +62,13 @@
   position: relative;
   justify-content: space-around;
   width: 600px;
-  height: 600px;
+  height: 700px;
   text-align: center;
   padding: 20px;
   border-radius: 10px;
   border: 10px solid #102027;
+  z-index: 5;
+  display: inline !important;
 }
 
 .close {
@@ -119,16 +122,20 @@
 .queue-modal-phone-number {
   position: absolute;
   bottom: 20px;
-  right: 60px;
+  right: 35px;
 }
 
 .wait-time {
   position: absolute;
-  right: 70px;
-  top: 30px;
+  right: 20px;
+  top: 55px;
+}
+
+.wait-time h4 {
+  font-size: 20px;
 }
 
 #wait-time-number {
-  margin-top: -20px;
+  margin-top: -10px;
   margin-left: 20px;
 }

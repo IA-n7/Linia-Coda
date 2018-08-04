@@ -101,9 +101,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-
     this.authListener();
-
   }
 
 
@@ -116,19 +114,23 @@ class App extends Component {
     let navbar;
     let modal;
     let modalButton;
+
     if (this.state.loading == false) {
       if (this.state.loggedUser != null) {
         user = (
           <User currentLatLng={this.state.currentLatLng} loggedUser={this.state.loggedUser} />
         );
+
         mapContainer = <MapContainer />;
         navbar = <NavBar authListener={this.authListener} geocodeAddress={this.geocodeAddress.bind(this)} />
         modalButton = <Button
+          id="toggle-modal-button"
           color="secondary"
           variant="raised"
           onClick={this.toggleModal}>
           Toggle Modal
-                        </Button>
+        </Button>
+
         if (this.state.modalShow === true) {
           modal = <QueueModal inQueue={this.state.inQueue} toggleQueue={this.toggleQueue} toggleModal={this.toggleModal} loggedUser={this.state.loggedUser} />
         }
@@ -160,7 +162,7 @@ class App extends Component {
         <div>
           {/* <Graphic /> */}
           {/*<CenteredGrid />*/}
-          {user}
+          {/* {user} */}
         </div>
       </MuiThemeProvider>
     );
