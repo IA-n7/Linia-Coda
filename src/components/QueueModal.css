@@ -118,10 +118,17 @@
 
 .queue-modal-phone-number {
   position: absolute;
-  bottom: 70px;
+  bottom: 20px;
   right: 60px;
 }
 
+.wait-time {
+  position: absolute;
+  right: 70px;
+  top: 30px;
+}
 
-/* #phone-field-submit {
-} */
+#wait-time-number {
+  margin-top: -20px;
+  margin-left: 20px;
+}

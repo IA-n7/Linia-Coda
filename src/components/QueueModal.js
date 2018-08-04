@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import * as firebase from "firebase";
 import db from "../config/firebase.js";
 import { Button, Typography, TextField } from "@material-ui/core";
-import { ArrowUpward, ArrowDownward, LocationOn, Email, Phone, AccessTime } from "@material-ui/icons";
+import { ArrowUpward, ArrowDownward, LocationOn, Email, Phone, AccessTime, AvTimer } from "@material-ui/icons";
 import("./QueueModal.css");
 
 class QueueModal extends Component {
@@ -22,7 +22,6 @@ class QueueModal extends Component {
     let businessDocRef = db
       .collection("Business")
       .doc("Ok7xpLzj73AY91S985oP");
-    let joinButton = document.getElementById("join-queue-button")
 
     let updatedArray = this.state.currentQueueMembers;
     updatedArray.push(userId);
@@ -51,7 +50,6 @@ class QueueModal extends Component {
     db.collection("Business")
       .doc("Ok7xpLzj73AY91S985oP")
       .onSnapshot(doc => {
-        console.log(doc.data().QueueBoiArray.length);
         this.setState({ currentQueueNumber: doc.data().QueueBoiArray.length });
       });
   };
@@ -60,24 +58,34 @@ class QueueModal extends Component {
     db.collection("Business")
       .doc("Ok7xpLzj73AY91S985oP")
       .onSnapshot(doc => {
-        console.log(doc.data());
         this.setState({ businessName: doc.data().businessName });
         this.setState({ businessEmail: doc.data().businessEmail });
         this.setState({ businessAddress: doc.data().businessAddress });
         this.setState({ businessPhoneNumber: doc.data().businessPhoneNumber });
         this.setState({ businessClosingHours: doc.data().closingHours });
         this.setState({ businessOpeningHours: doc.data().openingHours });
-        this.setState({ currentQueueMembers: doc.data().QueueBoiArray })
+        this.setState({ currentQueueMembers: doc.data().QueueBoiArray });
+        this.setState({ averageWait: doc.data().averageWait })
       });
   };
+
+  calculateWaitTime = () => {
+    let avgWait = this.state.averageWait;
+    let currentQueueNumber = this.state.currentQueueNumber
+    if (this.props.inQueue === true) {
+      currentQueueNumber -= 1
+    }
+    return avgWait * currentQueueNumber
+  }
 
   componentDidMount = () => {
     this.getCurrentGuestNumber();
     this.getDataFromBusiness();
-    let currentArr = this.state.currentQueueMembers
   };
 
   render() {
+
+    // Manages the button depending on whether or not the user is in a queue (Managed by App.js state)
     let joinQueueButton;
     if (this.props.inQueue === false) {
       joinQueueButton = <Button
@@ -135,6 +143,16 @@ class QueueModal extends Component {
                     {this.state.businessClosingHours} PM
                   </p>
                 </div>
+              </div>
+              <div className="wait-time">
+                <h4><AvTimer className="wait-time-icon" /> Approximate Wait Time:</h4>
+                <Typography
+                id="wait-time-number"
+                component="h3"
+                variant="display1"
+              >
+                {this.calculateWaitTime()} minutes
+              </Typography>
               </div>
               <form className="queue-modal-phone-number">
                 <TextField
