@@ -83,8 +83,6 @@ class App extends Component {
     });
   };
 
-
-
   componentDidMount() {
     this.authListener();
   }
@@ -103,12 +101,12 @@ class App extends Component {
             loggedUser={this.state.loggedUser}
           />
         );
+
         mapContainer = <MapContainer />;
         navbar = (
           <NavBar
             authListener={this.authListener}
             geocodeAddress={this.geocodeAddress.bind(this)}
-          />
         );
       } else {
         landing = <Landing loggedUser={this.state.loggedUser} />;
@@ -136,7 +134,7 @@ class App extends Component {
         <div>
           {/* <Graphic /> */}
           {/*<CenteredGrid />*/}
-          {user}
+          {/* {user} */}
         </div>
       </MuiThemeProvider>
     );

@@ -12,7 +12,6 @@ class QueueModal extends Component {
     this.state = {
       currentQueueMembers: [],
       currentQueueNumber: 0
-
     };
   }
 
@@ -118,7 +117,7 @@ class QueueModal extends Component {
           </div>
           <div className="circle" />
           <div className="circle-information">
-            <h3>People in Queue:</h3>
+            <h5>People in Queue:</h5>
             <Typography id="number-in-queue" component="h1" variant="display1">
               {this.state.currentQueueNumber}
             </Typography>
