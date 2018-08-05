@@ -161,7 +161,6 @@ class App extends Component {
       mapContainer = <MapContainer />
       navbar = <NavBar authListener={this.authListener}/>
       businessPage = <div>
-      <Graphic loggedUser={this.state.loggedUser}/>
       <CenteredGrid loggedUser={this.state.loggedUser}/>
       </div>
     }
@@ -169,13 +168,11 @@ class App extends Component {
     return (
       <MuiThemeProvider theme={theme}>
         <div>
-          {navbar}
           {landing}
           {/* {mapContainer} */}
         </div>
 
         <div>
-          <Graphic />
           <CenteredGrid />
           {user}
         </div>

@@ -25,6 +25,8 @@ const styles = theme => ({
 function CenteredGrid(props) {
   const { classes } = props;
 
+
+
   const getBusinessID = () => {
     db.collection("business").doc(this.props.loggedUser.uid).get().then(doc => {
       console.log(doc.data().businessName)

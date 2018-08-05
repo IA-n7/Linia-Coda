@@ -3,6 +3,8 @@ import db from './config/firebase.js'
 import {initFirestorter, Collection} from 'firestorter';
 import {observer} from 'mobx-react';
 import {Line} from 'react-chartjs-2';
+import * as firebase from "firebase";
+const auth = firebase.auth();
 
 class Graphic extends Component {
   constructor(props){
@@ -17,35 +19,41 @@ class Graphic extends Component {
     }
   }
 
-  getName = () => {
-    db.collection('Users').doc('zLOG0J18c6VvlVlnLKLxD8Qphp93').get().then(doc => {
-      let name = doc.data().fullName;
-      this.setState({
-       name
-     });
-    });
-  }
 
-  getEmail = () => {
-    db.collection("Users").doc("zLOG0J18c6VvlVlnLKLxD8Qphp93").get().then(doc => {
-      let email = doc.data().email;
-      this.setState({
-       email
-     });
-    });
-  }
-
-
-  // getHours = () => {
-  //   db.collection('Users').onSnapshot(collection => {
-  //     const hours = collection.docs.map(doc => doc.data().hours)
-  //     console.log(hours)
-  //     this.setState({
-  //       hours
-  //     })
-  //   })
+  // getUser = () => {
+  //   let loggedUser = this.state.loggedUser
+  //   console.log('USSER', loggedUser)
   // }
 
+
+getUser = () => {
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      console.log('Usserr', user)
+    } else {
+      console.log('No User')
+    }
+  });
+}
+
+
+  // getName = () => {
+  //   db.collection('Users').doc('zLOG0J18c6VvlVlnLKLxD8Qphp93').get().then(doc => {
+  //     let name = doc.data().fullName;
+  //     this.setState({
+  //      name
+  //    });
+  //   });
+  // }
+
+  // getEmail = () => {
+  //   db.collection("Users").doc("zLOG0J18c6VvlVlnLKLxD8Qphp93").get().then(doc => {
+  //     let email = doc.data().email;
+  //     this.setState({
+  //      email
+  //    });
+  //   });
+  // }
 
   getOpeningHours = () => {
     db.collection("business").doc("WICq27Zd4kT0GkiHu2rUkmHdUzu2").get().then(doc => {
@@ -57,21 +65,24 @@ class Graphic extends Component {
   }
 
   getClosingHours = () => {
-    db.collection("business").doc("WICq27Zd4kT0GkiHu2rUkmHdUzu2").get().then(doc => {
-      let getClosingHours = doc.data().getClosingHours;
+    var user = firebase.auth();
+    console.log(user)
+    db.collection("business").doc("0FgUHSrAWgWJGysCPIbpylk8f5M2").get().then(doc => {
+      let closingHours = doc.data().closingHours;
       this.setState({
-       getClosingHours
+       closingHours
      });
+      console.log('COOL', closingHours)
     });
   }
 
 
-
   componentDidMount = () => {
-    this.getName();
-    this.getEmail();
+    // this.getName();
+    // this.getEmail();
     this.getOpeningHours();
     this.getClosingHours();
+    // this.getUser();
   }
 
   render () {
