@@ -106,11 +106,12 @@ class App extends Component {
         navbar = (
           <NavBar
             authListener={this.authListener}
-            geocodeAddress={this.geocodeAddress.bind(this)}
+            geocodeAddress={this.geocodeAddress.bind(this)} />
         );
       } else {
         landing = <Landing loggedUser={this.state.loggedUser} />;
-      }
+
+    }
     } else {
       loading = (
         <img
@@ -120,6 +121,7 @@ class App extends Component {
         />
       );
     }
+
 
     return (
       <MuiThemeProvider theme={theme}>
@@ -134,7 +136,7 @@ class App extends Component {
         <div>
           {/* <Graphic /> */}
           {/*<CenteredGrid />*/}
-          {/* {user} */}
+          {user}
         </div>
       </MuiThemeProvider>
     );
