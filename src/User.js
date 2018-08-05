@@ -22,6 +22,8 @@ import * as firebase from "firebase";
 import db from "./config/firebase.js";
 // eslint-disable-next-line
 import { initFirestorter, Collection } from "firestorter";
+import QueueModal from "./components/QueueModal";
+
 // eslint-disable-next-line
 import { observer } from "mobx-react";
 import MapContainer from "./components/MapContainer.js";
@@ -37,13 +39,11 @@ const styles = theme => ({
     marginTop: 50
   },
   button: {
-    width: 280,
-
+    width: 280
   },
   menu: {
     width: 280,
     marginTop: 50
-
   },
   drawer: {
     width: 200
@@ -80,6 +80,8 @@ class User extends Component {
     this.state = {
       open: false,
       viewable: "inline",
+      modalShow: false,
+      inQueue: false,
       categories: [
         "Clinics",
         "Bakery",
@@ -91,7 +93,8 @@ class User extends Component {
         ""
       ],
       currentCategory: "",
-      businesses: []
+      businesses: [],
+      modalBusiness: {}
     };
     this.renderQueueModal = this.renderQueueModal.bind(this);
   }
@@ -155,6 +158,19 @@ class User extends Component {
     this.state.businesses.sort(this.compare);
   };
 
+  toggleModal = (businessInfo) => {
+    // console.log(businessInfo)
+
+    this.setState({
+      modalShow: !this.state.modalShow,
+      modalBusiness: businessInfo
+    });
+  };
+
+  toggleQueue = () => {
+    this.setState({ inQueue: !this.state.inQueue });
+  };
+
   populateCategories = () => {
     let categories = this.state.categories.map(category => {
       return (
@@ -165,6 +181,8 @@ class User extends Component {
     });
     return categories;
   };
+
+  renderQueueModal = event => {};
 
   // CLOSES GROW-MENU ON CLICK-AWAY
   handleToggle = event => {
@@ -194,8 +212,6 @@ class User extends Component {
     this.setState({ open: false });
   };
 
-  renderQueueModal = event => {};
-
   componentDidMount() {
     // RETRIEVE ALL BUSINESS DATA
     this.getData();
@@ -209,6 +225,31 @@ class User extends Component {
     User.propTypes = {
       classes: PropTypes.object.isRequired
     };
+
+    let modal;
+    let modalButton;
+
+    modalButton = (
+      <Button
+        id="modal-appear"
+        color="secondary"
+        variant="raised"
+        onClick={this.toggleModal}
+      >
+        Toggle Modal
+      </Button>
+    );
+    if (this.state.modalShow === true) {
+      modal = (
+        <QueueModal
+          loggedUser={this.props.loggedUser}
+          inQueue={this.state.inQueue}
+          toggleQueue={this.toggleQueue}
+          toggleModal={this.toggleModal}
+          modalBusiness={this.state.modalBusiness}
+        />
+      );
+    }
 
     return (
       <MuiThemeProvider theme={theme}>
@@ -258,7 +299,7 @@ class User extends Component {
                       placement === "bottom" ? "center top" : "center bottom"
                   }}
                 >
-                  <Paper classes={{docked: classes.menu}}>
+                  <Paper classes={{ docked: classes.menu }}>
                     <ClickAwayListener onClickAway={this.handleClose}>
                       <MenuList>{this.populateCategories()}</MenuList>
                     </ClickAwayListener>
@@ -274,10 +315,17 @@ class User extends Component {
                 currentCategory={this.state.currentCategory}
                 renderQueueModal={this.renderQueueModal}
                 logguedUser={this.props.loggedUser}
+                modalShow={this.state.modalShow}
+                toggleQueue={this.toggleQueue}
+                toggleModal={this.toggleModal}
+                inQueue={this.state.inQueue}
               />
             </div>
           </Drawer>
         </div>
+
+        {modalButton}
+        {modal}
 
         {/* MAP */}
         <Paper className="map">

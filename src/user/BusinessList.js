@@ -1,8 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
+import db from "../config/firebase.js";
+
 import { withStyles } from "@material-ui/core/styles";
 import {
   Card,
+  Button,
   CardContent,
   Typography,
   Divider,
@@ -24,12 +27,30 @@ const styles = theme => ({
   },
   item: {
     fontSize: 10
+  },
+  touchMe: {
+    cursor: "pointer"
   }
 });
 
 const BusinessList = props => {
   let onModal = event => {
-    console.log("heglawegjnrelkgnalrekngjkl")
+    // console.log(event.currentTarget.firstChild.innerHTML);
+    db.collection("Business")
+      .where("businessName", "==", event.currentTarget.firstChild.innerHTML)
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          // console.log(doc.id, " => ", doc.data());
+          let temp = doc.data();
+          temp.id = doc.id;
+          // console.log("HELLO", temp);
+          props.toggleModal(temp);
+        });
+      })
+      .catch(err => {
+        console.log("Error getting documents", err);
+      });
   };
 
   const populateBusinesses = () => {
@@ -60,6 +81,7 @@ const BusinessList = props => {
                 className={classes.item}
                 color="textSecondary"
                 align="center"
+                name={business.businessName}
               >
                 {"Open " +
                   openingHours +
@@ -96,7 +118,7 @@ const BusinessList = props => {
       if (props.currentCategory === "") {
         return (
           <div>
-            <CardContent onClick={onModal}>
+            <CardContent className={classes.touchMe} onClick={onModal}>
               <Typography className={classes.item} align="center">
                 {business.businessName}
               </Typography>
@@ -144,9 +166,11 @@ const BusinessList = props => {
   const { classes } = props;
 
   return (
-    <Card className={classes.root} component="nav" button>
-      {populateBusinesses()}
-    </Card>
+    <div>
+      <Card className={classes.root} component="nav" button>
+        {populateBusinesses()}
+      </Card>
+    </div>
   );
 };
 
