@@ -6,15 +6,17 @@ import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { Paper, Typography, TextField, Button } from "@material-ui/core";
 import { blueGrey, red } from "@material-ui/core/colors";
 import "./User.css";
-import {observer} from 'mobx-react';
+import { observer } from "mobx-react";
 import * as firebase from "firebase";
+// eslint-disable-next-line
 import db from "./config/firebase.js";
-import {initFirestorter, Collection} from 'firestorter';
+import { initFirestorter, Collection } from "firestorter";
 import Landing from "./Landing.js";
 import User from "./User.js";
 import Graphic from "./Graphic.js";
 import CenteredGrid from "./gridLayout.js";
 import("./Landing.css");
+const loadingSpinner = require("./img/lg.palette-rotating-ring-loader.gif");
 const auth = firebase.auth();
 
 const theme = createMuiTheme({
@@ -33,21 +35,42 @@ const theme = createMuiTheme({
 });
 
 class App extends Component {
-
   constructor(props) {
     super(props);
 
-
     this.state = {
-      loggedUser: null,
-      categoriesDisplay: "inline"
+      loading: true,
+      currentLatLng: {
+        lat: 0,
+        lng: 0
+      }
     };
-    // BINDING FUNCTION TO SEND AS PROPS
-    this.changeCategoriesDisplay = this.changeCategoriesDisplay.bind(this);
   }
 
+  geocodeAddress = address => {
+    this.geocoder = new window.google.maps.Geocoder();
+    this.geocoder.geocode({ address: address }, this.handleResults.bind(this));
+  };
 
-  authListener = () =>
+  handleResults(results, status) {
+    if (status === window.google.maps.GeocoderStatus.OK) {
+      this.setState({
+        currentLatLng: {
+          lat: results[0].geometry.location.lat(),
+          lng: results[0].geometry.location.lng()
+        }
+      });
+
+      // this.map.setCenter(results[0].geometry.location);
+      // this.marker.setPosition(results[0].geometry.location);
+    } else {
+      console.log(
+        "Geocode was not successful for the following reason: " + status
+      );
+    }
+  }
+
+  authListener = () => {
     auth.onAuthStateChanged(user => {
       if (user) {
         this.setState({ loggedUser: user });
@@ -56,130 +79,67 @@ class App extends Component {
         this.setState({ loggedUser: null });
         console.log(this.state.loggedUser);
       }
+      this.setState({ loading: false });
     });
+  };
 
-  getData = () => {
-      db.collection('Business').doc('YYMc8S7qv2wPRfYWlqfP').get().then(doc => {
-        let name = doc.data().businessName
-
-        this.setState({
-           name
-          })
-        return name
-    })
-  }
-
-
-  // CHANGES STATE OF THE CATEGORY SELECTION DISPLAY
-  // STORES STATE IN SESSION STORAGE FOR PRESERVATION
-  changeCategoriesDisplay = () => {
-    if (this.state.categoriesDisplay === "inline") {
-      sessionStorage.setItem("categoryDisplay", "none");
-      this.setState({ categoriesDisplay: "none" });
-    }
-    if (this.state.categoriesDisplay === "none") {
-      sessionStorage.setItem("categoryDisplay", "inline");
-      this.setState({ categoriesDisplay: "inline" });
-    }
-  }
-
-  componentDidMount(){
-
+  componentDidMount() {
     this.authListener();
-
-    // ENSURES ROOT WILL DISPLAY CATEGORIES TO LOGGED IN USER
-    if (window.location.pathname === "/") {
-      sessionStorage.setItem("categoryDisplay", "inline");
-    }
-
-
-    // PRESERVING STATE OF CATEGORY SELECTION DISPLAY
-    let preservedState = sessionStorage.getItem("categoryDisplay");
-    this.setState({ categoriesDisplay: preservedState });
-
-    // BACK/FORWARD BUTTON HANDLER
-    document.onmouseover = function() {
-      // USER MOUSE WITHIN PAGE
-      window.innerDocClick = true;
-    }
-    document.onmouseleave = function() {
-      // USER MOUSE LEFT PAGE
-      window.innerDocClick = false;
-    }
-    window.onpopstate = function () {
-      if (!window.innerDocClick && window.location.pathname === "/") {
-        sessionStorage.setItem("categoryDisplay", "inline");
-        window.location.reload();
-      } else {
-        sessionStorage.setItem("categoryDisplay", "none")
-        window.location.reload();
-      }
-    }
-
-    this.getData();
-
-    // PRESERVING STATE OF CATEGORY SELECTION DISPLAY
-    let preserveState = sessionStorage.getItem("categoryDisplay");
-    this.setState({ categoriesDisplay: preserveState });
-
-    document.onmouseover = function() {
-      //User's mouse is inside the page.
-      window.innerDocClick = true;
-    };
-
-    document.onmouseleave = function() {
-      //User's mouse has left the page.
-      window.innerDocClick = false;
-    };
-
-    window.onhashchange = function() {
-      if (window.innerDocClick) {
-        //Your own in-page mechanism triggered the hash change
-      } else {
-        //Browser back button was clicked
-        this.setState({ categoriesDisplay: preserveState });
-      }
-    }
   }
 
   render = () => {
+    let loading;
     let user;
     let mapContainer;
     let landing;
     let navbar;
-    let businessPage;
-    if (this.state.loggedUser == null) {
-      landing = <Landing
-      authListener={this.authListener}
-      loggedUser={this.state.loggedUser}
-    />
-    } else {
-      user = <User
-      changeCategoriesDisplay={this.changeCategoriesDisplay}
-      categoriesDisplay={this.state.categoriesDisplay}
-    />
-      mapContainer = <MapContainer />
-      navbar = <NavBar authListener={this.authListener}/>
-      businessPage = <div>
-      <CenteredGrid loggedUser={this.state.loggedUser}/>
-      </div>
+    if (this.state.loading == false) {
+      if (this.state.loggedUser != null) {
+        user = (
+          <User
+            currentLatLng={this.state.currentLatLng}
+            loggedUser={this.state.loggedUser}
+          />
+        );
+
+        mapContainer = <MapContainer />;
+        navbar = (
+          <NavBar
+            authListener={this.authListener}
+            geocodeAddress={this.geocodeAddress.bind(this)} />
+        );
+      } else {
+        landing = <Landing loggedUser={this.state.loggedUser} />;
+
     }
+    } else {
+      loading = (
+        <img
+          src={loadingSpinner}
+          style={{ position: "absolute", left: "40%", top: "35%" }}
+          alt=""
+        />
+      );
+    }
+
 
     return (
       <MuiThemeProvider theme={theme}>
         <div>
-          {landing}
+  {/*        {loading}
+          {navbar}
+
+          {landing}*/}
           {/* {mapContainer} */}
         </div>
 
         <div>
           <CenteredGrid />
-          {user}
+          {/* {user} */}
         </div>
       </MuiThemeProvider>
     );
   };
 }
-
 
 export default App;

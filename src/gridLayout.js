@@ -9,6 +9,7 @@ import BusinessForm from "./businessForm.js";
 import GuestWeek from "./GuestWeek.js";
 import QueueSelect from "./QueueSelect.js";
 import db from "./config/firebase.js";
+import QueueUpdate from './QueueUpdate.js'
 
 
 const styles = theme => ({
@@ -42,11 +43,15 @@ function CenteredGrid(props) {
             <Paper className={classes.paper}> <Graphic /> <FloatingActionButtons /></Paper>
           </Grid>
           {<Grid item xs={6}>
-            <Paper className={classes.paper}> <QueueSelect /> </Paper>
+            <Paper className={classes.paper}> <QueueUpdate /> </Paper>
           </Grid>}
           <Grid item xs={6}>
             <Paper className={classes.paper}> <GuestWeek /> <FloatingActionButtons /></Paper>
           </Grid>
+          <Grid item xs={6}>
+            <Paper className={classes.paper}> <QueueSelect /> </Paper>
+          </Grid>
+
         </Grid>
       </div>
     );

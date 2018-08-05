@@ -1,17 +1,12 @@
-import { Router, Link } from "@reach/router";
 import React, { Component } from "react";
-import QueueBusiness from "./user/QueueBusiness.js";
-import MapBusiness from "./user/MapBusiness.js";
-import JoinQueue from "./user/JoinQueue.js";
-import SearchBar from "./user/SearchBar.js";
 import {
   Button,
-  Card,
-  CardContent,
-  CardMedia,
-  CardActions,
-  Typography,
-  Grid,
+  Drawer,
+  ClickAwayListener,
+  MenuItem,
+  MenuList,
+  Popper,
+  Grow,
   Paper
 } from "@material-ui/core";
 // eslint-disable-next-line
@@ -27,8 +22,44 @@ import * as firebase from "firebase";
 import db from "./config/firebase.js";
 // eslint-disable-next-line
 import { initFirestorter, Collection } from "firestorter";
+import QueueModal from "./components/QueueModal";
+
 // eslint-disable-next-line
 import { observer } from "mobx-react";
+import MapContainer from "./components/MapContainer.js";
+import BusinessList from "./user/BusinessList.js";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import QueueUpdate from './QueueUpdate.js'
+
+const styles = theme => ({
+  root: {
+    backgroundColor: theme.palette.background.paper,
+    position: "relative",
+    overflow: "auto",
+    marginTop: 50
+  },
+  button: {
+    width: 280
+  },
+  menu: {
+    width: 280,
+    marginTop: 50
+  },
+  drawer: {
+    width: 200
+  }
+});
+// root: {
+// width: 200,
+// width: "100%",
+// backgroundColor: theme.palette.background.paper,
+// position: "relative",
+// overflow: "auto"
+// maxHeight: 300
+// display: "flex"
+// },
+
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -47,187 +78,274 @@ const theme = createMuiTheme({
 class User extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
-  }
-
-  render() {
-    //CATEGORIES DISPLAY HANDLER
-    const onCategory = event => {
-      this.props.changeCategoriesDisplay();
-    };
-
-    return (
-      <MuiThemeProvider theme={theme}>
-        <div id="hide-me" style={{ display: this.props.categoriesDisplay }}>
-          <Paper className="categories">
-            <Grid container spacing={24}>
-              {/* TOP */}
-              <Grid item xs={12} className="categories-align">
-                <Card className="category">
-                  <Link to="map" className="cat-link" onClick={onCategory}>
-                    Something
-                  </Link>
-                </Card>
-                <Card className="category">
-                  <Link to="map" className="cat-link" onClick={onCategory}>
-                    Clinics
-                  </Link>
-                </Card>
-                <Card className="category">
-                  <Link to="map" className="cat-link" onClick={onCategory}>
-                    Barbers
-                  </Link>
-                </Card>
-              </Grid>
-              {/* BOTTOM */}
-              <Grid item xs={12}>
-                <Card className="category">
-                  <Link to="map" className="cat-link" onClick={onCategory}>
-                    DMV
-                  </Link>
-                </Card>
-                <Card className="category">
-                  <Link to="map" className="cat-link" onClick={onCategory}>
-                    RAMQ
-                  </Link>
-                </Card>
-                <Card className="category">
-                  <Link to="map" className="cat-link" onClick={onCategory}>
-                    Restaurants
-                  </Link>
-                </Card>
-              </Grid>
-            </Grid>
-          </Paper>
-        </div>
-
-        <Router>
-          <MapPage
-            path="/map"
-            changeCategoriesDisplay={this.props.changeCategoriesDisplay}
-          />
-          <Queue path="/queue" />
-        </Router>
-      </MuiThemeProvider>
-    );
-  }
-}
-
-class MapPage extends Component {
-  constructor(props) {
-    super(props);
     this.state = {
-      value: "",
-      name: "WOOO"
+      open: false,
+      viewable: "inline",
+      modalShow: false,
+      inQueue: false,
+      categories: [
+        "Clinics",
+        "Bakery",
+        "Restaurant",
+        "RAMQ",
+        "Bank",
+        "Emergency",
+        "Hairdressers",
+        ""
+      ],
+      currentCategory: "",
+      businesses: [],
+      modalBusiness: {}
     };
+    this.renderQueueModal = this.renderQueueModal.bind(this);
   }
 
+  // DATA FETCHER
   getData = () => {
     db.collection("Business")
-      .doc("YYMc8S7qv2wPRfYWlqfP")
       .get()
-      .then(doc => {
-        let name = doc.data().businessName;
+      .then(businesses => {
+        businesses.forEach(doc => {
+          this.setState({
+            businesses: [...this.state.businesses, doc.data()]
+          });
 
-        this.setState({
-          name
+          this.sortBusinesses();
         });
-        return name;
+      })
+      .catch(err => {
+        console.log("Error getting documents", err);
       });
   };
 
-  componentDidMount = () => {
-    this.getData();
+  toRadians = degree => {
+    return degree * (Math.PI / 180);
   };
 
+  compare = (a, b) => {
+    return a.distance - b.distance;
+    return 0;
+  };
+
+  sortBusinesses = () => {
+    let sortedBusinesses = [];
+    this.state.businesses.map(business => {
+      // console.log("PROPS: ", this.props.loggedUser)
+      // console.log("LATITUDE, BUSINESS: ", business.businessLocation._lat)
+      // console.log("LONGITUDE, BUSINESS: ", business.businessLocation._long)
+      let lat1 = business.businessLocation._lat;
+      let lon1 = business.businessLocation._long;
+
+      // HARDCODED, CHANGE TO LOGGEDUSER VALUES
+      let lat2 = 45.496761799999994;
+      let lon2 = -73.5703049;
+
+      let R = 6371e3; // metres
+      let φ1 = this.toRadians(lat1);
+      let φ2 = this.toRadians(lat2);
+      let Δφ = this.toRadians(lat2 - lat1);
+      let Δλ = this.toRadians(lon2 - lon1);
+
+      let a =
+        Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+        Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+      let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+      let d = R * c;
+
+      business["distance"] = d;
+    });
+
+    this.state.businesses.sort(this.compare);
+  };
+
+  toggleModal = (businessInfo) => {
+    // console.log(businessInfo)
+
+    this.setState({
+      modalShow: !this.state.modalShow,
+      modalBusiness: businessInfo
+    });
+  };
+
+  toggleQueue = () => {
+    this.setState({ inQueue: !this.state.inQueue });
+  };
+
+  populateCategories = () => {
+    let categories = this.state.categories.map(category => {
+      return (
+        <MenuItem className="business" onClick={this.handleClose}>
+          {category}
+        </MenuItem>
+      );
+    });
+    return categories;
+  };
+
+  renderQueueModal = event => {};
+
+  // CLOSES GROW-MENU ON CLICK-AWAY
+  handleToggle = event => {
+    if (this.state.viewable === "inline") {
+      this.setState({ viewable: "none" });
+    } else {
+      this.setState({ viewable: "inline" });
+    }
+    this.setState(state => ({ open: !state.open }));
+  };
+
+  // OPENS/CLOSES GROW-MENU ON CATEGORIES SELECT
+  handleClose = event => {
+    if (event.currentTarget.textContent === null) {
+    } else {
+      this.setState({ currentCategory: event.currentTarget.textContent });
+    }
+
+    if (this.anchorEl.contains(event.target)) {
+      return;
+    }
+    if (this.state.viewable === "inline") {
+      this.setState({ viewable: "none" });
+    } else {
+      this.setState({ viewable: "inline" });
+    }
+    this.setState({ open: false });
+  };
+
+  componentDidMount() {
+    // RETRIEVE ALL BUSINESS DATA
+    this.getData();
+    setTimeout(() => {}, 2000);
+  }
+
   render() {
-    // CATEGORIES DISPLAY HANDLER
-    const onCategory = event => {
-      this.props.changeCategoriesDisplay();
+    const { open } = this.state;
+    const { classes } = this.props;
+
+    User.propTypes = {
+      classes: PropTypes.object.isRequired
     };
+
+    let modal;
+    let modalButton;
+
+    modalButton = (
+      <Button
+        id="modal-appear"
+        color="secondary"
+        variant="raised"
+        onClick={this.toggleModal}
+      >
+        Toggle Modal
+      </Button>
+    );
+    if (this.state.modalShow === true) {
+      modal = (
+        <div>
+        <QueueModal
+          loggedUser={this.props.loggedUser}
+          inQueue={this.state.inQueue}
+          toggleQueue={this.toggleQueue}
+          toggleModal={this.toggleModal}
+          modalBusiness={this.state.modalBusiness}
+        />
+        <QueueUpdate
+          loggedUser={this.props.loggedUser}
+          inQueue={this.state.inQueue}
+          toggleQueue={this.toggleQueue}
+          toggleModal={this.toggleModal}
+          modalBusiness={this.state.modalBusiness}
+        />
+        </div>
+      );
+    }
 
     return (
       <MuiThemeProvider theme={theme}>
-        <div>
-          <h2>I'm the Map!</h2>
+        <div className={classes.drawer}>
+          <Drawer
+            className={classes.root}
+            variant="permanent"
+            anchor="left"
+            style={
+              this.state.color === "blue"
+                ? {
+                    "--background-start": "#2196F3",
+                    "--background-end": "#21CBF3",
+                    "--box-shadow": "rgba(33, 203, 243, .3)"
+                  }
+                : {
+                    "--background-start": "#FE6B8B",
+                    "--background-end": "#FF8E53",
+                    "--box-shadow": "rgba(255, 105, 135, .3)"
+                  }
+            }
+          >
+            {/* CATEGORIES DROPDOWN */}
+            <Button
+              buttonRef={node => {
+                this.anchorEl = node;
+              }}
+              aria-owns={open ? "menu-list-grow" : null}
+              aria-haspopup="true"
+              onClick={this.handleToggle}
+              className={classes.button}
+            >
+              Categories
+            </Button>
+            <Popper
+              open={open}
+              anchorEl={this.anchorEl}
+              transition
+              disablePortal
+            >
+              {({ TransitionProps, placement }) => (
+                <Grow
+                  {...TransitionProps}
+                  id="menu-list-grow"
+                  style={{
+                    transformOrigin:
+                      placement === "bottom" ? "center top" : "center bottom"
+                  }}
+                >
+                  <Paper classes={{ docked: classes.menu }}>
+                    <ClickAwayListener onClickAway={this.handleClose}>
+                      <MenuList>{this.populateCategories()}</MenuList>
+                    </ClickAwayListener>
+                  </Paper>
+                </Grow>
+              )}
+            </Popper>
 
-          <Grid container spacing={24}>
-            <Grid item xs={12}>
-              <SearchBar />
-            </Grid>
-            <Grid item xs={6}>
-              <MapBusiness />
-            </Grid>
-            <Grid item xs={6}>
-              <Paper className="">
-                <Card className="map-bottom">MAP WILL GO HERE</Card>
-              </Paper>
-            </Grid>
-          </Grid>
-
-          <div>
-            <Link to="../queue">Queue here!</Link>
-          </div>
-          <div>
-            <Link to="/" onClick={onCategory}>
-              Back to Categories
-            </Link>
-          </div>
+            {/* BUSINESS LIST */}
+            <div style={{ display: this.state.viewable }}>
+              <BusinessList
+                businesses={this.state.businesses}
+                currentCategory={this.state.currentCategory}
+                renderQueueModal={this.renderQueueModal}
+                logguedUser={this.props.loggedUser}
+                modalShow={this.state.modalShow}
+                toggleQueue={this.toggleQueue}
+                toggleModal={this.toggleModal}
+                inQueue={this.state.inQueue}
+              />
+            </div>
+          </Drawer>
         </div>
+
+        {modalButton}
+        {modal}
+
+        {/* MAP */}
+        <Paper className="map">
+          <MapContainer currentLatLng={this.props.currentLatLng} />
+        </Paper>
       </MuiThemeProvider>
     );
   }
 }
 
-class Queue extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: "WOOO"
-    };
-  }
+export default withStyles(styles)(User);
 
-  getData = () => {
-    db.collection("Business")
-      .doc("DxbucRUhcSzfvgSDML6J")
-      .get()
-      .then(doc => {
-        let name = doc.data().Name;
-
-        this.setState({
-          name
-        });
-        return name;
-      });
-  };
-
-  componentDidMount = () => {
-    this.getData();
-  };
-
-  render() {
-    return (
-      <MuiThemeProvider theme={theme}>
-        <h2>I'm the Queue!</h2>
-
-        <Grid container spacing={24}>
-          {/* TOP */}
-          <Grid item xs={12}>
-            <JoinQueue />
-          </Grid>
-
-          {/* BOTTOM */}
-          <Grid item xs={12}>
-            <QueueBusiness />
-          </Grid>
-        </Grid>
-
-        <div>
-          <Link to="../map">Back to Map</Link>
-        </div>
-      </MuiThemeProvider>
-    );
-  }
-}
-
-export default User;
+// export default User;

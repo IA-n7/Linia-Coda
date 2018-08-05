@@ -39,11 +39,35 @@
   background-color: #B71C1C !important;
 }
 
+/*SEARCH BAR*/
+.MuiGrid-container-108 {
+  margin-bottom: 2%;
+}
+
+/* INFO WINDOW */
+
+.MuiSvgIcon-root-226 {
+  margin-right: 5%;
+}
+
+
 .test {
   float: right !important;
   position: absolute !important;
   right: 20px !important;
 }
 
+.modal {
+  display: inline;
+}
 
+#modal-appear {
+  position: absolute;
+  right: 10px;
+}
+
+#toggle-modal-button {
+  position: absolute;
+  right: 10px;
+}
 

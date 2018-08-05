@@ -76,11 +76,8 @@ class SignUpForm extends Component {
           email: email.value,
           phoneNumber: phoneNumber.value
         })
-        fullName.value = "";
-        email.value = "";
         password.value = "";
         passwordConfirm.value = "";
-        phoneNumber.value = "";
       }).catch((e) => {
        console.log(e.message);
       });
@@ -99,7 +96,6 @@ class SignUpForm extends Component {
     }).catch((e) => {
       console.log(e.message);
     });
-    email.value = "";
     password.value = "";
   };
 
@@ -162,10 +158,6 @@ class SignUpForm extends Component {
   logout = () => {
     firebase.auth().signOut();
   };
-
-  componentDidMount() {
-    this.props.authListener();
-  }
 
   render() {
     return (
