@@ -21,7 +21,7 @@ class QueueModal extends Component {
     let businessId;
     let businessDocRef = db
       .collection("Business")
-      .doc("Ok7xpLzj73AY91S985oP");
+      .doc(this.props.modalBusiness.id);
 
     let updatedArray = this.state.currentQueueMembers;
     updatedArray.push(userId);
@@ -36,7 +36,7 @@ class QueueModal extends Component {
     let businessId;
     let businessDocRef = db
       .collection("Business")
-      .doc("Ok7xpLzj73AY91S985oP");
+      .doc(this.props.modalBusiness.id);
 
     let updatedArray = this.state.currentQueueMembers;
     let filteredArr = updatedArray.filter(e => e !== userId)
@@ -48,15 +48,16 @@ class QueueModal extends Component {
 
   getCurrentGuestNumber = () => {
     db.collection("Business")
-      .doc("Ok7xpLzj73AY91S985oP")
+      .doc(this.props.modalBusiness.id)
       .onSnapshot(doc => {
         this.setState({ currentQueueNumber: doc.data().QueueBoiArray.length });
       });
   };
 
   getDataFromBusiness = () => {
+    console.log(this.props);
     db.collection("Business")
-      .doc("Ok7xpLzj73AY91S985oP")
+      .doc(this.props.modalBusiness.id)
       .onSnapshot(doc => {
         this.setState({ businessName: doc.data().businessName });
         this.setState({ businessEmail: doc.data().businessEmail });
