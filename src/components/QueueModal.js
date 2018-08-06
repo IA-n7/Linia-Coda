@@ -17,7 +17,6 @@ class QueueModal extends Component {
 
   joinQueue = () => {
     let userId = this.props.loggedUser.uid;
-    let businessId;
     let businessDocRef = db
       .collection("Business")
       .doc(this.props.modalBusiness.id);
@@ -32,7 +31,6 @@ class QueueModal extends Component {
 
   leaveQueue = () => {
     let userId = this.props.loggedUser.uid;
-    let businessId;
     let businessDocRef = db
       .collection("Business")
       .doc(this.props.modalBusiness.id);
@@ -54,7 +52,7 @@ class QueueModal extends Component {
   };
 
   getDataFromBusiness = () => {
-    console.log(this.props);
+    // console.log(this.props);
     db.collection("Business")
       .doc(this.props.modalBusiness.id)
       .onSnapshot(doc => {

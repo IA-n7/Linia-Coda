@@ -133,7 +133,7 @@ class App extends Component {
           {/* {mapContainer} */}
         </div>
 
-        <div>
+        <div className="map-size">
           {/* <Graphic /> */}
           {/*<CenteredGrid />*/}
           {user}

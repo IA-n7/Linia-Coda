@@ -42,13 +42,14 @@ const styles = theme => ({
     width: 280
   },
   menu: {
-    width: 280,
-    marginTop: 50
+    marginTop: 65
   },
   drawer: {
     width: 200
   }
 });
+ // className={classes.menu}
+
 // root: {
 // width: 200,
 // width: "100%",
@@ -90,13 +91,13 @@ class User extends Component {
         "Bank",
         "Emergency",
         "Hairdressers",
+        "SAAQ",
         ""
       ],
       currentCategory: "",
       businesses: [],
       modalBusiness: {}
     };
-    this.renderQueueModal = this.renderQueueModal.bind(this);
   }
 
   // DATA FETCHER
@@ -105,10 +106,11 @@ class User extends Component {
       .get()
       .then(businesses => {
         businesses.forEach(doc => {
+          // PLACE ALL BUSINESS DATA IN STATE
           this.setState({
             businesses: [...this.state.businesses, doc.data()]
           });
-
+          // SORT BUSINESSES BASED ON DISTANCE TO USER
           this.sortBusinesses();
         });
       })
@@ -123,17 +125,15 @@ class User extends Component {
 
   compare = (a, b) => {
     return a.distance - b.distance;
-    return 0;
+    // return 0;
   };
 
+  // SORT BUSINESSES BASED ON DISTANCE TO USER
   sortBusinesses = () => {
-    let sortedBusinesses = [];
     this.state.businesses.map(business => {
-      // console.log("PROPS: ", this.props.loggedUser)
-      // console.log("LATITUDE, BUSINESS: ", business.businessLocation._lat)
-      // console.log("LONGITUDE, BUSINESS: ", business.businessLocation._long)
       let lat1 = business.businessLocation._lat;
       let lon1 = business.businessLocation._long;
+
 
       // HARDCODED, CHANGE TO LOGGEDUSER VALUES
       let lat2 = 45.496761799999994;
@@ -153,24 +153,34 @@ class User extends Component {
       let d = R * c;
 
       business["distance"] = d;
+
+      if (business.businessName === "Clinique OPUS") {
+        console.log("LATITUDE: ", lat1)
+        console.log("LONGITUDE: ", lon1)
+        console.log("IS IT A NUMBER: ", d);
+        console.log("business: ", business.distance);
+      }
+      return 1;
     });
 
     this.state.businesses.sort(this.compare);
+    return 1;
   };
 
+  // DISPLAYS JOIN QUEUE MODAL
   toggleModal = (businessInfo) => {
-    // console.log(businessInfo)
-
     this.setState({
       modalShow: !this.state.modalShow,
       modalBusiness: businessInfo
     });
   };
 
+  // BUTTON HANDLER FOR QUEUE JOINING/EXITING
   toggleQueue = () => {
     this.setState({ inQueue: !this.state.inQueue });
   };
 
+  // POPULATES CATEGORIES MENU
   populateCategories = () => {
     let categories = this.state.categories.map(category => {
       return (
@@ -181,8 +191,6 @@ class User extends Component {
     });
     return categories;
   };
-
-  renderQueueModal = event => {};
 
   // CLOSES GROW-MENU ON CLICK-AWAY
   handleToggle = event => {
@@ -215,7 +223,6 @@ class User extends Component {
   componentDidMount() {
     // RETRIEVE ALL BUSINESS DATA
     this.getData();
-    setTimeout(() => {}, 2000);
   }
 
   render() {
@@ -272,7 +279,7 @@ class User extends Component {
                   }
             }
           >
-            {/* CATEGORIES DROPDOWN */}
+            <div className={classes.menu}>{/* CATEGORIES DROPDOWN */}
             <Button
               buttonRef={node => {
                 this.anchorEl = node;
@@ -299,7 +306,7 @@ class User extends Component {
                       placement === "bottom" ? "center top" : "center bottom"
                   }}
                 >
-                  <Paper classes={{ docked: classes.menu }}>
+                  <Paper>
                     <ClickAwayListener onClickAway={this.handleClose}>
                       <MenuList>{this.populateCategories()}</MenuList>
                     </ClickAwayListener>
@@ -320,11 +327,12 @@ class User extends Component {
                 toggleModal={this.toggleModal}
                 inQueue={this.state.inQueue}
               />
-            </div>
+            </div></div>
+
           </Drawer>
         </div>
 
-        {modalButton}
+        {/* {modalButton} */}
         {modal}
 
         {/* MAP */}

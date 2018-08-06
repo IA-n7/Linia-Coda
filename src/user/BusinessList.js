@@ -35,16 +35,13 @@ const styles = theme => ({
 
 const BusinessList = props => {
   let onModal = event => {
-    // console.log(event.currentTarget.firstChild.innerHTML);
     db.collection("Business")
       .where("businessName", "==", event.currentTarget.firstChild.innerHTML)
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(doc => {
-          // console.log(doc.id, " => ", doc.data());
           let temp = doc.data();
           temp.id = doc.id;
-          // console.log("HELLO", temp);
           props.toggleModal(temp);
         });
       })
@@ -54,10 +51,25 @@ const BusinessList = props => {
   };
 
   const populateBusinesses = () => {
+    // console.log(props);
+
     let businesses = props.businesses.map(business => {
       let hours = "";
       let minutes = "";
+      let distance = (Math.ceil(business.distance / 5) * 5).toString();
+
+      if (business.businessName === "Clinique OPUS") {
+        console.log("DISTANCE: ", business.distance);
+      }
+      if (distance.length <= 3) {
+        distance = distance + "m Away";
+      } else {
+        distance = distance / 1000;
+        distance = distance + "km Away";
+      }
+
       let openingHours = business.openingHours;
+      let closingHours = business.closingHours - 1200;
 
       if (business.openingHours.length === 3) {
         hours = business.openingHours.slice(0, 1);
@@ -68,6 +80,16 @@ const BusinessList = props => {
         hours = business.openingHours.slice(0, 2);
         minutes = business.openingHours.slice(2, 4);
         openingHours = hours + ":" + minutes;
+      }
+      if (business.closingHours.length === 3) {
+        hours = business.closingHours.slice(0, 1);
+        minutes = business.closingHours.slice(1, 3);
+        closingHours = hours + ":" + minutes;
+      }
+      if (business.closingHours.length === 4) {
+        hours = business.closingHours.slice(0, 2);
+        minutes = business.closingHours.slice(2, 4);
+        closingHours = hours + ":" + minutes;
       }
 
       if (props.currentCategory === business.category) {
@@ -83,11 +105,7 @@ const BusinessList = props => {
                 align="center"
                 name={business.businessName}
               >
-                {"Open " +
-                  openingHours +
-                  "am - Closes " +
-                  (business.closingHours - 12) +
-                  "pm"}
+                {"Open " + openingHours + "am - Closes " + closingHours + "pm"}
               </Typography>
               <Typography
                 className={classes.item}
@@ -109,6 +127,13 @@ const BusinessList = props => {
                 align="center"
               >
                 {"Average Wait - " + business.averageWait + " minutes"}
+              </Typography>
+              <Typography
+                className={classes.item}
+                color="textSecondary"
+                align="center"
+              >
+                {distance}
               </Typography>
             </CardContent>
             <Divider />
@@ -127,11 +152,7 @@ const BusinessList = props => {
                 color="textSecondary"
                 align="center"
               >
-                {"Open " +
-                  openingHours +
-                  "am - Closes " +
-                  (business.closingHours - 12) +
-                  "pm"}
+                {"Open " + openingHours + "am - Closes " + closingHours + "pm"}
               </Typography>
               <Typography
                 className={classes.item}
@@ -154,6 +175,13 @@ const BusinessList = props => {
               >
                 {"Average Wait - " + business.averageWait + " minutes"}
               </Typography>
+              <Typography
+                className={classes.item}
+                color="textSecondary"
+                align="center"
+              >
+                {distance}
+              </Typography>
             </CardContent>
             <Divider />
           </div>
@@ -167,7 +195,7 @@ const BusinessList = props => {
 
   return (
     <div>
-      <Card className={classes.root} component="nav" button>
+      <Card className={classes.root} component="nav">
         {populateBusinesses()}
       </Card>
     </div>
