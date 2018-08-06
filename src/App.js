@@ -13,8 +13,7 @@ import db from "./config/firebase.js";
 import { initFirestorter, Collection } from "firestorter";
 import Landing from "./Landing.js";
 import User from "./User.js";
-import Graphic from "./Graphic.js";
-import CenteredGrid from "./gridLayout.js";
+import CenteredGrid from "./businessForm/gridLayout.js";
 import("./Landing.css");
 const loadingSpinner = require("./img/lg.palette-rotating-ring-loader.gif");
 const auth = firebase.auth();
@@ -126,17 +125,19 @@ class App extends Component {
     return (
       <MuiThemeProvider theme={theme}>
         <div>
-          {loading}
-          {navbar}
+     {loading}
+        {navbar}
 
           {landing}
-          {/* {mapContainer} */}
         </div>
-
         <div className="map-size">
-          {/* <Graphic /> */}
-          {/*<CenteredGrid />*/}
           {user}
+        </div>
+        <div>
+       { (this.state.loggedUser) &&
+            <CenteredGrid loggedUser={this.state.loggedUser}/>
+        }
+
         </div>
       </MuiThemeProvider>
     );

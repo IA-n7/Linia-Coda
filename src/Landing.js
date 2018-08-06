@@ -5,7 +5,7 @@ import { Paper, Typography, TextField, Button, Grid } from "@material-ui/core";
 
 class Landing extends Component {
 
-  
+
   render() {
     return (
       <div>
