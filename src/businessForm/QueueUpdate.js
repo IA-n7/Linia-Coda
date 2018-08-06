@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import * as firebase from "firebase";
-import db from "./config/firebase.js";
+import db from "../config/firebase.js";
 import { Button, Typography, TextField } from "@material-ui/core";
 import { ArrowUpward, ArrowDownward, LocationOn, Email, Phone, AccessTime, AvTimer } from "@material-ui/icons";
 

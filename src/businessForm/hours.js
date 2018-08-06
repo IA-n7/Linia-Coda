@@ -8,7 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
-import db from './config/firebase.js';
+import db from '../config/firebase.js';
 import * as firebase from "firebase";;
 
 const styles = theme => ({
@@ -57,7 +57,7 @@ class OpeningHours extends React.Component {
     var user = firebase.auth().currentUser;
     let openingHours = this.state.openingHours;
 
-    db.collection('business').doc(user.uid).set({
+    db.collection('business').doc(user.uid).update({
       openingHours: openingHours
     })
     .then(function() {

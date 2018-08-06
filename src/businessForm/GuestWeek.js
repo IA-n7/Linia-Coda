@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import db from './config/firebase.js'
+import db from '../config/firebase.js'
 import {initFirestorter, Collection} from 'firestorter';
 import {observer} from 'mobx-react';
 import {Line} from 'react-chartjs-2';

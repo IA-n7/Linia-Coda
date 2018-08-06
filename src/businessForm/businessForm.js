@@ -9,7 +9,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import db from './config/firebase.js';
+import db from '../config/firebase.js';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
@@ -42,30 +42,16 @@ const styles = theme => ({
 });
 
 class BusinessForm extends React.Component {
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
     this.state = {
-      businessName: "",
+      businessName: "WOOORD",
       businessAddress: "",
       businessPhoneNumber: "",
-      businessEmail: ""
+      businessEmail: "",
+      mondayOpeningHours: "",
     };
   }
-
-  onOpenData = () => {
-    let businessName;
-    var user = firebase.auth().currentUser;
-    console.log('UUUSSSERR', user)
-      // db.collection('business').doc(user.uid).get().then(function(doc) {
-      //   businessName = doc.data().businessName
-      // }).catch(function(error) {
-      //   console.log("Error getting document:", error);
-      // });
-      // this.setState({
-      //   businessName: businessName
-      // })
-  }
-
 
   handleName = event => {
     this.setState({
@@ -104,11 +90,11 @@ class BusinessForm extends React.Component {
     let businessPhoneNumber = this.state.businessPhoneNumber
     let businessEmail = this.state.businessEmail
 
-    db.collection('business').doc(user.uid).set({
+    db.collection('business').doc(user.uid).update({
       businessName: businessName,
       businessAddress: businessAddress,
       businessPhoneNumber: businessPhoneNumber,
-      businessEmail: businessEmail,
+      businessEmail: businessEmail
     })
     .then(function() {
         console.log("Document successfully written!");
@@ -118,6 +104,28 @@ class BusinessForm extends React.Component {
     });
   }
 
+  componentWillMount(){
+    this.onLoadData();
+  }
+
+    onLoadData = () => {
+      let businessName;
+      let businessAddress;
+      let businessPhoneNumber;
+      let businessEmail;
+      db.collection('business').doc(this.props.loggedUser.uid).onSnapshot(doc => {
+        businessName = doc.data().businessName,
+        businessAddress = doc.data().businessAddress,
+        businessPhoneNumber = doc.data().businessPhoneNumber,
+        businessEmail = doc.data().businessEmail
+        this.setState({
+          businessName: businessName,
+          businessAddress: businessAddress,
+          businessPhoneNumber: businessPhoneNumber,
+          businessEmail: businessEmail
+        })
+      })
+    }
 
   render() {
     const { classes } = this.props;
@@ -125,7 +133,6 @@ class BusinessForm extends React.Component {
 
 
     return (
-
       <div >
       <Grid container spacing={12}>
       <Grid item xs={12}>
@@ -143,6 +150,7 @@ class BusinessForm extends React.Component {
         margin="normal"
       />
       <TextField
+      value={this.state.businessAddress}
         id="businessAddress"
         label="Business Address"
         onChange={this.handleAddress.bind(this)}
@@ -153,6 +161,7 @@ class BusinessForm extends React.Component {
         margin="normal"
       />
       <TextField
+        value={this.state.businessPhoneNumber}
         id="businessPhoneNumber"
         label="Business Phone Number"
         onChange={this.handlePhoneNumber.bind(this)}
@@ -163,6 +172,7 @@ class BusinessForm extends React.Component {
         margin="normal"
       />
       <TextField
+        value={this.state.businessEmail}
         id="businessEmail"
         label="Business Email"
         onChange={this.handleEmail.bind(this)}

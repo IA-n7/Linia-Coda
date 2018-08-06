@@ -30,7 +30,7 @@ import MapContainer from "./components/MapContainer.js";
 import BusinessList from "./user/BusinessList.js";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import QueueUpdate from './QueueUpdate.js'
+import QueueUpdate from './businessForm/QueueUpdate.js'
 
 const styles = theme => ({
   root: {

@@ -11,7 +11,7 @@ import Grid from '@material-ui/core/Grid';
 import OpeningHours from './hours.js';
 import ClosingHours from './ClosingHours.js';
 import Button from '@material-ui/core/Button';
-import db from './config/firebase.js';
+import db from '../config/firebase.js';
 import * as firebase from "firebase";;
 
 const styles = theme => ({
