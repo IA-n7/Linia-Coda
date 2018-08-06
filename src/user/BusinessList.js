@@ -68,29 +68,8 @@ const BusinessList = props => {
         distance = distance + "km Away";
       }
 
-      let openingHours = business.openingHours;
-      let closingHours = business.closingHours - 1200;
-
-      if (business.openingHours.length === 3) {
-        hours = business.openingHours.slice(0, 1);
-        minutes = business.openingHours.slice(1, 3);
-        openingHours = hours + ":" + minutes;
-      }
-      if (business.openingHours.length === 4) {
-        hours = business.openingHours.slice(0, 2);
-        minutes = business.openingHours.slice(2, 4);
-        openingHours = hours + ":" + minutes;
-      }
-      if (business.closingHours.length === 3) {
-        hours = business.closingHours.slice(0, 1);
-        minutes = business.closingHours.slice(1, 3);
-        closingHours = hours + ":" + minutes;
-      }
-      if (business.closingHours.length === 4) {
-        hours = business.closingHours.slice(0, 2);
-        minutes = business.closingHours.slice(2, 4);
-        closingHours = hours + ":" + minutes;
-      }
+      let openingHours = props.formatOpening(business.openingHours);
+      let closingHours = props.formatClosing(business.closingHours);
 
       if (props.currentCategory === business.category) {
         return (
