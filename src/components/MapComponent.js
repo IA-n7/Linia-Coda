@@ -16,7 +16,7 @@ const MapComponent = compose(withStateHandlers(() => ({
   withProps({
     googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyDgEhsdvD_39T0FWsxHIHX6H5kob8MEBwA&libraries=places&",
     loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `400px` }} />,
+    containerElement: <div style={{ height: `100%`}} />,
     mapElement: <div style={{ height: `100%` }} />,
   }),
   withScriptjs,
@@ -45,29 +45,3 @@ const MapComponent = compose(withStateHandlers(() => ({
   );
 
   export default MapComponent
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

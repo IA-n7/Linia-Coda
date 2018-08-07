@@ -80,6 +80,15 @@
   right: 20px !important;
 }
 
+.modal {
+  display: inline;
+}
+
+#modal-appear {
+  position: absolute;
+  right: 10px;
+}
+
 #toggle-modal-button {
   position: absolute;
   right: 10px;
@@ -92,15 +101,5 @@
 .SearchBar-searchContainer-213 {
   margin-left: 100px !important;
 }
-
-
-
-
-
-
-
-
-
-
 
 

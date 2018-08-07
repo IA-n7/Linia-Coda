@@ -22,12 +22,15 @@ import * as firebase from "firebase";
 import db from "./config/firebase.js";
 // eslint-disable-next-line
 import { initFirestorter, Collection } from "firestorter";
+import QueueModal from "./components/QueueModal";
+
 // eslint-disable-next-line
 import { observer } from "mobx-react";
 import MapContainer from "./components/MapContainer.js";
 import BusinessList from "./user/BusinessList.js";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
+import QueueUpdate from './businessForm/QueueUpdate.js'
 
 const styles = theme => ({
   root: {
@@ -37,18 +40,17 @@ const styles = theme => ({
     marginTop: 50
   },
   button: {
-    width: 280,
-
+    width: 280
   },
   menu: {
-    width: 280,
-    marginTop: 50
-
+    marginTop: 65
   },
   drawer: {
-    width: 200
+    width: 280
   }
 });
+// className={classes.menu}
+
 // root: {
 // width: 200,
 // width: "100%",
@@ -80,6 +82,8 @@ class User extends Component {
     this.state = {
       open: false,
       viewable: "inline",
+      modalShow: false,
+      inQueue: false,
       categories: [
         "Clinics",
         "Restaurants",
@@ -90,8 +94,8 @@ class User extends Component {
       currentCategory: "",
       businesses: [],
       //currentLatLng: this.props.currentLatLng,
+      modalBusiness: {}
     };
-    this.renderQueueModal = this.renderQueueModal.bind(this);
   }
 
   // DATA FETCHER
@@ -100,10 +104,11 @@ class User extends Component {
       .get()
       .then(businesses => {
         businesses.forEach(doc => {
+          // PLACE ALL BUSINESS DATA IN STATE
           this.setState({
             businesses: [...this.state.businesses, doc.data()]
           });
-
+          // SORT BUSINESSES BASED ON DISTANCE TO USER
           this.sortBusinesses();
         });
       })
@@ -118,15 +123,12 @@ class User extends Component {
 
   compare = (a, b) => {
     return a.distance - b.distance;
-    return 0;
+    // return 0;
   };
 
+  // SORT BUSINESSES BASED ON DISTANCE TO USER
   sortBusinesses = () => {
-    let sortedBusinesses = [];
     this.state.businesses.map(business => {
-      // console.log("PROPS: ", this.props.loggedUser)
-      // console.log("LATITUDE, BUSINESS: ", business.businessLocation._lat)
-      // console.log("LONGITUDE, BUSINESS: ", business.businessLocation._long)
       let lat1 = business.businessLocation._lat;
       let lon1 = business.businessLocation._long;
 
@@ -148,11 +150,78 @@ class User extends Component {
       let d = R * c;
 
       business["distance"] = d;
+
+      if (business.businessName === "Clinique OPUS") {
+        console.log("LATITUDE: ", lat1);
+        console.log("LONGITUDE: ", lon1);
+        console.log("IS IT A NUMBER: ", d);
+        console.log("business: ", business.distance);
+      }
+      return 1;
     });
 
     this.state.businesses.sort(this.compare);
+    return 1;
   };
 
+  formatClosing = closingHours => {
+    let minutes;
+    let hours;
+    if (closingHours.length === 4) {
+      hours = closingHours.slice(0, 2);
+
+      if (parseInt(hours) > 12) {
+        hours = parseInt(hours) - 12;
+      }
+
+      minutes = closingHours.slice(2, 4);
+      closingHours = hours + ":" + minutes;
+    }
+    if (closingHours.length === 3) {
+      hours = closingHours.slice(0, 1);
+      minutes = closingHours.slice(1, 3);
+      closingHours = hours + ":" + minutes;
+    }
+    return closingHours;
+  };
+
+  formatOpening = openingHours => {
+    let minutes;
+    let hours;
+    if (openingHours.length === 4) {
+      hours = openingHours.slice(0, 2);
+
+      if (parseInt(hours) > 12) {
+        hours = parseInt(hours) - 12;
+      }
+
+      minutes = openingHours.slice(2, 4);
+      openingHours = hours + ":" + minutes;
+    }
+    if (openingHours.length === 3) {
+      hours = openingHours.slice(0, 1);
+      minutes = openingHours.slice(1, 3);
+      openingHours = hours + ":" + minutes;
+    }
+    return openingHours;
+  };
+
+  // DISPLAYS JOIN QUEUE MODAL
+  toggleModal = (businessInfo) => {
+     this.setState({
+       modalShow: !this.state.modalShow,
+       modalBusiness: businessInfo
+     });
+   };
+
+
+
+  // BUTTON HANDLER FOR QUEUE JOINING/EXITING
+  toggleQueue = () => {
+    this.setState({ inQueue: !this.state.inQueue });
+  };
+
+  // POPULATES CATEGORIES MENU
   populateCategories = () => {
     let categories = this.state.categories.map(category => {
       return (
@@ -192,12 +261,9 @@ class User extends Component {
     this.setState({ open: false });
   };
 
-  renderQueueModal = event => {};
-
   componentDidMount() {
     // RETRIEVE ALL BUSINESS DATA
     this.getData();
-    setTimeout(() => {}, 2000);
   }
 
   render() {
@@ -207,6 +273,31 @@ class User extends Component {
     User.propTypes = {
       classes: PropTypes.object.isRequired
     };
+
+    let modal;
+
+    if (this.state.modalShow === true) {
+      modal = (
+        <div>
+        <QueueModal
+          loggedUser={this.props.loggedUser}
+          inQueue={this.state.inQueue}
+          toggleQueue={this.toggleQueue}
+          toggleModal={this.toggleModal}
+          modalBusiness={this.state.modalBusiness}
+          formatClosing={this.formatClosing}
+          formatOpening={this.formatOpening}
+        />
+        <QueueUpdate
+          loggedUser={this.props.loggedUser}
+          inQueue={this.state.inQueue}
+          toggleQueue={this.toggleQueue}
+          toggleModal={this.toggleModal}
+          modalBusiness={this.state.modalBusiness}
+        />
+        </div>
+      );
+    }
 
     return (
       <MuiThemeProvider theme={theme}>
@@ -229,53 +320,62 @@ class User extends Component {
                   }
             }
           >
-            {/* CATEGORIES DROPDOWN */}
-            <Button
-              buttonRef={node => {
-                this.anchorEl = node;
-              }}
-              aria-owns={open ? "menu-list-grow" : null}
-              aria-haspopup="true"
-              onClick={this.handleToggle}
-              className={classes.button}
-            >
-              Categories
-            </Button>
-            <Popper
-              open={open}
-              anchorEl={this.anchorEl}
-              transition
-              disablePortal
-            >
-              {({ TransitionProps, placement }) => (
-                <Grow
-                  {...TransitionProps}
-                  id="menu-list-grow"
-                  style={{
-                    transformOrigin:
-                      placement === "bottom" ? "center top" : "center bottom"
-                  }}
-                >
-                  <Paper classes={{docked: classes.menu}}>
-                    <ClickAwayListener onClickAway={this.handleClose}>
-                      <MenuList>{this.populateCategories()}</MenuList>
-                    </ClickAwayListener>
-                  </Paper>
-                </Grow>
-              )}
-            </Popper>
+            <div className={classes.menu}>
+              {/* CATEGORIES DROPDOWN */}
+              <Button
+                buttonRef={node => {
+                  this.anchorEl = node;
+                }}
+                aria-owns={open ? "menu-list-grow" : null}
+                aria-haspopup="true"
+                onClick={this.handleToggle}
+                className={classes.button}
+              >
+                Categories
+              </Button>
+              <Popper
+                open={open}
+                anchorEl={this.anchorEl}
+                transition
+                disablePortal
+              >
+                {({ TransitionProps, placement }) => (
+                  <Grow
+                    {...TransitionProps}
+                    id="menu-list-grow"
+                    style={{
+                      transformOrigin:
+                        placement === "bottom" ? "center top" : "center bottom"
+                    }}
+                  >
+                    <Paper>
+                      <ClickAwayListener onClickAway={this.handleClose}>
+                        <MenuList>{this.populateCategories()}</MenuList>
+                      </ClickAwayListener>
+                    </Paper>
+                  </Grow>
+                )}
+              </Popper>
 
-            {/* BUSINESS LIST */}
-            <div style={{ display: this.state.viewable }}>
-              <BusinessList
-                businesses={this.state.businesses}
-                currentCategory={this.state.currentCategory}
-                renderQueueModal={this.renderQueueModal}
-                logguedUser={this.props.loggedUser}
-              />
+              {/* BUSINESS LIST */}
+              <div style={{ display: this.state.viewable }}>
+                <BusinessList
+                  businesses={this.state.businesses}
+                  currentCategory={this.state.currentCategory}
+                  renderQueueModal={this.renderQueueModal}
+                  logguedUser={this.props.loggedUser}
+                  toggleQueue={this.toggleQueue}
+                  toggleModal={this.toggleModal}
+                  inQueue={this.state.inQueue}
+                  formatClosing={this.formatClosing}
+                  formatOpening={this.formatOpening}
+                />
+              </div>
             </div>
           </Drawer>
         </div>
+
+        {modal}
 
         {/* MAP */}
         <Paper className="map">

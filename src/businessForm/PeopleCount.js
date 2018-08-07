@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import db from './config/firebase.js';
+import db from '../config/firebase.js';
 import {Line} from 'react-chartjs-2';
 
 class PeopleCount extends Component {

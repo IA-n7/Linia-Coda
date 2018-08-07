@@ -1,14 +1,45 @@
-.map {
-  margin-left: 300px;
-  /* line-height: 200px; */
-  height: 100%;
-  z-index: 0;
+html {
+  min-height: 100%; /* make sure it is at least as tall as the viewport */
+  position: relative;
+}
+body {
+  height: 100%; /* force the BODY element to match the height of the HTML element */
 }
 
-.MuiPaper-elevation0-265 {
-  margin-top: 65px;
+.map-size {
+  margin-top: 70px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.map {
+  margin-left: 300px;
+  /* line-height: 500px; */
+  height: 100%;
+  /* z-index: 0; */
 }
 
 #menu-list-grow {
   width: 200px;
 }
+
+/* .MuiPaper-root-249 {
+  margin-top: 65px;
+} */
+/* .MuiPaper-elevation0-251 {
+  margin-top: 65px;
+} */
+/* .MuiDrawer-paper-239 {
+  margin-top: 65px;
+} */
+/* .MuiDrawer-paperAnchorLeft-240 {
+  margin-top: 65px;
+} */
+/* .MuiDrawer-paperAnchorDockedLeft-244 {
+  margin-top: 65px;
+} */
