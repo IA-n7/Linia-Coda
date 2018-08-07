@@ -40,8 +40,8 @@ class App extends Component {
     this.state = {
       loading: true,
       currentLatLng: {
-        lat: 0,
-        lng: 0
+        lat: 45.4961,
+        lng: -73.5693
       }
     };
   }
@@ -125,7 +125,7 @@ class App extends Component {
     return (
       <MuiThemeProvider theme={theme}>
         <div>
-     {loading}
+        {loading}
         {navbar}
 
           {landing}
@@ -133,12 +133,12 @@ class App extends Component {
         <div className="map-size">
           {user}
         </div>
-        <div>
+        {/* <div>
        { (this.state.loggedUser) &&
             <CenteredGrid loggedUser={this.state.loggedUser}/>
         }
 
-        </div>
+        </div> */}
       </MuiThemeProvider>
     );
   };
