@@ -12,17 +12,7 @@ class QueueModal extends Component {
     this.state = {
       currentQueueMembers: [],
       currentQueueNumber: 0,
-      scroll: 'paper',
-      open: false,
     };
-  }
-
-  handleClickOpen = scroll => () => {
-    this.setState({ open: true, scroll });
-  }
-
-  handleClose = () => {
-    this.setState({ open: false });
   }
 
   joinQueue = () => {

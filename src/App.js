@@ -47,8 +47,8 @@ class App extends Component {
     this.geocodeAddress = this.geocodeAddress.bind(this);
   }
 
-  geocodeAddress = address => {
 
+  geocodeAddress = address => {
     this.geocoder = new window.google.maps.Geocoder();
     this.geocoder.geocode({ address: address }, this.handleResults.bind(this));
   };
@@ -63,9 +63,6 @@ class App extends Component {
           lng: results[0].geometry.location.lng()
         }
       });
-
-      //this.map.setCenter(results[0].geometry.location);
-      //this.marker.setPosition(results[0].geometry.location);
 
       console.log("APP", this.state.currentLatLng)
 
@@ -92,7 +89,6 @@ class App extends Component {
   componentDidMount() {
     this.authListener();
 }
-
 
   render = () => {
     let loading;
@@ -143,18 +139,16 @@ class App extends Component {
         <div className="map-size">
           {user}
         </div>
-        <div>
-
 
       {/* { (this.state.loggedUser) &&
             <CenteredGrid loggedUser={this.state.loggedUser}/>
         }*/}
 
-        </div>
       </MuiThemeProvider>
     );
   };
 }
 
 export default App;
+
 

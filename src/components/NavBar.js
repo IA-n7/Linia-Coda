@@ -215,6 +215,7 @@ class NavBar extends Component {
 
           </Toolbar>
         </AppBar>
+
         {/*<SearchBarContainer geocodeAddress={this.props.geocodeAddress} currentLatLng={this.state.currentLatLng}/>*/}
 
       </div>

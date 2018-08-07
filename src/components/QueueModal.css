@@ -1,4 +1,4 @@
-/*.modal-background {
+.modal-background {
   background-color: rgba(0,0,0,0.7);
   height: 100%;
   width: 100%;
@@ -8,9 +8,10 @@
   justify-content: center;
   align-items: center;
   z-index: 70;
-}*/
 
-/*.circle {
+}
+
+.circle {
   background-color: transparent;
   position: absolute;
   top: 40px;
@@ -37,7 +38,7 @@
   }
 }*/
 
-/*#join-queue-button {
+#join-queue-button {
   position: absolute;
   top: 230px;
   left: 230px;
@@ -47,42 +48,42 @@
   position: absolute;
   top: 230px;
   left: 230px;
-}*/
+}
 
-/*#number-in-queue {
+#number-in-queue {
   font-size: 50px;
 }
 
 .arrow-icon {
   font-size: 17px;
-}*/
+}
 
-/*.modal {
+.modal {
   background-color: rgb(211, 216, 219);
   position: absolute;
   top: -10px;
   left: 400px;
   justify-content: space-around;
   width: 600px;
-  height: 600px;
+  height: 650px;
   text-align: center;
   padding: 20px;
   border-radius: 10px;
   border: 10px solid #102027;
-  z-index: 1000;
+  z-index: 80;
   display: inline !important;
 }
-*/
-/*.close {
+
+.close {
   position: absolute;
   top: 0;
   right: 14px;
   font-size: 42px;
   transform: rotate(45deg);
   cursor: pointer;
-}*/
+}
 
-/*.bottom-part {
+.bottom-part {
   position: absolute;
   z-index: 10;
   bottom: -1px;
@@ -106,9 +107,9 @@
   border-radius: 2px;
   clip-path: polygon(7% 0, 100% 0, 100% 100%, 0 100%, 0 20%);
   box-shadow:-3px -1px 25px #000000;
-}*/
+}
 
-/*.business-info-flex {
+.business-info-flex {
   display: flex;
 }
 
@@ -129,15 +130,15 @@
 
 .wait-time {
   position: absolute;
-  right: 20px;
-  top: 55px;
+  right: 2.5rem;
+  top: 4.7rem;
 }
 
 .wait-time h4 {
-  font-size: 20px;
+  font-size: 16px;
 }
 
 #wait-time-number {
   margin-top: -10px;
   margin-left: 20px;
-}*/
+}

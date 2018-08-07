@@ -24,6 +24,7 @@ const styles = theme => ({
     flexShrink: 0,
   },
   secondaryHeading: {
+
     fontSize: theme.typography.pxToRem(8),
     color: theme.palette.text.secondary,
   },
