@@ -5,6 +5,11 @@ import { Paper, Typography, TextField, Button, Grid } from "@material-ui/core";
 import mainLogo from './img/LiniaCodaLogo.png'
 
 class Landing extends Component {
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 694ac821e35366ece8e5e3223f2591609277aa64
   render() {
     return (
       <div>

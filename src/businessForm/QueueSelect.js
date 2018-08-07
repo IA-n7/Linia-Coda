@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
 // import Grid from '@material-ui/core/Grid';
-import db from './config/firebase.js'
+import db from '../config/firebase.js'
 // import Example from './Countdown.js'
 import Countdown from './Countdown'
 import PeopleCount from './PeopleCount'

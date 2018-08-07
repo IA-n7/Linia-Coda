@@ -30,6 +30,7 @@ import MapContainer from "./components/MapContainer.js";
 import BusinessList from "./user/BusinessList.js";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
+import QueueUpdate from './businessForm/QueueUpdate.js'
 
 const styles = theme => ({
   root: {
@@ -280,6 +281,7 @@ class User extends Component {
 
     if (this.state.modalShow === true) {
       modal = (
+        <div>
         <QueueModal
           loggedUser={this.props.loggedUser}
           inQueue={this.state.inQueue}
@@ -289,6 +291,14 @@ class User extends Component {
           formatClosing={this.formatClosing}
           formatOpening={this.formatOpening}
         />
+        <QueueUpdate
+          loggedUser={this.props.loggedUser}
+          inQueue={this.state.inQueue}
+          toggleQueue={this.toggleQueue}
+          toggleModal={this.toggleModal}
+          modalBusiness={this.state.modalBusiness}
+        />
+        </div>
       );
     }
 
