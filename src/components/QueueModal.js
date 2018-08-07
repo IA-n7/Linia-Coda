@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import * as firebase from "firebase";
 import db from "../config/firebase.js";
-import { Button, Typography, TextField } from "@material-ui/core";
+import { Button, Typography, TextField, Dialog, DialogActions,DialogContent, DialogContentText, DialogTitle } from "@material-ui/core";
 import { ArrowUpward, ArrowDownward, LocationOn, Email, Phone, AccessTime, AvTimer } from "@material-ui/icons";
 import("./QueueModal.css");
 
@@ -11,8 +11,18 @@ class QueueModal extends Component {
 
     this.state = {
       currentQueueMembers: [],
-      currentQueueNumber: 0
+      currentQueueNumber: 0,
+      scroll: 'paper',
+      open: false,
     };
+  }
+
+  handleClickOpen = scroll => () => {
+    this.setState({ open: true, scroll });
+  }
+
+  handleClose = () => {
+    this.setState({ open: false });
   }
 
   joinQueue = () => {
@@ -108,20 +118,32 @@ class QueueModal extends Component {
     }
 
     return (
-      <div className="modal-background">
-        <div className="modal">
-          <div className="close" onClick={this.props.toggleModal}>
+      <div>
+      <Button onClick={this.handleClickOpen('paper')}></Button>
+      <Dialog
+        open={this.state.open}
+        onClose={this.handleClose}
+        scroll={this.state.scroll}
+      >
+      <DialogTitle id="scroll-dialog-title">QueueModal</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          <div className="modal-background">
+            <div className="modal">
+            <div className="close" onClick={this.props.toggleModal}>
             +
-          </div>
-          <div className="circle" />
-          <div className="circle-information">
-            <h5>People in Queue:</h5>
-            <Typography id="number-in-queue" component="h1" variant="display1">
-              {this.state.currentQueueNumber}
-            </Typography>
-          </div>
-          {joinQueueButton}
-          <div className="bottom-part">
+            </div>
+            <div className="circle" />
+            <div className="circle-information">
+              <h5>People in Queue:</h5>
+              <Typography id="number-in-queue" component="h1" variant="display1">
+                {this.state.currentQueueNumber}
+              </Typography>
+            </div>
+            <DialogActions>
+              {joinQueueButton}
+            </DialogActions>
+            <div className="bottom-part">
             <div className="business-info-container">
               <Typography
                 id="business-name-info"
@@ -162,20 +184,26 @@ class QueueModal extends Component {
                   margin="normal"
                 />
                 <br />
-                <Button
-                  id="phone-field-submit"
-                  type="submit"
-                  color="secondary"
-                  variant="raised"
-                  onClick={this.signUpOnSubmit}
-                >
-                  Notify Me!
-                </Button>
+                <DialogActions>
+                  <Button
+                    id="phone-field-submit"
+                    type="submit"
+                    color="secondary"
+                    variant="raised"
+                    onClick={this.signUpOnSubmit}
+                  >
+                    Notify Me!
+                  </Button>
+                </DialogActions>
               </form>
             </div>
           </div>
         </div>
       </div>
+      </DialogContentText>
+     </DialogContent>
+    </Dialog>
+    </div>
     );
   }
 }

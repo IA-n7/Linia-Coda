@@ -40,8 +40,8 @@ class App extends Component {
     this.state = {
       loading: true,
       currentLatLng: {
-        lat: 0,
-        lng: 0
+        lat: 45.4961,
+        lng: -73.5693
       },
     }
     this.geocodeAddress = this.geocodeAddress.bind(this);
@@ -137,7 +137,7 @@ class App extends Component {
      {loading}
         {navbar}
 
-          {landing}
+         {landing}
 
         </div>
         <div className="map-size">
@@ -146,9 +146,9 @@ class App extends Component {
         <div>
 
 
-       { (this.state.loggedUser) &&
+      {/* { (this.state.loggedUser) &&
             <CenteredGrid loggedUser={this.state.loggedUser}/>
-        }
+        }*/}
 
         </div>
       </MuiThemeProvider>

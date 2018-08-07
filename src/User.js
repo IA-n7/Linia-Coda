@@ -379,7 +379,7 @@ class User extends Component {
 
         {/* MAP */}
         <Paper className="map">
-          <MapContainer currentCategory={this.state.currentCategory} currentLatLng={this.props.currentLatLng} />
+         <MapContainer currentCategory={this.state.currentCategory} currentLatLng={this.props.currentLatLng} />
         </Paper>
       </MuiThemeProvider>
     );

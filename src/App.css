@@ -45,6 +45,19 @@
   margin-left: auto !important;
 }
 
+.MuiIconButton-colorSecondary-48 {
+  color: white !important;
+  font-size: 48px;
+}
+
+.MuiSvgIcon-root-54 {
+  font-size: 48px !important;
+}
+
+.MuiButton-contained-90 {
+  background-color: #fff !important;
+}
+
 /*SEARCH BAR*/
 .MuiGrid-container-108 {
   margin-bottom: 2%;
@@ -100,6 +113,9 @@
 }
 .SearchBar-searchContainer-213 {
   margin-left: 100px !important;
+}
+.User-menu-107 {
+  margin-top: 110px !important;
 }
 
 

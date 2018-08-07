@@ -27,7 +27,7 @@ const MapComponent = compose(withStateHandlers(() => ({
     console.log(currentLocation)
     return (
       <GoogleMap
-        defaultZoom={14}
+        defaultZoom={17}
         center={currentLocation}
       >
 

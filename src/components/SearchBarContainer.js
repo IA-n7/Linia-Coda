@@ -51,7 +51,7 @@ class SearchBarContainer extends Component {
         <Grid container spacing={0}>
 
           <Grid item xs>
-           <SearchBar style={{marginLeft: '20%', marginRight: '1%', maxWidth: 800}}
+           <SearchBar style={{marginLeft: '40%', marginRight: '1%', maxWidth: 800}}
                         placeholder='Search for services near you ...'
                         onChange={this.handleInputChange}
                         handleSelect={this.handleSelect}

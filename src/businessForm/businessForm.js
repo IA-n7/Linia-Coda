@@ -16,6 +16,9 @@ import Menu from '@material-ui/core/Menu';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
+
+
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -105,27 +108,27 @@ class BusinessForm extends React.Component {
   }
 
   componentWillMount(){
-    this.onLoadData();
+    //this.onLoadData();
   }
 
-    onLoadData = () => {
-      let businessName;
-      let businessAddress;
-      let businessPhoneNumber;
-      let businessEmail;
-      db.collection('business').doc(this.props.loggedUser.uid).onSnapshot(doc => {
-        businessName = doc.data().businessName,
-        businessAddress = doc.data().businessAddress,
-        businessPhoneNumber = doc.data().businessPhoneNumber,
-        businessEmail = doc.data().businessEmail
-        this.setState({
-          businessName: businessName,
-          businessAddress: businessAddress,
-          businessPhoneNumber: businessPhoneNumber,
-          businessEmail: businessEmail
-        })
-      })
-    }
+    // onLoadData = () => {
+    //   let businessName;
+    //   let businessAddress;
+    //   let businessPhoneNumber;
+    //   let businessEmail;
+    //   db.collection('business').doc(this.props.loggedUser.uid).onSnapshot(doc => {
+    //     businessName = doc.data().businessName,
+    //     businessAddress = doc.data().businessAddress,
+    //     businessPhoneNumber = doc.data().businessPhoneNumber,
+    //     businessEmail = doc.data().businessEmail
+    //     this.setState({
+    //       businessName: businessName,
+    //       businessAddress: businessAddress,
+    //       businessPhoneNumber: businessPhoneNumber,
+    //       businessEmail: businessEmail
+    //     })
+    //   })
+    // }
 
   render() {
     const { classes } = this.props;
@@ -133,76 +136,84 @@ class BusinessForm extends React.Component {
 
 
     return (
-      <div >
-      <Grid container spacing={12}>
-      <Grid item xs={12}>
-      <Paper className={classes.paper}>
-      <form className={classes.container} noValidate autoComplete="off">
-      <TextField
-        value={this.state.businessName}
-        id="businessName"
-        label="Business Name"
-        onChange={this.handleName.bind(this)}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-      value={this.state.businessAddress}
-        id="businessAddress"
-        label="Business Address"
-        onChange={this.handleAddress.bind(this)}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        value={this.state.businessPhoneNumber}
-        id="businessPhoneNumber"
-        label="Business Phone Number"
-        onChange={this.handlePhoneNumber.bind(this)}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        value={this.state.businessEmail}
-        id="businessEmail"
-        label="Business Email"
-        onChange={this.handleEmail.bind(this)}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        fullWidth
-        margin="normal"
-      />
-      <SelectDays />
-      <Button
-        type="submit"
-        color="secondary"
-        variant="raised"
-        id="sign-up-submit"
-        onClick={this.detailsToDB.bind(this)}
-      >
-      Update Business Details
-      </Button>
-
-      </form>
-
-
-      </Paper>
-      </Grid>
-      </Grid>
+      <div>
+      <Dialog>
+        <DialogTitle id="form-dialog-title">Edit Account Information</DialogTitle>
+        <DialogContent>
+        <DialogContentText>
+          To update your business' information, please fill out the form below.
+        </DialogContentText>
+        <TextField
+          autoFocus
+          value={this.state.businessName}
+          id="businessName"
+          label="Business Name"
+          onChange={this.handleName.bind(this)}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          fullWidth
+          margin="dense"
+        />
+        <TextField
+          autoFocus
+          value={this.state.businessAddress}
+          id="businessAddress"
+          label="Business Address"
+          onChange={this.handleAddress.bind(this)}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          fullWidth
+          margin="dense"
+        />
+        <TextField
+          autoFocus
+          value={this.state.businessPhoneNumber}
+          id="businessPhoneNumber"
+          label="Business Phone Number"
+          onChange={this.handlePhoneNumber.bind(this)}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          fullWidth
+          margin="dense"
+        />
+        <TextField
+          autoFocus
+          value={this.state.businessEmail}
+          id="businessEmail"
+          label="Business Email"
+          onChange={this.handleEmail.bind(this)}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          fullWidth
+          margin="dense"
+        />
+        </DialogContent>
+        <DialogActions>
+        <SelectDays />
+        <Button
+          type="submit"
+          color="secondary"
+          variant="raised"
+          id="sign-up-submit"
+          onClick={this.detailsToDB.bind(this)}
+        >
+        Update Business Details
+        </Button>
+        <Button
+          onClick={this.handleClose}
+          color="secondary"
+        > Cancel
+        </Button>
+        </DialogActions>
+        </Dialog>
       </div>
       );
+    }
   }
-}
 
 
 BusinessForm.propTypes = {

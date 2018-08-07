@@ -25,7 +25,7 @@ class Landing extends Component {
                 align="left"
                 variant="display1"
                 >
-                The Queue Boi
+                A New Way to Queue
               </Typography>
             </div>
           </Grid>
@@ -45,74 +45,45 @@ class Landing extends Component {
         </div>
 
         <section className="section section-light">
-          <h2>Section One</h2>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita
-            ipsa nulla modi quaerat sed esse quisquam praesentium voluptate
-            delectus, doloribus fugit cum vel quas in similique cumque ipsum
-            dolorem obcaecati tenetur dolorum voluptates itaque. Deserunt
-            voluptate consectetur hic suscipit natus omnis quis amet dolores
-            esse, reiciendis explicabo similique voluptas eos, debitis
-            repudiandae dolorem distinctio magni tempore adipisci facilis. Ipsa
-            nobis eveniet esse sit sunt voluptatum quas laudantium qui aliquam,
-            optio, ipsum nostrum vel. Quidem totam est ab, ad earum neque quos
-            tempore nesciunt omnis mollitia ullam consequuntur ipsa officia
-            architecto unde porro assumenda nobis placeat optio ex vero. Labore,
-            ducimus.
-          </p>
+          <h1>Queue Up From Anywhere!</h1>
+          <h4>
+           Linia Coda provides you the freedom of managing your own day <br/>
+           while still being queued up for any service of your choosing.
+          </h4>
         </section>
 
         <div className="pimg2">
           <div className="ptext">
-            <span className="border">Best Thing2</span>
+            <span className="border">Queue Up From Anywhere!</span>
           </div>
         </div>
 
         <section className="section section-dark">
-          <h2>Section Two</h2>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita
-            ipsa nulla modi quaerat sed esse quisquam praesentium voluptate
-            delectus, doloribus fugit cum vel quas in similique cumque ipsum
-            dolorem obcaecati tenetur dolorum voluptates itaque. Deserunt
-            voluptate consectetur hic suscipit natus omnis quis amet dolores
-            esse, reiciendis explicabo similique voluptas eos, debitis
-            repudiandae dolorem distinctio magni tempore adipisci facilis. Ipsa
-            nobis eveniet esse sit sunt voluptatum quas laudantium qui aliquam,
-            optio, ipsum nostrum vel. Quidem totam est ab, ad earum neque quos
-            tempore nesciunt omnis mollitia ullam consequuntur ipsa officia
-            architecto unde porro assumenda nobis placeat optio ex vero. Labore,
-            ducimus.
-          </p>
+          <h1>Your Day. Your Time.</h1>
+          <h4>
+           Linia Coda provides you the freedom of managing your own day <br/>
+           while still being queued up for any service of your choosing.
+          </h4>
         </section>
 
         <div className="pimg3">
           <div className="ptext">
-            <span className="border">Best Thing3</span>
+            <span className="border">Business Owners Rejoice!</span>
           </div>
         </div>
 
         <section className="section section-light">
-          <h2>Section Three</h2>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita
-            ipsa nulla modi quaerat sed esse quisquam praesentium voluptate
-            delectus, doloribus fugit cum vel quas in similique cumque ipsum
-            dolorem obcaecati tenetur dolorum voluptates itaque. Deserunt
-            voluptate consectetur hic suscipit natus omnis quis amet dolores
-            esse, reiciendis explicabo similique voluptas eos, debitis
-            repudiandae dolorem distinctio magni tempore adipisci facilis. Ipsa
-            nobis eveniet esse sit sunt voluptatum quas laudantium qui aliquam,
-            optio, ipsum nostrum vel. Quidem totam est ab, ad earum neque quos
-            tempore nesciunt omnis mollitia ullam consequuntur ipsa officia
-            architecto unde porro assumenda nobis placeat optio ex vero. Labore,
-            ducimus.
-          </p>
+          <h1>Your Queue. Your Way.</h1>
+          <h4>
+            Your business. Your data. Your rules.  <br/>
+            By using Linia Coda, you will constantly have access to useful data about how your <br/>
+            business is performing as well as having full control over the customization of your queue.
+          </h4>
         </section>
 
         <div className="pimg4">
           <div className="ptext">
-            <span className="border trans"> Catinian&trade; </span>
+            <span className="border trans">Your Freedom.&trade; </span>
           </div>
         </div>
 
