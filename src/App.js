@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import NavBar from "./components/NavBar";
 import MapContainer from "./components/MapContainer.js";
+import QueueModal from "./components/QueueModal";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { Paper, Typography, TextField, Button } from "@material-ui/core";
 import { blueGrey, red } from "@material-ui/core/colors";
@@ -16,6 +17,7 @@ import User from "./User.js";
 import Graphic from "./Graphic.js";
 import CenteredGrid from "./gridLayout.js";
 import("./Landing.css");
+const loadingSpinner = require('./img/lg.palette-rotating-ring-loader.gif')
 const auth = firebase.auth();
 
 const theme = createMuiTheme({
@@ -38,90 +40,138 @@ class App extends Component {
     super(props);
 
     this.state = {
-     loggedUser: null,
-
-     currentLatLng: {
+      loading: true,
+      modalShow: false,
+      inQueue: false,
+      currentLatLng: {
         lat: 0,
         lng: 0
       },
     }
+    this.geocodeAddress = this.geocodeAddress.bind(this);
   }
 
-   geocodeAddress = (address) => {
+  toggleQueue = () => {
+    this.setState({ inQueue: !this.state.inQueue })
+
+  }
+
+  geocodeAddress(address) {
     this.geocoder = new window.google.maps.Geocoder();
     this.geocoder.geocode({ 'address': address }, this.handleResults.bind(this))
   }
 
-  handleResults(results, status) {
+  handleResults = (results, status) => {
 
-      if (status === window.google.maps.GeocoderStatus.OK) {
+    if (status === window.google.maps.GeocoderStatus.OK) {
 
-          this.setState({
-            currentLatLng: {
-              lat: results[0].geometry.location.lat(),
-              lng: results[0].geometry.location.lng()
-            }
-          })
+      this.setState({
+        currentLatLng: {
+          lat: results[0].geometry.location.lat(),
+          lng: results[0].geometry.location.lng()
+        }
+      })
 
-        // this.map.setCenter(results[0].geometry.location);
-        // this.marker.setPosition(results[0].geometry.location);
-      } else {
-        console.log("Geocode was not successful for the following reason: " + status);
-      }
+      //this.map.setCenter(results[0].geometry.location);
+      //this.marker.setPosition(results[0].geometry.location);
 
+      console.log("APP", this.state.currentLatLng)
+
+    } else {
+      console.log("Geocode was not successful for the following reason: " + status);
     }
+  }
 
-    authListener = () => {
-    auth.onAuthStateChanged(user => {
+  authListener = () => {
+    auth.onAuthStateChanged((user) => {
       if (user) {
         this.setState({ loggedUser: user });
         console.log(this.state.loggedUser);
+
       } else {
         this.setState({ loggedUser: null });
         console.log(this.state.loggedUser);
       }
-    });
+      this.setState({ loading: false })
+    })
+  };
+
+  toggleModal = e => {
+    this.setState({
+      modalShow: !this.state.modalShow
+    })
   }
 
   componentDidMount() {
     this.authListener();
+
 }
 
   render = () => {
+
+    let loading;
     let user;
     let mapContainer;
     let landing;
     let navbar;
-    if (this.state.loggedUser == null) {
-      landing = (
-        <Landing
-          authListener={this.authListener}
-          loggedUser={this.state.loggedUser}
-        />
-      );
-    } else {
+    let modal;
+    let modalButton;
 
-      user = <User currentLatLng={this.state.currentLatLng} loggedUser={this.state.loggedUser}/>
-      navbar = <NavBar authListener={this.authListener} geocodeAddress={this.geocodeAddress.bind(this)} />
+    if (this.state.loading == false) {
+      if (this.state.loggedUser != null) {
+        user = (
+          <User currentLatLng={this.state.currentLatLng} loggedUser={this.state.loggedUser} />
+        );
+
+        mapContainer = <MapContainer currentLatLng={this.state.currentLatLng} />;
+        navbar = <NavBar authListener={this.authListener} geocodeAddress={this.geocodeAddress.bind(this)} currentLatLng={this.state.currentLatLng}
+ />
+        modalButton = <Button
+          id="toggle-modal-button"
+          color="secondary"
+          variant="raised"
+          onClick={this.toggleModal}>
+          Toggle Modal
+        </Button>
+
+        if (this.state.modalShow === true) {
+          modal = <QueueModal inQueue={this.state.inQueue} toggleQueue={this.toggleQueue} toggleModal={this.toggleModal} loggedUser={this.state.loggedUser} />
+        }
+
+      } else {
+        landing = (
+          <Landing
+            loggedUser={this.state.loggedUser}
+          />
+        );
+      }
+    } else {
+      loading = <img src={loadingSpinner} style={{ position: "absolute", left: "40%", top: "35%" }} alt="" />
     }
 
     return (
       <MuiThemeProvider theme={theme}>
         <div>
-          {landing}
+          {loading}
           {navbar}
+          {modalButton}
+          {modal}
+
+          {landing}
+         {/* {mapContainer}*/}
+
         </div>
 
         <div>
           {/* <Graphic /> */}
           {/*<CenteredGrid />*/}
-          {user}
+         {user}
         </div>
       </MuiThemeProvider>
-
-
-  );
- }
+    );
+  };
 }
+
+
 
 export default App;

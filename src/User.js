@@ -88,7 +88,8 @@ class User extends Component {
         "SAAQ",
       ],
       currentCategory: "",
-      businesses: []
+      businesses: [],
+      //currentLatLng: this.props.currentLatLng,
     };
     this.renderQueueModal = this.renderQueueModal.bind(this);
   }

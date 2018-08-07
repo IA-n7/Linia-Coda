@@ -27,6 +27,10 @@ class MapContainer extends Component {
     }else{
       this.setState({currentLatLng: nextProps.currentLatLng})
     }
+
+    if(nextProps.searchValue == prevState.searchValue){
+      this.setState({currentLatLng: nextProps.currentLatLng})
+    }
   }
 
   componentDidMount() {

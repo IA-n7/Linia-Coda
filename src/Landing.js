@@ -4,9 +4,7 @@ import SignUpForm from "./SignUpForm";
 import { Paper, Typography, TextField, Button, Grid } from "@material-ui/core";
 
 class Landing extends Component {
-  componentDidMount() {
-    this.props.authListener();
-  }
+
   
   render() {
     return (
@@ -35,7 +33,6 @@ class Landing extends Component {
             <SignUpForm
               className="landing-form"
               loggedUser={this.props.loggedUser}
-              authListener={this.props.authListener}
               />
           </Grid>
         </Grid>

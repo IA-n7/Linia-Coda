@@ -26,15 +26,15 @@ const styles = {
 class NavBar extends Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      currentLatLng: this.props.currentLatLng,
+    }
   }
 
   logout = () => {
     firebase.auth().signOut();
   };
-
-  componentDidMount() {
-    this.props.authListener
-  }
 
   render() {
     const { classes } = this.props;
@@ -56,7 +56,8 @@ class NavBar extends Component {
             </div>
           </Toolbar>
         </AppBar>
-        <SearchBarContainer geocodeAddress={this.props.geocodeAddress}/>
+        <SearchBarContainer geocodeAddress={this.props.geocodeAddress} currentLatLng={this.state.currentLatLng}/>
+
       </div>
     );
   }
@@ -65,4 +66,4 @@ class NavBar extends Component {
 
 export default withStyles(styles)(NavBar);
 
-// export default NavBar;
+
