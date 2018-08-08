@@ -123,8 +123,8 @@ class App extends Component {
           <NavBar
             authListener={this.authListener}
             geocodeAddress={this.geocodeAddress.bind(this)}
-
             isBusiness={this.state.isBusiness} />
+
         );
 
       } else {
@@ -146,15 +146,13 @@ class App extends Component {
      {loading}
         {navbar}
          {landing}
-
         </div>
         <div className="map-size">
           {user}
         </div>
 
 
-      {/* { (this.state.loggedUser) &&
-
+     {/*  { (this.state.loggedUser) &&
             <CenteredGrid loggedUser={this.state.loggedUser}/>
         }*/}
 
@@ -164,4 +162,3 @@ class App extends Component {
 }
 
 export default App;
-
