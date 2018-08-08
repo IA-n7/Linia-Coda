@@ -25,7 +25,15 @@ body {
 }
 
 #menu-list-grow {
-  width: 200px;
+  width: 280px;
+}
+
+.category {
+  width: 50% !important;
+  margin: auto !important;
+  justify-content: center !important;
+  font-size: 14px !important;
+  font-weight: 450 !important;
 }
 
 /* .MuiPaper-root-249 {

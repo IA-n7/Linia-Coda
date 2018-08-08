@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+// eslint-disable-next-line
 import * as firebase from "firebase";
 import db from "../config/firebase.js";
 import { Button, Typography, TextField } from "@material-ui/core";
