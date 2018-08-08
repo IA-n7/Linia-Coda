@@ -15,6 +15,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import OpeningHours from './hours.js'
+import ClosingHours from './ClosingHours.js'
 
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -131,7 +133,7 @@ class BusinessForm extends React.Component {
     });
   }
 
-  componentWillMount(){
+  componentDidMount(){
     this.onLoadData();
   }
 
@@ -140,17 +142,23 @@ class BusinessForm extends React.Component {
       let businessAddress;
       let businessPhoneNumber;
       let businessEmail;
+      let openingHours;
+      let closingHours;
       console.log('uuuser', this.props)
       db.collection('business').doc(this.props.loggedUser.uid).get().then(doc => {
         businessName = doc.data().businessName,
         businessAddress = doc.data().businessAddress,
         businessPhoneNumber = doc.data().businessPhoneNumber,
-        businessEmail = doc.data().businessEmail
+        businessEmail = doc.data().businessEmail,
+        openingHours = doc.data().openingHours,
+        closingHours = doc.data().closingHours
         this.setState({
           businessName: businessName,
           businessAddress: businessAddress,
           businessPhoneNumber: businessPhoneNumber,
-          businessEmail: businessEmail
+          businessEmail: businessEmail,
+          openingHours: openingHours,
+          closingHours: closingHours
         })
       })
     }
@@ -210,7 +218,20 @@ class BusinessForm extends React.Component {
         fullWidth
         margin="normal"
       />
-      <SelectDays />
+      <OpeningHours
+       InputLabelProps={{
+          shrink: true,
+        }}
+        fullWidth
+        margin="normal"/>
+      <br />
+      <ClosingHours
+        InputLabelProps={{
+          shrink: true,
+        }}
+        fullWidth
+        margin="normal"/>
+        <textField/>
       <Button
         type="submit"
         color="secondary"

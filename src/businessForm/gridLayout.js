@@ -43,21 +43,18 @@ render() {
     return (
       <div className={classes.root}>
         <Grid container spacing={24}>
-          <Grid item xs={6}>
-            <Paper className={classes.paper}> <BusinessForm loggedUser={this.props.loggedUser}/> </Paper>
+          <Grid item xs={4}>
+            <Paper className={classes.paper}> <QueueUpdate loggedUser={this.props.loggedUser}/> </Paper>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={8}>
             <Paper className={classes.paper}> <Graphic loggedUser={this.props.loggedUser}/> </Paper>
           </Grid>
-          {<Grid item xs={6}>
+{/*          {<Grid item xs={6}>
             <Paper className={classes.paper}> <QueueUpdate loggedUser={this.props.loggedUser}/> </Paper>
-          </Grid>}
-          <Grid item xs={6}>
-            <Paper className={classes.paper}> <GuestWeek loggedUser={this.props.loggedUser}/> </Paper>
-          </Grid>
-          <Grid item xs={6}>
+          </Grid>}*/}
+          {/*<Grid item xs={6}>
             <Paper className={classes.paper}> <QueueSelect loggedUser={this.props.loggedUser}/> </Paper>
-          </Grid>
+          </Grid>*/}
 
         </Grid>
       </div>

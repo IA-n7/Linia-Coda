@@ -19,11 +19,12 @@ class QueueSelect extends Component {
   }
 
   getName = () => {
+    console.log('QUUUU', this.props.loggedUser.uid)
     db.collection('Users').doc(this.props.loggedUser.uid).get().then(doc => {
-      let name = doc.data().fullName;
-      this.setState({
-       name
-     });
+     //  let name = doc.data().fullName;
+     //  this.setState({
+     //   name
+     // });
     });
   }
 

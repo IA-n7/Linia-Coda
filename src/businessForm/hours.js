@@ -115,7 +115,7 @@ class OpeningHours extends React.Component {
             <MenuItem value={23}>11pm</MenuItem>
             <MenuItem value={24}>12pm</MenuItem>
           </Select>
-      <Button
+      {/*<Button
         type="submit"
         color="secondary"
         variant="raised"
@@ -123,7 +123,7 @@ class OpeningHours extends React.Component {
         onClick={this.detailsToDB.bind(this)}
       >
       Confirm Hours
-      </Button>
+      </Button>*/}
         </FormControl>
       </form>
       </div>

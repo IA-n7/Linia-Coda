@@ -20,22 +20,10 @@ class Graphic extends Component {
   }
 
 
-  // getUser = () => {
-  //   let loggedUser = this.state.loggedUser.uid
-  //   console.log('USSER', loggedUser)
-  // }
-
-
-getUser = () => {
-  firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      console.log('Usserr', user)
-    } else {
-      console.log('No User')
-    }
-  });
-}
-
+  getUser = () => {
+    let loggedUser = this.state.loggedUser.uid
+    console.log('USSER', loggedUser)
+  }
 
   // getName = () => {
   //   db.collection('Users').doc('zLOG0J18c6VvlVlnLKLxD8Qphp93').get().then(doc => {
@@ -62,7 +50,6 @@ getUser = () => {
        openingHours
      });
     });
-    console.log('OOPPPEN', this.props.loggedUser.uid)
   }
 
   getClosingHours = () => {

@@ -118,15 +118,16 @@ class App extends Component {
     let mapContainer;
     let landing;
     let navbar;
+    let gridLayout;
     if (this.state.loading == false) {
       if (this.state.loggedUser != null) {
         user = (
           <User
             currentLatLng={this.state.currentLatLng}
-            loggedUser={this.state.loggedUser}
+            loggedUser={'logged user', this.state.loggedUser}
           />
         );
-
+        gridLayout = <GridLayout loggedUser={this.state.loggedUser}/>
         mapContainer = <MapContainer />;
         navbar = (
           <NavBar
@@ -160,7 +161,7 @@ class App extends Component {
           {user}
         </div>*/}
         <div>
-            <GridLayout loggedUser={this.state.loggedUser} businessFormToTrue={this.state.businessFormToTrue}/>
+            {gridLayout}
         </div>
       </MuiThemeProvider>
     );
