@@ -24,10 +24,10 @@ const MapComponent = compose(withStateHandlers(() => ({
   )((props) => {
 
     const currentLocation = props.currentLocation;
-    console.log(currentLocation)
+
     return (
       <GoogleMap
-        defaultZoom={17}
+        defaultZoom={15}
         center={currentLocation}
       >
 
@@ -35,9 +35,14 @@ const MapComponent = compose(withStateHandlers(() => ({
         const onClick = props.onToggleOpen.bind(this, business)
         const position = { lat: business.latitude, lng: business.longitude }
         return (
-          <MarkerInfoWindow key={index} position={position} business={business}
+          <MarkerInfoWindow key={index}
+                            position={position}
+                            business={business}
+                            toggleModal={props.toggleModal}
+                            modalShow={props.modalShow}
+                            modalBusiness={props.modalBusiness}
           />
-        )
+         )
       })}
     </GoogleMap>
       )

@@ -3,7 +3,6 @@ import db from '../config/firebase.js';
 import { initFirestorter, Collection } from 'firestorter';
 import { observer } from 'mobx-react';
 import MapComponent from './MapComponent';
-import SearchBar from 'material-ui-search-bar';
 import FloatingActionButton from './FloatingActionButton';
 
 class MapContainer extends Component {
@@ -19,6 +18,7 @@ class MapContainer extends Component {
     }
     this.getGeoLocation();
     this.getLocationsForMap = this.getLocationsForMap.bind(this);
+    this.showMarker = this.showMarker.bind(this);
   }
 
   componentWillReceiveProps(nextProps,prevState) {
@@ -66,13 +66,14 @@ class MapContainer extends Component {
         loading: false,
         allBusinesses: allBusinesses
       });
-    console.log(allBusinesses.latitude)
+    console.log("all businesses", self.state.allBusinesses)
     });
 
    }
 
-  showMarker = () => {
+  showMarker() {
       this.setState({ isMarkerShown: true })
+      console.log("marker shown", this.state.isMarkerShown)
   }
 
   getGeoLocation = () => {
@@ -93,7 +94,7 @@ class MapContainer extends Component {
 
   render() {
     let businesses;
-    if(this.state.currentCategory === undefined || this.state.currentCategory === ''){
+    if(this.state.currentCategory === undefined || this.state.currentCategory === '' || this.state.currentCategory === "All Categories"){
       businesses = this.state.allBusinesses;
     }else{
       businesses = this.state.allBusinesses.filter(x=>this.state.currentCategory == x.category)
@@ -105,6 +106,9 @@ class MapContainer extends Component {
        businessInfo={this.state.businessInfo}
        allBusinesses={businesses}
        currentCategory={this.props.currentCategory}
+       toggleModal={this.props.toggleModal}
+       modalShow={this.props.modalShow}
+       modalBusiness={this.props.modalBusiness}
 
      />
      )

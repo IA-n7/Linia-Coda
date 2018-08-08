@@ -61,7 +61,7 @@ const BusinessList = props => {
 
   const populateBusinesses = () => {
     let businesses = props.businesses.map((business, i) => {
-      
+
       let hours = "";
       let minutes = "";
       let distance = (Math.ceil(business.distance / 5) * 5).toString();
@@ -125,6 +125,7 @@ const BusinessList = props => {
         );
       }
       if (props.currentCategory === "All Categories") {
+        console.log("loading all categories")
         return (
           <div key={i}>
             <CardContent className={classes.touchMe} onClick={onModal}>

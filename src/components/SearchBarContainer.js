@@ -51,15 +51,16 @@ class SearchBarContainer extends Component {
         <Grid container spacing={0}>
 
           <Grid item xs>
-           <SearchBar style={{marginLeft: '40%', marginRight: '1%', maxWidth: 800}}
+           <div className="test">
+           <SearchBar style={{marginLeft: '31%', marginRight: '1%', maxWidth: '100%', width: '925px'}}
                         placeholder='Search for services near you ...'
                         onChange={this.handleInputChange}
-                        handleSelect={this.handleSelect}
-                        handleAddressInput={this.handleAddressInput}
+                        /*handleSelect={this.handleSelect}*/
                         value={this.state.address}
                         required
            />
 
+           </div>
           </Grid>
           <Grid item xs={3}>
           <FloatingActionButton />
@@ -73,31 +74,4 @@ class SearchBarContainer extends Component {
 }
 
 export default SearchBarContainer
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

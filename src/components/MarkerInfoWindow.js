@@ -10,8 +10,8 @@ import InfoWindowCard from './InfoWindowCard.js'
 
 class MarkerInfoWindow extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       isOpen: false,
       loading: true,
@@ -57,6 +57,9 @@ class MarkerInfoWindow extends Component {
 
 
                 <InfoWindowCard business={this.props.business}
+                                toggleModal={this.props.toggleModal}
+                                modalShow={this.props.modalShow}
+                                modalBusiness={this.props.modalBusiness}
                 />
 
 

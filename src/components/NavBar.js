@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles} from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, Button, IconButton, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
-import SearchBarContainer from './SearchBarContainer.js';
 import * as firebase from 'firebase'
 import { SettingsApplications } from '@material-ui/icons';
 //import SearchBarContainer from './SearchBar.js';
@@ -230,25 +229,18 @@ class NavBar extends Component {
     return (
       <div>
         <AppBar position="static">
-          <Toolbar>
+          <Toolbar className={"nav-flex"}>
 
             <img src={logo} alt="logo" height="75rem" />
-            {/*<IconButton color="inherit" aria-label="Menu">
-            </IconButton>
-            <Typography variant="title" color="inherit">
-              LINIA CODA
-            </Typography>*/}
 
             <div className="test">
               {businessSettings}
-              <Button variant="contained" color="#fff" onClick={this.logout}>LOGOUT</Button>
+              <Button variant="contained" className={"btn-white"} onClick={this.logout}>LOGOUT</Button>
             </div>
 
 
           </Toolbar>
         </AppBar>
-
-        {/*<SearchBarContainer geocodeAddress={this.props.geocodeAddress} currentLatLng={this.state.currentLatLng}/>*/}
 
       </div>
     );
