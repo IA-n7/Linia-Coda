@@ -92,12 +92,11 @@ class App extends Component {
       user.isBusiness = true
       if (user) {
         this.setState({ loggedUser: user });
-        console.log('logged user', this.state.loggedUser);
       } else {
         this.setState({ loggedUser: null });
-        console.log('NO user logged in', this.state.loggedUser);
       }
       this.setState({ loading: false });
+      console.log(this.state.loggedUser);
     });
   };
 
@@ -147,7 +146,7 @@ class App extends Component {
       } else {
         landing = <Landing loggedUser={this.state.loggedUser} />;
       }
-    } else {
+     } else {
       loading = (
         <img
           src={loadingSpinner}
