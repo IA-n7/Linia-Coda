@@ -110,7 +110,7 @@ class App extends Component {
       } else {
         landing = <Landing loggedUser={this.state.loggedUser} />;
 
-    }
+      }
     } else {
       loading = (
         <img
@@ -125,8 +125,8 @@ class App extends Component {
     return (
       <MuiThemeProvider theme={theme}>
         <div>
-        {loading}
-        {navbar}
+          {loading}
+          {navbar}
 
           {landing}
         </div>
