@@ -284,6 +284,12 @@ class SignUpForm extends Component {
       <div>
         {BusinessOrUser}
       </div>
+      </div>
+    }
+    return (
+      <div>
+      {BusinessOrUser}
+      </div>
     );
   }
 }

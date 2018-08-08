@@ -210,6 +210,7 @@ class BusinessSignUp extends Component {
               onClick={this.signUpBusiness}
             >
               Sign Up
+
         </Button>
 
             <br />
@@ -222,8 +223,3 @@ class BusinessSignUp extends Component {
 }
 
 export default BusinessSignUp;
-
-
-
-firebase.User
-
