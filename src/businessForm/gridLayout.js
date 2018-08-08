@@ -35,9 +35,10 @@ class GridLayout extends Component {
 render() {
   const classes = this.props.classes;
   const getBusinessID = () => {
-    db.collection("business").doc(this.props.loggedUser.uid).get().then(doc => {
+    db.collection("business").doc(this.props.loggedUser).get().then(doc => {
       console.log(doc.data().businessName)
     });
+    console.log(this.props.loggedUser)
   }
     return (
       <div className={classes.root}>

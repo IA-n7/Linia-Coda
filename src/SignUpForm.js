@@ -160,6 +160,7 @@ class SignUpForm extends Component {
   };
 
   render() {
+
     return (
       <div>
       <Paper id="paper-form" elevation="20">
@@ -208,7 +209,7 @@ class SignUpForm extends Component {
         />
         <br />
         <p>Want to register your business?</p>
-        <Switch color="secondary" onChange={this.props.businessFormToTrue}/>
+        <Button color="secondary" onChange={this.props.businessFormToTrue}> Register Your Business </Button>
 
         <br />
         <Button

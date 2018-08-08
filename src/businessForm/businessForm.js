@@ -140,7 +140,8 @@ class BusinessForm extends React.Component {
       let businessAddress;
       let businessPhoneNumber;
       let businessEmail;
-      db.collection('business').doc(this.props.loggedUser.uid).onSnapshot(doc => {
+      console.log('uuuser', this.props)
+      db.collection('business').doc(this.props.loggedUser.uid).get().then(doc => {
         businessName = doc.data().businessName,
         businessAddress = doc.data().businessAddress,
         businessPhoneNumber = doc.data().businessPhoneNumber,

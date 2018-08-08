@@ -51,6 +51,7 @@ class App extends Component {
 
     this.state = {
       loading: true,
+      isBusiness: false,
       currentLatLng: {
         lat: 45.4961,
         lng: -73.5693
@@ -85,14 +86,27 @@ class App extends Component {
     auth.onAuthStateChanged(user => {
       if (user) {
         this.setState({ loggedUser: user });
-        console.log(this.state.loggedUser);
+        console.log('logged user', this.state.loggedUser);
       } else {
         this.setState({ loggedUser: null });
-        console.log(this.state.loggedUser);
+        console.log('NO user logged in', this.state.loggedUser);
       }
       this.setState({ loading: false });
     });
   };
+
+
+  businessFormToTrue () {
+    if (this.state.isBusiness === true) {
+      this.setState({
+        isBusiness: false
+      })
+    } else {
+      this.setState({
+        isBusiness: true
+      })
+    }
+  }
 
   componentDidMount() {
     this.authListener();
@@ -120,7 +134,7 @@ class App extends Component {
             geocodeAddress={this.geocodeAddress.bind(this)} />
         );
       } else {
-        landing = <Landing loggedUser={this.state.loggedUser} />;
+        landing = <Landing loggedUser={this.state.loggedUser} businessFormToTrue={this.state.businessFormToTrue}/>;
 
     }
     } else {
@@ -142,15 +156,12 @@ class App extends Component {
 
           {landing}
         </div>
-        <div className="map-size">
+{/*        <div className="map-size">
           {user}
+        </div>*/}
+        <div>
+            <GridLayout loggedUser={this.state.loggedUser} businessFormToTrue={this.state.businessFormToTrue}/>
         </div>
-        {/* <div>
-       { (this.state.loggedUser) &&
-            <GridLayout loggedUser={this.state.loggedUser} />
-        }
-
-        </div> */}
       </MuiThemeProvider>
     );
   };

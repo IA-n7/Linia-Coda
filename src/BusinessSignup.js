@@ -191,7 +191,8 @@ class BusinessSignUp extends Component {
 
 {/*. DONT FORGET THE LCOAITON nchajcsk */}
         <br />
-        <Switch color="secondary" checked="true" onChange={this.props.businessFormToTrue}/>
+        <Button color="secondary" checked="true" onChange={this.props.businessFormToTrue}> Sign up as a user
+        </Button>
 
         <br />
         <Button
