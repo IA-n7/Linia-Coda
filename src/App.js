@@ -84,6 +84,7 @@ class App extends Component {
 
   authListener = () => {
     auth.onAuthStateChanged(user => {
+      user.isBusiness = true
       if (user) {
         this.setState({ loggedUser: user });
         console.log('logged user', this.state.loggedUser);
@@ -121,23 +122,24 @@ class App extends Component {
     let gridLayout;
     if (this.state.loading == false) {
       if (this.state.loggedUser != null) {
-        user = (
-          <User
-            currentLatLng={this.state.currentLatLng}
-            loggedUser={'logged user', this.state.loggedUser}
-          />
-        );
-        gridLayout = <GridLayout loggedUser={this.state.loggedUser}/>
-        mapContainer = <MapContainer />;
-        navbar = (
-          <NavBar
-            authListener={this.authListener}
-            geocodeAddress={this.geocodeAddress.bind(this)} />
-        );
-      } else {
-        landing = <Landing loggedUser={this.state.loggedUser} businessFormToTrue={this.state.businessFormToTrue}/>;
 
-    }
+            user = (
+              <User
+                currentLatLng={this.state.currentLatLng}
+                loggedUser={'logged user', this.state.loggedUser}
+              />
+            );
+            mapContainer = <MapContainer />;
+            navbar = (
+              <NavBar
+                authListener={this.authListener}
+                geocodeAddress={this.geocodeAddress.bind(this)} />
+            );
+            gridLayout = <GridLayout loggedUser={this.state.loggedUser} />
+
+      } else {
+        landing = <Landing loggedUser={this.state.loggedUser} businessFormToTrue={this.businessFormToTrue} isBusiness={this.state.isBusiness}/>;
+      }
     } else {
       loading = (
         <img

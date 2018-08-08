@@ -61,7 +61,12 @@ class BusinessSignUp extends Component {
       }).catch((e) => {
        console.log(e.message);
       });
+      let isBusiness = this.props.isBusiness;
+      this.setState({
+        isBusiness: true
+      })
     }
+
   };
 
     render(){

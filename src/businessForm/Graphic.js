@@ -56,7 +56,7 @@ class Graphic extends Component {
         queueArr.push(i);
       }
       this.setState({
-       queueArr: queueArr
+       queueArr: [...this.state.queueArr, doc.data()]
      });
     });
   }
@@ -96,21 +96,21 @@ class Graphic extends Component {
           label: "Number of Guest Per Hour",
           fill: true,
           lineTension: 0.1,
-          backgroundColor: 'primary',
-          borderColor: 'rgba(75,192,192,1)',
-          borderCapStyle: 'butt',
-          borderDash: [],
-          borderDashOffset: 0.0,
-          borderJoinStyle: 'miter',
-          pointBorderColor: 'rgba(75,192,192,1)',
-          pointBackgroundColor: '#fff',
-          pointBorderWidth: 1,
-          pointHoverRadius: 5,
-          pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-          pointHoverBorderColor: 'rgba(220,220,220,1)',
-          pointHoverBorderWidth: 2,
-          pointRadius: 1,
-          pointHitRadius: 10,
+          color: 'secondary',
+          // borderColor: 'rgba(75,192,192,1)',
+          // borderCapStyle: 'butt',
+          // borderDash: [],
+          // borderDashOffset: 0.0,
+          // borderJoinStyle: 'miter',
+          // pointBorderColor: 'rgba(75,192,192,1)',
+          // pointBackgroundColor: 'primary',
+          // pointBorderWidth: 1,
+          // pointHoverRadius: 5,
+          // pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+          // pointHoverBorderColor: 'rgba(220,220,220,1)',
+          // pointHoverBorderWidth: 2,
+          // pointRadius: 1,
+          // pointHitRadius: 10,
           data: [1, 3, 2, 6, 3, 7]
 
         }

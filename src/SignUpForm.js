@@ -4,6 +4,7 @@ import * as firebase from "firebase";
 import db from "./config/firebase.js";
 import GoogleButton from "react-google-button";
 import FacebookLogin from 'react-facebook-login';
+import BusinessSignUp from './BusinessSignup.js'
 const auth = firebase.auth();
 
 class SignUpForm extends Component {
@@ -160,8 +161,12 @@ class SignUpForm extends Component {
   };
 
   render() {
-
-    return (
+    let BusinessOrUser;
+    if (!this.props.businessFormToTrue) {
+      BusinessOrUser = <BusinessSignUp loggedUser={this.props.loggedUser} businessFormToTrue={this.props.businessFormToTrue} isBusiness={this.props.isBusiness}/>
+    } else {
+      BusinessOrUser =
+        <div>
       <div>
       <Paper id="paper-form" elevation="20">
       <Typography id="form-title" component="h2" variant="display1">Sign Up</Typography>
@@ -261,6 +266,12 @@ class SignUpForm extends Component {
       <div className="fb-login-button" onClick={this.signInWithFacebook} data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
 
     </Paper>
+      </div>
+      </div>
+    }
+    return (
+      <div>
+      {BusinessOrUser}
       </div>
     );
   }

@@ -74,15 +74,19 @@ class QueueUpdate extends Component {
 
   render() {
     let firstUserStyle = {
-      backgroundColor: '#e5e5e5',
+      backgroundColor: '#455a64',
       color: 'white',
       borderRadius: '5px',
-      paddingLeft: 5
+      marginLeft: '5px',
+      marginRight: '5px',
     }
 
     const showUsersInQueue = this.state.currentQueueMembers.map((user, index) => {
       if (index === 0) {
-        return  <h2 style={firstUserStyle}>{user} </h2>
+        return  <div>
+        <p> Current User: </p>
+        <h4 style={firstUserStyle}>{user} </h4>
+        </div>
 
       } else {
 
@@ -94,6 +98,7 @@ class QueueUpdate extends Component {
     return (
 
       <div>
+      <br/>
         <Button
             type="submit"
             color="secondary"
@@ -104,7 +109,7 @@ class QueueUpdate extends Component {
           Call Next Guest
         </Button>
         <br/>
-
+                <br/>
       {showUsersInQueue}
       </div>
     );
