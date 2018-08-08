@@ -29,7 +29,15 @@ const styles = theme => ({
     fontSize: 10
   },
   touchMe: {
-    cursor: "pointer"
+    cursor: "pointer",
+    "&:hover": {
+      backgroundColor: "#DCDCDC"
+    },
+    "&:active": {
+      // boxShadow: "0 5px #666",
+      transform: "translateY(4px)",
+      backgroundColor: "darkgrey"
+    }
   }
 });
 
@@ -51,20 +59,16 @@ const BusinessList = props => {
   };
 
   const populateBusinesses = () => {
-    // console.log(props);
-
-    let businesses = props.businesses.map(business => {
+    let businesses = props.businesses.map((business, i) => {
+      
       let hours = "";
       let minutes = "";
       let distance = (Math.ceil(business.distance / 5) * 5).toString();
 
-      if (business.businessName === "Clinique OPUS") {
-        console.log("DISTANCE: ", business.distance);
-      }
       if (distance.length <= 3) {
         distance = distance + "m Away";
       } else {
-        distance = distance / 1000;
+        distance = Math.round((distance / 1000)*100)/100;
         distance = distance + "km Away";
       }
 
@@ -73,8 +77,8 @@ const BusinessList = props => {
 
       if (props.currentCategory === business.category) {
         return (
-          <div>
-            <CardContent onClick={onModal}>
+          <div key={i}>
+            <CardContent className={classes.touchMe} onClick={onModal}>
               <Typography className={classes.item} align="center">
                 {business.businessName}
               </Typography>
@@ -119,9 +123,9 @@ const BusinessList = props => {
           </div>
         );
       }
-      if (props.currentCategory === "") {
+      if (props.currentCategory === "All Categories") {
         return (
-          <div>
+          <div key={i}>
             <CardContent className={classes.touchMe} onClick={onModal}>
               <Typography className={classes.item} align="center">
                 {business.businessName}
