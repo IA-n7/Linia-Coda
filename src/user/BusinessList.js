@@ -29,7 +29,10 @@ const styles = theme => ({
     fontSize: 10
   },
   touchMe: {
-    cursor: "pointer"
+    cursor: "pointer",
+    "&:hover": {
+      backgroundColor: "#DCDCDC"
+    }
   }
 });
 
@@ -53,14 +56,11 @@ const BusinessList = props => {
   const populateBusinesses = () => {
     // console.log(props);
 
-    let businesses = props.businesses.map(business => {
+    let businesses = props.businesses.map((business, i) => {
       let hours = "";
       let minutes = "";
       let distance = (Math.ceil(business.distance / 5) * 5).toString();
 
-      if (business.businessName === "Clinique OPUS") {
-        console.log("DISTANCE: ", business.distance);
-      }
       if (distance.length <= 3) {
         distance = distance + "m Away";
       } else {
@@ -73,7 +73,7 @@ const BusinessList = props => {
 
       if (props.currentCategory === business.category) {
         return (
-          <div>
+          <div key={i}>
             <CardContent onClick={onModal}>
               <Typography className={classes.item} align="center">
                 {business.businessName}
@@ -119,9 +119,9 @@ const BusinessList = props => {
           </div>
         );
       }
-      if (props.currentCategory === "") {
+      if (props.currentCategory === "All Categories") {
         return (
-          <div>
+          <div key={i}>
             <CardContent className={classes.touchMe} onClick={onModal}>
               <Typography className={classes.item} align="center">
                 {business.businessName}

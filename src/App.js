@@ -105,12 +105,12 @@ class App extends Component {
         navbar = (
           <NavBar
             authListener={this.authListener}
-            geocodeAddress={this.geocodeAddress.bind(this)} />
+            geocodeAddress={this.geocodeAddress.bind(this)}
+          />
         );
       } else {
         landing = <Landing loggedUser={this.state.loggedUser} />;
-
-    }
+      }
     } else {
       loading = (
         <img
@@ -121,18 +121,14 @@ class App extends Component {
       );
     }
 
-
     return (
       <MuiThemeProvider theme={theme}>
         <div>
-        {loading}
-        {navbar}
-
+          {loading}
+          {navbar}
           {landing}
         </div>
-        <div className="map-size">
-          {user}
-        </div>
+        <div className="map-size">{user}</div>
         {/* <div>
        { (this.state.loggedUser) &&
             <CenteredGrid loggedUser={this.state.loggedUser}/>
