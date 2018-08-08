@@ -113,18 +113,19 @@ class BusinessForm extends React.Component {
       let businessAddress;
       let businessPhoneNumber;
       let businessEmail;
-      db.collection('business').doc(this.props.loggedUser.uid).onSnapshot(doc => {
-        businessName = doc.data().businessName,
-        businessAddress = doc.data().businessAddress,
-        businessPhoneNumber = doc.data().businessPhoneNumber,
-        businessEmail = doc.data().businessEmail
-        this.setState({
-          businessName: businessName,
-          businessAddress: businessAddress,
-          businessPhoneNumber: businessPhoneNumber,
-          businessEmail: businessEmail
-        })
-      })
+      console.log('thisssss', this.props)
+      // db.collection('business').doc(this.props.loggedUser.uid).onSnapshot(doc => {
+      //   businessName = doc.data().businessName,
+      //   businessAddress = doc.data().businessAddress,
+      //   businessPhoneNumber = doc.data().businessPhoneNumber,
+      //   businessEmail = doc.data().businessEmail
+      //   this.setState({
+      //     businessName: businessName,
+      //     businessAddress: businessAddress,
+      //     businessPhoneNumber: businessPhoneNumber,
+      //     businessEmail: businessEmail
+      //   })
+      // })
     }
 
   render() {

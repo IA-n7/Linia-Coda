@@ -25,7 +25,7 @@ const styles = theme => ({
 
 
 
-class CenteredGrid extends Component {
+class GridLayout extends Component {
   constructor(props) {
     super(props)
     this.state = {}
@@ -35,28 +35,29 @@ class CenteredGrid extends Component {
 render() {
   const classes = this.props.classes;
   const getBusinessID = () => {
-    db.collection("business").doc(this.props.loggedUser.uid).get().then(doc => {
+    db.collection("business").doc(this.props.loggedUser).get().then(doc => {
       console.log(doc.data().businessName)
     });
   }
+    console.log('IS THIS A THING', this.props.loggedUser)
     return (
       <div className={classes.root}>
         <Grid container spacing={24}>
           <Grid item xs={6}>
-            <Paper className={classes.paper}><BusinessForm loggedUser={this.props.loggedUser}/></Paper>
+            <Paper className={classes.paper}> <BusinessForm loggedUser={this.props.loggedUser}/> </Paper>
           </Grid>
-          <Grid item xs={6}>
-            <Paper className={classes.paper}> <Graphic /> <FloatingActionButtons /></Paper>
+{/*          <Grid item xs={6}>
+            <Paper className={classes.paper}> <Graphic loggedUser={this.props.loggedUser}/> </Paper>
           </Grid>
           {<Grid item xs={6}>
-            <Paper className={classes.paper}> <QueueUpdate /> </Paper>
+            <Paper className={classes.paper}> <QueueUpdate loggedUser={this.props.loggedUser}/> </Paper>
           </Grid>}
           <Grid item xs={6}>
-            <Paper className={classes.paper}> <GuestWeek /> <FloatingActionButtons /></Paper>
+            <Paper className={classes.paper}> <GuestWeek loggedUser={this.props.loggedUser}/> </Paper>
           </Grid>
           <Grid item xs={6}>
-            <Paper className={classes.paper}> <QueueSelect /> </Paper>
-          </Grid>
+            <Paper className={classes.paper}> <QueueSelect loggedUser={this.props.loggedUser}/> </Paper>
+          </Grid>*/}
 
         </Grid>
       </div>
@@ -64,8 +65,8 @@ render() {
   }
 }
 
-CenteredGrid.propTypes = {
+GridLayout.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(CenteredGrid);
+export default withStyles(styles)(GridLayout);

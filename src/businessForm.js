@@ -6,6 +6,7 @@ import { Paper, Typography, TextField, Button } from "@material-ui/core";
 
 class BusinessForm extends Component {
   render() {
+
     return (
         <Paper className="paper-form">
           <h2 className="form-title">Business Details</h2>

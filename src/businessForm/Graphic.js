@@ -56,7 +56,7 @@ getUser = () => {
   // }
 
   getOpeningHours = () => {
-    db.collection("business").doc("WICq27Zd4kT0GkiHu2rUkmHdUzu2").get().then(doc => {
+    db.collection("business").doc(this.props.loggedUser.uid).get().then(doc => {
       let openingHours = doc.data().openingHours;
       this.setState({
        openingHours
