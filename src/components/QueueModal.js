@@ -17,7 +17,6 @@ class QueueModal extends Component {
 
   joinQueue = () => {
     let userId = this.props.loggedUser.uid;
-    let businessId;
     let businessDocRef = db
       .collection("Business")
       .doc(this.props.modalBusiness.id);
@@ -32,7 +31,6 @@ class QueueModal extends Component {
 
   leaveQueue = () => {
     let userId = this.props.loggedUser.uid;
-    let businessId;
     let businessDocRef = db
       .collection("Business")
       .doc(this.props.modalBusiness.id);
@@ -54,7 +52,7 @@ class QueueModal extends Component {
   };
 
   getDataFromBusiness = () => {
-    console.log(this.props);
+    // console.log(this.props);
     db.collection("Business")
       .doc(this.props.modalBusiness.id)
       .onSnapshot(doc => {
@@ -62,8 +60,8 @@ class QueueModal extends Component {
         this.setState({ businessEmail: doc.data().businessEmail });
         this.setState({ businessAddress: doc.data().businessAddress });
         this.setState({ businessPhoneNumber: doc.data().businessPhoneNumber });
-        this.setState({ businessClosingHours: doc.data().closingHours });
-        this.setState({ businessOpeningHours: doc.data().openingHours });
+        this.setState({ businessClosingHours: this.props.formatClosing(doc.data().closingHours) });
+        this.setState({ businessOpeningHours: this.props.formatOpening(doc.data().openingHours) });
         this.setState({ currentQueueMembers: doc.data().QueueBoiArray });
         this.setState({ averageWait: doc.data().averageWait })
       });

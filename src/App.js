@@ -1,3 +1,15 @@
+// import React, { Component } from 'react';
+// import './App.css';
+// import db from './config/firebase.js';
+// import User from "./User.js";
+// import FloatingActionButtons from './button.js';
+// import ComplexGrid from './gridLayout.js';
+// import Graphic from "./Graphic.js";
+// import { createMuiTheme, MuiThemeProvider, getMuiTheme } from '@material-ui/core/styles';
+// import { blueGrey, red } from '@material-ui/core/colors';
+// import QueueSelect from "./QueueSelect.js";
+
+
 import React, { Component } from "react";
 import "./App.css";
 import NavBar from "./components/NavBar";
@@ -23,7 +35,7 @@ const theme = createMuiTheme({
     primary: {
       light: blueGrey[300],
       main: blueGrey[700],
-      dark: blueGrey[900]
+      dark: blueGrey[900],
     },
     secondary: {
       light: red[500],
@@ -40,8 +52,8 @@ class App extends Component {
     this.state = {
       loading: true,
       currentLatLng: {
-        lat: 0,
-        lng: 0
+        lat: 45.4961,
+        lng: -73.5693
       }
     };
   }
@@ -125,18 +137,20 @@ class App extends Component {
     return (
       <MuiThemeProvider theme={theme}>
         <div>
-     {loading}
+        {loading}
         {navbar}
 
           {landing}
         </div>
-
-        <div>
+        <div className="map-size">
+          {user}
+        </div>
+        {/* <div>
        { (this.state.loggedUser) &&
             <GridLayout loggedUser={this.state.loggedUser} />
         }
-          {/* {user} */}
-        </div>
+
+        </div> */}
       </MuiThemeProvider>
     );
   };

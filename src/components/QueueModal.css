@@ -7,7 +7,7 @@
   top: 0;
   justify-content: center;
   align-items: center;
-  z-index: 0;
+  z-index: 70;
 }
 
 .circle {
@@ -62,12 +62,12 @@
   position: relative;
   justify-content: space-around;
   width: 600px;
-  height: 700px;
+  height: 650px;
   text-align: center;
   padding: 20px;
   border-radius: 10px;
   border: 10px solid #102027;
-  z-index: 5;
+  z-index: 80;
   display: inline !important;
 }
 
@@ -127,12 +127,12 @@
 
 .wait-time {
   position: absolute;
-  right: 20px;
-  top: 55px;
+  right: 2.5rem;
+  top: 4.7rem;
 }
 
 .wait-time h4 {
-  font-size: 20px;
+  font-size: 16px;
 }
 
 #wait-time-number {

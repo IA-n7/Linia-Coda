@@ -52,7 +52,7 @@ class NavBar extends Component {
             </div>
           </Toolbar>
         </AppBar>
-        <SearchBarContainer geocodeAddress={this.props.geocodeAddress}/>
+        {/* <SearchBarContainer geocodeAddress={this.props.geocodeAddress}/> */}
       </div>
     );
   }
