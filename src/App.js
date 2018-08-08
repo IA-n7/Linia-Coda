@@ -142,15 +142,15 @@ class App extends Component {
 
           {landing}
         </div>
-        <div className="map-size">
+        {/*<div className="map-size">
           {user}
-        </div>
-        {/* <div>
+        </div>*/}
+        <div>
        { (this.state.loggedUser) &&
             <CenteredGrid loggedUser={this.state.loggedUser}/>
         }
 
-        </div> */}
+        </div>
       </MuiThemeProvider>
     );
   };
