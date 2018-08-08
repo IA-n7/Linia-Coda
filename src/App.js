@@ -85,12 +85,11 @@ class App extends Component {
     auth.onAuthStateChanged(user => {
       if (user) {
         this.setState({ loggedUser: user });
-        console.log(this.state.loggedUser);
       } else {
         this.setState({ loggedUser: null });
-        console.log(this.state.loggedUser);
       }
       this.setState({ loading: false });
+      console.log(this.state.loggedUser);
     });
   };
 
