@@ -13,7 +13,7 @@ import db from "./config/firebase.js";
 import { initFirestorter, Collection } from "firestorter";
 import Landing from "./Landing.js";
 import User from "./User.js";
-import CenteredGrid from "./businessForm/gridLayout.js";
+import GridLayout from "./businessForm/gridLayout.js";
 import("./Landing.css");
 const loadingSpinner = require("./img/lg.palette-rotating-ring-loader.gif");
 const auth = firebase.auth();
@@ -133,7 +133,7 @@ class App extends Component {
 
         <div>
        { (this.state.loggedUser) &&
-            <CenteredGrid loggedUser={this.state.loggedUser}/>
+            <GridLayout loggedUser={this.state.loggedUser} />
         }
           {/* {user} */}
         </div>

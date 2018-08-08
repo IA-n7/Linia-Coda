@@ -41,6 +41,8 @@ const styles = theme => ({
   },
 });
 
+
+
 class BusinessForm extends React.Component {
   constructor(props){
     super(props)
@@ -82,15 +84,40 @@ class BusinessForm extends React.Component {
   };
 
 
+  geocodeAddress = address => {
+    this.geocoder = new window.google.maps.Geocoder();
+    this.geocoder.geocode({ address: address }, this.handleResults.bind(this));
+  };
+
+  handleResults(results, status) {
+    if (status === window.google.maps.GeocoderStatus.OK) {
+      this.setState({
+        currentLatLng: {
+          lat: results[0].geometry.location.lat(),
+          lng: results[0].geometry.location.lng()
+        }
+      });
+
+      // this.map.setCenter(results[0].geometry.location);
+      // this.marker.setPosition(results[0].geometry.location);
+    } else {
+      console.log(
+        "Geocode was not successful for the following reason: " + status
+      );
+    }
+  }
+
+
+
+
   detailsToDB = (event) => {
     event.preventDefault();
-    var user = firebase.auth().currentUser;
     let businessName = this.state.businessName
     let businessAddress = this.state.businessAddress
     let businessPhoneNumber = this.state.businessPhoneNumber
     let businessEmail = this.state.businessEmail
 
-    db.collection('business').doc(user.uid).update({
+    db.collection('business').doc(this.props.loggedUser.uid).update({
       businessName: businessName,
       businessAddress: businessAddress,
       businessPhoneNumber: businessPhoneNumber,

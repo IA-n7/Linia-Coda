@@ -19,8 +19,8 @@ class QueueSelect extends Component {
   }
 
   getName = () => {
-    db.collection('Users').doc('zLOG0J18c6VvlVlnLKLxD8Qphp93').get().then(doc => {
-      let name = doc.data().Name;
+    db.collection('Users').doc(this.props.loggedUser.uid).get().then(doc => {
+      let name = doc.data().fullName;
       this.setState({
        name
      });
@@ -44,7 +44,7 @@ class QueueSelect extends Component {
 
 
       PEOPLE COUNT
-        <PeopleCount  />
+        <PeopleCount  loggedUser={this.props.loggedUser}/>
       </div>
     );
   }
