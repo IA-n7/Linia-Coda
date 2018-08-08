@@ -86,7 +86,7 @@ class QueueUpdate extends Component {
 
       } else {
 
-      return <h2> {user} </h2>
+      return <h3> {user} </h3>
 
       }
     });
@@ -101,8 +101,9 @@ class QueueUpdate extends Component {
             id="sign-up-submit"
             onClick={this.guestInfo.bind(this)}
         >
-          Next Guest
+          Call Next Guest
         </Button>
+        <br/>
 
       {showUsersInQueue}
       </div>
