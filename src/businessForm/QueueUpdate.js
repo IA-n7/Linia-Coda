@@ -3,6 +3,7 @@ import * as firebase from "firebase";
 import db from "../config/firebase.js";
 import { Button, Typography, TextField } from "@material-ui/core";
 import { ArrowUpward, ArrowDownward, LocationOn, Email, Phone, AccessTime, AvTimer } from "@material-ui/icons";
+import {Line} from 'react-chartjs-2';
 
 const styles = theme => ({
   button: {
@@ -16,17 +17,19 @@ class QueueUpdate extends Component {
     super(props);
 
     this.state = {
-      currentQueueMembers: [1],
+      currentQueueMembers: [],
       currentQueueNumber: 1
     };
   }
 
+
+// set state of currentQueue to queboiArr
   guestInfo() {
-    var user = firebase.auth().currentUser;
-      db.collection("business").doc(user.uid).get().then(doc => {
-        let currentQueueMembers = doc.data().currentQueueMembers;
+    let QueueBoiArray;
+      db.collection("business").doc(this.props.loggedUser.uid).get().then(doc => {
+        QueueBoiArray = doc.data().QueueBoiArray;
         this.setState({
-         currentQueueMembers: currentQueueMembers
+         currentQueueMembers: QueueBoiArray
       });
       this.callNextQuest()
     });
@@ -34,11 +37,15 @@ class QueueUpdate extends Component {
 
 
   callNextQuest() {
-    var user = firebase.auth().currentUser;
     let currentQueueMembers = this.state.currentQueueMembers;
     let removeQueueMember = currentQueueMembers.shift()
-    db.collection('business').doc(user.uid).set({
-        currentQueueMembers: currentQueueMembers
+    console.log('currentQueueMembers THIS', currentQueueMembers)
+    console.log('TYYPE', typeof currentQueueMembers)
+    this.setState({
+      currentQueueMembers: currentQueueMembers
+    })
+    db.collection('business').doc(this.props.loggedUser.uid).update({
+        QueueBoiArray: currentQueueMembers
       })
       .then(function() {
         console.log("Document successfully written!");
@@ -49,10 +56,11 @@ class QueueUpdate extends Component {
   }
 
   showQueue() {
-   var user = firebase.auth().currentUser;
-    db.collection("business").doc(user.uid).get().then(doc => {
-      let currentQueueMembers = doc.data().QArr;
-      let QueueLength = currentQueueMembers.length
+    let currentQueueMembers;
+    let QueueLength;
+    db.collection("business").doc(this.props.loggedUser.uid).onSnapshot(doc => {
+      currentQueueMembers = doc.data().QueueBoiArray;
+      QueueLength = currentQueueMembers.length
       this.setState({
        currentQueueMembers: currentQueueMembers,
        currentQueueNumber: QueueLength
@@ -60,27 +68,37 @@ class QueueUpdate extends Component {
     });
   }
 
+  componentDidMount() {
+    this.showQueue()
+  }
+
   render() {
+    let firstUserStyle = {
+      backgroundColor: '#455a64',
+      color: 'white',
+      borderRadius: '5px',
+      marginLeft: '5px',
+      marginRight: '5px',
+    }
 
+    const showUsersInQueue = this.state.currentQueueMembers.map((user, index) => {
+      if (index === 0) {
+        return  <div>
+        <p> Current User: </p>
+        <h4 style={firstUserStyle}>{user} </h4>
+        </div>
 
+      } else {
+
+      return <h3> {user} </h3>
+
+      }
+    });
 
     return (
 
-      <div> HII
-
-      {this.state.currentQueueNumber}
-<br />
-
-        <Button
-            type="submit"
-            color="secondary"
-            variant="raised"
-            id="sign-up-submit"
-            onClick={this.showQueue.bind(this)}
-        >
-          Show Queue Details
-        </Button>
-
+      <div>
+      <br/>
         <Button
             type="submit"
             color="secondary"
@@ -88,9 +106,11 @@ class QueueUpdate extends Component {
             id="sign-up-submit"
             onClick={this.guestInfo.bind(this)}
         >
-          Next Guest
+          Call Next Guest
         </Button>
-
+        <br/>
+                <br/>
+      {showUsersInQueue}
       </div>
     );
   }

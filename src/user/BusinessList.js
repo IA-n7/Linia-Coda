@@ -12,7 +12,8 @@ import {
   List,
   ListItem,
   ListItemIcon,
-  ListItemText
+  ListItemText,
+  Dialog,
 } from "@material-ui/core";
 
 const styles = theme => ({

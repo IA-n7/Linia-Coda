@@ -14,10 +14,10 @@ class PeopleCount extends Component {
   }
 
   getPeople = () => {
-    db.collection('Users').get().then(res => {
+    db.collection('Users').doc(this.props.loggedUser.uid).get().then(res => {
       let size = res.size;
       this.setState({
-       size
+       size: size
      });
     });
   }

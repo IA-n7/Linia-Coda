@@ -22,6 +22,8 @@ class Landing extends Component {
             <SignUpForm
               className="landing-form"
               loggedUser={this.props.loggedUser}
+              isBusiness={this.props.isBusiness}
+              businessFormToTrue={this.props.businessFormToTrue}
               />
           </Grid>
         </Grid>

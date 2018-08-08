@@ -83,10 +83,11 @@ class User extends Component {
         "Restaurants",
         "Clinics",
         "SAAQ",
-        "Banks"
+        "Banks",
       ],
       currentCategory: "All Categories",
       businesses: [],
+      //currentLatLng: this.props.currentLatLng,
       modalBusiness: {}
     };
   }
@@ -366,7 +367,7 @@ class User extends Component {
 
         {/* MAP */}
         <Paper className="map">
-          <MapContainer currentLatLng={this.props.currentLatLng} />
+         <MapContainer currentCategory={this.state.currentCategory} currentLatLng={this.props.currentLatLng} />
         </Paper>
       </MuiThemeProvider>
     );

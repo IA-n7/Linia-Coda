@@ -15,7 +15,11 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import OpeningHours from './hours.js'
+import ClosingHours from './ClosingHours.js'
 
+
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -40,6 +44,8 @@ const styles = theme => ({
     width: 200,
   },
 });
+
+
 
 class BusinessForm extends React.Component {
   constructor(props){
@@ -82,15 +88,40 @@ class BusinessForm extends React.Component {
   };
 
 
+  geocodeAddress = address => {
+    this.geocoder = new window.google.maps.Geocoder();
+    this.geocoder.geocode({ address: address }, this.handleResults.bind(this));
+  };
+
+  handleResults(results, status) {
+    if (status === window.google.maps.GeocoderStatus.OK) {
+      this.setState({
+        currentLatLng: {
+          lat: results[0].geometry.location.lat(),
+          lng: results[0].geometry.location.lng()
+        }
+      });
+
+      // this.map.setCenter(results[0].geometry.location);
+      // this.marker.setPosition(results[0].geometry.location);
+    } else {
+      console.log(
+        "Geocode was not successful for the following reason: " + status
+      );
+    }
+  }
+
+
+
+
   detailsToDB = (event) => {
     event.preventDefault();
-    var user = firebase.auth().currentUser;
     let businessName = this.state.businessName
     let businessAddress = this.state.businessAddress
     let businessPhoneNumber = this.state.businessPhoneNumber
     let businessEmail = this.state.businessEmail
 
-    db.collection('business').doc(user.uid).update({
+    db.collection('business').doc(this.props.loggedUser.uid).update({
       businessName: businessName,
       businessAddress: businessAddress,
       businessPhoneNumber: businessPhoneNumber,
@@ -113,19 +144,27 @@ class BusinessForm extends React.Component {
       let businessAddress;
       let businessPhoneNumber;
       let businessEmail;
-      db.collection('business').doc(this.props.loggedUser.uid).onSnapshot(doc => {
+      let openingHours;
+      let closingHours;
+      console.log('uuuser', this.props)
+      db.collection('business').doc(this.props.loggedUser.uid).get().then(doc => {
         businessName = doc.data().businessName,
         businessAddress = doc.data().businessAddress,
         businessPhoneNumber = doc.data().businessPhoneNumber,
-        businessEmail = doc.data().businessEmail
+        businessEmail = doc.data().businessEmail,
+        openingHours = doc.data().openingHours,
+        closingHours = doc.data().closingHours
         this.setState({
           businessName: businessName,
           businessAddress: businessAddress,
           businessPhoneNumber: businessPhoneNumber,
-          businessEmail: businessEmail
+          businessEmail: businessEmail,
+          openingHours: openingHours,
+          closingHours: closingHours
         })
       })
     }
+
 
   render() {
     const { classes } = this.props;
@@ -182,7 +221,20 @@ class BusinessForm extends React.Component {
         fullWidth
         margin="normal"
       />
-      <SelectDays />
+      <OpeningHours
+       InputLabelProps={{
+          shrink: true,
+        }}
+        fullWidth
+        margin="normal"/>
+      <br />
+      <ClosingHours
+        InputLabelProps={{
+          shrink: true,
+        }}
+        fullWidth
+        margin="normal"/>
+        <textField/>
       <Button
         type="submit"
         color="secondary"
@@ -201,8 +253,8 @@ class BusinessForm extends React.Component {
       </Grid>
       </div>
       );
+    }
   }
-}
 
 
 BusinessForm.propTypes = {

@@ -2,19 +2,20 @@ import React, { Component } from "react";
 import { Paper, Typography, TextField, Button, Switch } from "@material-ui/core";
 import * as firebase from "firebase";
 import db from "./config/firebase.js";
+import BusinessSignUp from "./BusinessSignup.js"
 import GoogleButton from "react-google-button";
 import FacebookLogin from 'react-facebook-login';
-import BusinessSignUp from './BusinessSignup.js'
 const auth = firebase.auth();
 
-class SignUpForm extends Component {
+class UserSignUp extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       fullNameLabel: "Full Name",
       phoneNumberLabel: "Phone Number",
-      passwordConfirmLabel: "Password Confirm"
+      passwordConfirmLabel: "Password Confirm",
+      isBusiness: false
     }
   }
 
@@ -160,14 +161,10 @@ class SignUpForm extends Component {
     firebase.auth().signOut();
   };
 
+
   render() {
-    let BusinessOrUser;
-    if (!this.props.businessFormToTrue) {
-      BusinessOrUser = <BusinessSignUp loggedUser={this.props.loggedUser} businessFormToTrue={this.props.businessFormToTrue} isBusiness={this.props.isBusiness}/>
-    } else {
-      BusinessOrUser =
-        <div>
-      <div>
+    return (
+    <div>
       <Paper id="paper-form" elevation="20">
       <Typography id="form-title" component="h2" variant="display1">Sign Up</Typography>
       <form autoComplete="off">
@@ -213,8 +210,6 @@ class SignUpForm extends Component {
           margin="normal"
         />
         <br />
-        <p>Want to register your business?</p>
-        <Button color="secondary" onChange={this.props.businessFormToTrue}> Register Your Business </Button>
 
         <br />
         <Button
@@ -264,17 +259,11 @@ class SignUpForm extends Component {
       <br/>
       <br/>
       <div className="fb-login-button" onClick={this.signInWithFacebook} data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
-
     </Paper>
       </div>
-      </div>
-    }
-    return (
-      <div>
-      {BusinessOrUser}
-      </div>
+
     );
   }
 }
 
-export default SignUpForm;
+export default UserSignUp;
