@@ -142,6 +142,7 @@ class App extends Component {
             isBusiness={this.state.isBusiness} />
 
         );
+        gridLayout = <GridLayout loggedUser={this.state.loggedUser} />
 
       } else {
         landing = <Landing loggedUser={this.state.loggedUser} />;
@@ -168,9 +169,6 @@ class App extends Component {
         </div>
         <div>
             {gridLayout}
-        </div>
-        <div>
-            <CenteredGrid loggedUser={this.state.loggedUser}/>
         </div>
       </MuiThemeProvider>
     );
