@@ -54,17 +54,34 @@
   font-size: 48px !important;
 }
 
-.MuiButton-contained-90 {
+/*.MuiButton-contained-90 {
   background-color: #fff !important;
-}
+}*/
 
 .MuiIconButton-colorSecondary-48 {
   color: #fff !important;
 }
+
+.btn-white {
+  background-color: #fff;
+}
+
+.btn-white:hover {
+  background-color: #aaa !important;
+}
+
 /*SEARCH BAR*/
 .MuiGrid-container-108 {
   margin-bottom: 2%;
 }
+
+.MuiButton-fab-137 {
+  width: 50px !important;
+  height: 50px !important;
+  background-color: #37474f !important;
+}
+
+
 
 .location-search-input {
   height: 48px;
@@ -90,11 +107,25 @@
   margin-right: 5%;
 }
 
-.test {
+/*.test {
   float: right !important;
   position: absolute !important;
   right: 20px !important;
   color: #fff !important;
+}*/
+
+.test {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.nav-flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .modal {
@@ -118,7 +149,7 @@
 .SearchBar-searchContainer-213 {
   margin-left: 100px !important;
 }
-.User-menu-107 {
+.User-menu-81 {
   margin-top: 110px !important;
 }
 

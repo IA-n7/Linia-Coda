@@ -1,15 +1,5 @@
 import React, { Component } from "react";
-import {
-  Button,
-  Drawer,
-  Divider,
-  ClickAwayListener,
-  MenuItem,
-  MenuList,
-  Popper,
-  Grow,
-  Paper
-} from "@material-ui/core";
+import { Button, Drawer, Divider, ClickAwayListener, MenuItem, MenuList, Popper, Grow, Paper } from "@material-ui/core";
 // eslint-disable-next-line
 import {
   createMuiTheme,
@@ -24,7 +14,6 @@ import db from "./config/firebase.js";
 // eslint-disable-next-line
 import { initFirestorter, Collection } from "firestorter";
 import QueueModal from "./components/QueueModal";
-
 // eslint-disable-next-line
 import { observer } from "mobx-react";
 import MapContainer from "./components/MapContainer.js";
@@ -32,6 +21,8 @@ import BusinessList from "./user/BusinessList.js";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import QueueUpdate from "./businessForm/QueueUpdate.js";
+import SearchBar from 'material-ui-search-bar';
+import SearchBarContainer from './components/SearchBarContainer.js';
 
 const styles = theme => ({
   root: {
@@ -254,6 +245,29 @@ class User extends Component {
     this.getData();
   }
 
+  loadModal() {
+    return (
+      <div>
+        <QueueModal
+          loggedUser={this.props.loggedUser}
+          inQueue={this.state.inQueue}
+          toggleQueue={this.toggleQueue}
+          toggleModal={this.toggleModal}
+          modalBusiness={this.state.modalBusiness}
+          formatClosing={this.formatClosing}
+          formatOpening={this.formatOpening}
+        />
+        <QueueUpdate
+          loggedUser={this.props.loggedUser}
+          inQueue={this.state.inQueue}
+          toggleQueue={this.toggleQueue}
+          toggleModal={this.toggleModal}
+          modalBusiness={this.state.modalBusiness}
+        />
+      </div>
+    )
+  }
+
   render() {
     const { open } = this.state;
     const { classes } = this.props;
@@ -262,30 +276,6 @@ class User extends Component {
       classes: PropTypes.object.isRequired
     };
 
-    let modal;
-
-    if (this.state.modalShow === true) {
-      modal = (
-        <div>
-          <QueueModal
-            loggedUser={this.props.loggedUser}
-            inQueue={this.state.inQueue}
-            toggleQueue={this.toggleQueue}
-            toggleModal={this.toggleModal}
-            modalBusiness={this.state.modalBusiness}
-            formatClosing={this.formatClosing}
-            formatOpening={this.formatOpening}
-          />
-          <QueueUpdate
-            loggedUser={this.props.loggedUser}
-            inQueue={this.state.inQueue}
-            toggleQueue={this.toggleQueue}
-            toggleModal={this.toggleModal}
-            modalBusiness={this.state.modalBusiness}
-          />
-        </div>
-      );
-    }
 
     return (
       <MuiThemeProvider theme={theme}>
@@ -363,11 +353,17 @@ class User extends Component {
           </Drawer>
         </div>
 
-        {modal}
+        {this.state.modalShow && this.loadModal()}
 
         {/* MAP */}
+        <SearchBarContainer geocodeAddress={this.props.geocodeAddress} currentLatLng={this.state.currentLatLng}/>
         <Paper className="map">
-         <MapContainer currentCategory={this.state.currentCategory} currentLatLng={this.props.currentLatLng} />
+         <MapContainer currentCategory={this.state.currentCategory}
+                       currentLatLng={this.props.currentLatLng}
+                       geocodeAddress={this.props.geocodeAddress}
+                       toggleModal={this.toggleModal}
+                       modalShow={this.state.modalShow}
+                       modalBusiness={this.state.modalBusiness} />
         </Paper>
       </MuiThemeProvider>
     );

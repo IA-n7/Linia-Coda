@@ -129,6 +129,7 @@ class App extends Component {
           <User
             currentLatLng={this.state.currentLatLng}
             loggedUser={this.state.loggedUser}
+            geocodeAddress={this.geocodeAddress}
           />
         );
 
@@ -136,7 +137,6 @@ class App extends Component {
         navbar = (
           <NavBar
             authListener={this.authListener}
-            geocodeAddress={this.geocodeAddress.bind(this)}
             isBusiness={this.state.isBusiness} />
 
         );

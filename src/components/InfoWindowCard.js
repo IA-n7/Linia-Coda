@@ -36,19 +36,23 @@ constructor(props) {
     };
   }
 
-  joinQueue = () => {
-    let userId = this.props.loggedUser.uid;
-    let businessDocRef = db
-      .collection("Business")
-      .doc(this.props.modalBusiness.id);
+  // joinQueue = () => {
+  //   let userId = this.props.loggedUser.uid;
+  //   let businessDocRef = db
+  //     .collection("Business")
+  //     .doc(this.props.modalBusiness.id);
 
-    let updatedArray = this.state.currentQueueMembers;
-    updatedArray.push(userId);
-    businessDocRef.update({
-      QueueBoiArray: updatedArray
-    });
-    this.props.toggleQueue();
-  };
+  //   let updatedArray = this.state.currentQueueMembers;
+  //   updatedArray.push(userId);
+  //   businessDocRef.update({
+  //     QueueBoiArray: updatedArray
+  //   });
+  //   this.props.toggleQueue();
+  // };
+
+  callToggleModal = () => {
+    this.props.toggleModal(this.props.business)
+  }
 
   render() {
     const { classes } = this.props;
@@ -91,9 +95,9 @@ constructor(props) {
               color="secondary"
               className={classes.button}
               variant="raised"
-              onClick={this.joinQueue}
+              onClick={this.callToggleModal}
             >
-              JOIN Q
+              JOIN QUEUE
             <AddCircle className={classes.rightIcon} />
             </Button>
           </Card>
