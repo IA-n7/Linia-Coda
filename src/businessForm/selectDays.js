@@ -70,7 +70,7 @@ class SelectDays extends React.Component {
             </Typography>
           </ExpansionPanelDetails>
         </ExpansionPanel>
-
+{/*
          <ExpansionPanel expanded={expanded === 'panel2'} onChange={this.handleChange('panel2')}>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <Typography className={classes.heading}>Select Tuesday Hours</Typography>
@@ -190,7 +190,7 @@ class SelectDays extends React.Component {
             </div>
             </Typography>
           </ExpansionPanelDetails>
-        </ExpansionPanel>
+        </ExpansionPanel>*/}
 
 
       </div>
