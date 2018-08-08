@@ -108,16 +108,6 @@ class QueueModal extends Component {
     }
 
     return (
-      <div>
-      <Button onClick={this.handleClickOpen('paper')}></Button>
-      <Dialog
-        open={this.state.open}
-        onClose={this.handleClose}
-        scroll={this.state.scroll}
-      >
-      <DialogTitle id="scroll-dialog-title">QueueModal</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
           <div className="modal-background">
             <div className="modal">
             <div className="close" onClick={this.props.toggleModal}>
@@ -130,9 +120,7 @@ class QueueModal extends Component {
                 {this.state.currentQueueNumber}
               </Typography>
             </div>
-            <DialogActions>
               {joinQueueButton}
-            </DialogActions>
             <div className="bottom-part">
             <div className="business-info-container">
               <Typography
@@ -174,7 +162,6 @@ class QueueModal extends Component {
                   margin="normal"
                 />
                 <br />
-                <DialogActions>
                   <Button
                     id="phone-field-submit"
                     type="submit"
@@ -184,16 +171,11 @@ class QueueModal extends Component {
                   >
                     Notify Me!
                   </Button>
-                </DialogActions>
               </form>
             </div>
           </div>
         </div>
       </div>
-      </DialogContentText>
-     </DialogContent>
-    </Dialog>
-    </div>
     );
   }
 }

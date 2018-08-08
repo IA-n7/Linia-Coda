@@ -39,26 +39,46 @@ class NavBar extends Component {
 
     this.state = {
       currentLatLng: this.props.currentLatLng,
-      open: false,
       businessName: "",
       businessAddress: "",
       businessPhoneNumber: "",
       BusinessEmail: "",
       mondayOpeningHours: "",
       scroll: 'paper',
+      show: false,
+      isBusiness: this.props.isBusiness,
     }
+    this.handleShow = this.handleShow.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+
   }
 
   logout = () => {
     firebase.auth().signOut();
   }
 
-  handleClickOpen = scroll => () => {
-    this.setState({ open: true, scroll });
+  // handleClickOpen = scroll => () => {
+  //   this.setState({ open: true, scroll });
+  // }
+
+  // handleClose = () => {
+  //   debugger
+  //   let self = this;
+  //   self.setState({ open: false });
+  // }
+
+
+
+  // handleClick() {
+  //   console.log()
+  // }
+
+  handleClose() {
+    this.setState({ show: false });
   }
 
-  handleClose = () => {
-    this.setState({ open: false });
+  handleShow() {
+    this.setState({ show: true });
   }
 
   handleName = event => {
@@ -114,26 +134,18 @@ class NavBar extends Component {
   render() {
     const { classes } = this.props;
 
-    NavBar.propTypes = {
-      classes: PropTypes.object.isRequired,
-    };
-    return (
-      <div>
-        <AppBar position="static">
-          <Toolbar>
+    let businessSettings;
 
-            <img src={logo} alt="logo" height="75rem" />
-            {/*<IconButton color="inherit" aria-label="Menu">
-            </IconButton>
-            <Typography variant="title" color="inherit">
-              LINIA CODA
-            </Typography>*/}
-            <div className="test">
-            <IconButton color="secondary" aria-label="Settings" onClick={this.handleClickOpen('paper')}>
+    if (this.state.isBusiness === true) {
+
+      businessSettings =
+          <div>
+            <IconButton color="secondary" aria-label="Settings" onClick={this.handleShow}>
               <SettingsApplications />
+            </IconButton>
               <Dialog
-                open={this.state.open}
-                onClose={this.state.handleClose}
+                open={this.state.show}
+                onClose={this.handleClose}
               >
               <DialogTitle id="form-dialog-title">Edit Account Information</DialogTitle>
               <DialogContent>
@@ -209,9 +221,29 @@ class NavBar extends Component {
                 </Button>
               </DialogActions>
             </Dialog>
-             </IconButton>
+            </div>
+    }
+
+    NavBar.propTypes = {
+      classes: PropTypes.object.isRequired,
+    };
+    return (
+      <div>
+        <AppBar position="static">
+          <Toolbar>
+
+            <img src={logo} alt="logo" height="75rem" />
+            {/*<IconButton color="inherit" aria-label="Menu">
+            </IconButton>
+            <Typography variant="title" color="inherit">
+              LINIA CODA
+            </Typography>*/}
+
+            <div className="test">
+              {businessSettings}
               <Button variant="contained" color="#fff" onClick={this.logout}>LOGOUT</Button>
             </div>
+
 
           </Toolbar>
         </AppBar>

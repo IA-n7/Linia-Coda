@@ -43,6 +43,7 @@ class App extends Component {
         lat: 45.4961,
         lng: -73.5693
       },
+      isBusiness: false,
     }
     this.geocodeAddress = this.geocodeAddress.bind(this);
   }
@@ -109,7 +110,8 @@ class App extends Component {
         navbar = (
           <NavBar
             authListener={this.authListener}
-            geocodeAddress={this.geocodeAddress.bind(this)} />
+            geocodeAddress={this.geocodeAddress.bind(this)}
+            isBusiness={this.state.isBusiness} />
         );
 
       } else {

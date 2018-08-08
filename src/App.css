@@ -45,9 +45,9 @@
   margin-left: auto !important;
 }
 
-.MuiIconButton-colorSecondary-48 {
+.MuiIconButton-colorSecondary-193 {
   color: white !important;
-  font-size: 48px;
+  font-size: 48px !important;
 }
 
 .MuiSvgIcon-root-54 {
@@ -58,6 +58,9 @@
   background-color: #fff !important;
 }
 
+.MuiIconButton-colorSecondary-48 {
+  color: #fff !important;
+}
 /*SEARCH BAR*/
 .MuiGrid-container-108 {
   margin-bottom: 2%;
@@ -91,6 +94,7 @@
   float: right !important;
   position: absolute !important;
   right: 20px !important;
+  color: #fff !important;
 }
 
 .modal {
@@ -116,5 +120,11 @@
 }
 .User-menu-107 {
   margin-top: 110px !important;
+}
+
+/* BUSINESS FORM */
+
+#sign-up-submit {
+  background-color: #c62828 !important;
 }
 
