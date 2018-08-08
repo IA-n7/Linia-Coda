@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import {
   Button,
   Drawer,
+  Divider,
   ClickAwayListener,
   MenuItem,
   MenuList,
@@ -30,7 +31,7 @@ import MapContainer from "./components/MapContainer.js";
 import BusinessList from "./user/BusinessList.js";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import QueueUpdate from './businessForm/QueueUpdate.js'
+import QueueUpdate from "./businessForm/QueueUpdate.js";
 
 const styles = theme => ({
   root: {
@@ -47,19 +48,11 @@ const styles = theme => ({
   },
   drawer: {
     width: 280
+  },
+  category: {
+    width: 280
   }
 });
-// className={classes.menu}
-
-// root: {
-// width: 200,
-// width: "100%",
-// backgroundColor: theme.palette.background.paper,
-// position: "relative",
-// overflow: "auto"
-// maxHeight: 300
-// display: "flex"
-// },
 
 const theme = createMuiTheme({
   palette: {
@@ -85,18 +78,16 @@ class User extends Component {
       modalShow: false,
       inQueue: false,
       categories: [
-        "Clinics",
-        "Bakery",
-        "Restaurant",
-        "RAMQ",
-        "Bank",
-        "Emergency",
+        "All Categories",
         "Hairdressers",
+        "Restaurants",
+        "Clinics",
         "SAAQ",
-        ""
+        "Banks",
       ],
-      currentCategory: "",
+      currentCategory: "All Categories",
       businesses: [],
+      //currentLatLng: this.props.currentLatLng,
       modalBusiness: {}
     };
   }
@@ -134,10 +125,9 @@ class User extends Component {
     this.state.businesses.map(business => {
       let lat1 = business.businessLocation._lat;
       let lon1 = business.businessLocation._long;
-
       // HARDCODED, CHANGE TO LOGGEDUSER VALUES
-      let lat2 = 45.496761799999994;
-      let lon2 = -73.5703049;
+      let lat2 = this.props.currentLatLng.lat;
+      let lon2 = this.props.currentLatLng.lng;
 
       let R = 6371e3; // metres
       let φ1 = this.toRadians(lat1);
@@ -154,12 +144,6 @@ class User extends Component {
 
       business["distance"] = d;
 
-      if (business.businessName === "Clinique OPUS") {
-        console.log("LATITUDE: ", lat1);
-        console.log("LONGITUDE: ", lon1);
-        console.log("IS IT A NUMBER: ", d);
-        console.log("business: ", business.distance);
-      }
       return 1;
     });
 
@@ -173,8 +157,8 @@ class User extends Component {
     if (closingHours.length === 4) {
       hours = closingHours.slice(0, 2);
 
-      if (parseInt(hours) > 12) {
-        hours = parseInt(hours) - 12;
+      if (parseInt(hours, 10) > 12) {
+        hours = parseInt(hours, 10) - 12;
       }
 
       minutes = closingHours.slice(2, 4);
@@ -194,8 +178,8 @@ class User extends Component {
     if (openingHours.length === 4) {
       hours = openingHours.slice(0, 2);
 
-      if (parseInt(hours) > 12) {
-        hours = parseInt(hours) - 12;
+      if (parseInt(hours, 10) > 12) {
+        hours = parseInt(hours, 10) - 12;
       }
 
       minutes = openingHours.slice(2, 4);
@@ -210,14 +194,12 @@ class User extends Component {
   };
 
   // DISPLAYS JOIN QUEUE MODAL
-  toggleModal = (businessInfo) => {
-     this.setState({
-       modalShow: !this.state.modalShow,
-       modalBusiness: businessInfo
-     });
-   };
-
-
+  toggleModal = businessInfo => {
+    this.setState({
+      modalShow: !this.state.modalShow,
+      modalBusiness: businessInfo
+    });
+  };
 
   // BUTTON HANDLER FOR QUEUE JOINING/EXITING
   toggleQueue = () => {
@@ -226,11 +208,14 @@ class User extends Component {
 
   // POPULATES CATEGORIES MENU
   populateCategories = () => {
-    let categories = this.state.categories.map(category => {
+    let categories = this.state.categories.map((category, i) => {
       return (
-        <MenuItem className="business" onClick={this.handleClose}>
-          {category}
-        </MenuItem>
+        <div key={i}>
+          <MenuItem className="category" onClick={this.handleClose}>
+            {category}
+          </MenuItem>
+          <Divider />
+        </div>
       );
     });
     return categories;
@@ -282,22 +267,22 @@ class User extends Component {
     if (this.state.modalShow === true) {
       modal = (
         <div>
-        <QueueModal
-          loggedUser={this.props.loggedUser}
-          inQueue={this.state.inQueue}
-          toggleQueue={this.toggleQueue}
-          toggleModal={this.toggleModal}
-          modalBusiness={this.state.modalBusiness}
-          formatClosing={this.formatClosing}
-          formatOpening={this.formatOpening}
-        />
-        <QueueUpdate
-          loggedUser={this.props.loggedUser}
-          inQueue={this.state.inQueue}
-          toggleQueue={this.toggleQueue}
-          toggleModal={this.toggleModal}
-          modalBusiness={this.state.modalBusiness}
-        />
+          <QueueModal
+            loggedUser={this.props.loggedUser}
+            inQueue={this.state.inQueue}
+            toggleQueue={this.toggleQueue}
+            toggleModal={this.toggleModal}
+            modalBusiness={this.state.modalBusiness}
+            formatClosing={this.formatClosing}
+            formatOpening={this.formatOpening}
+          />
+          <QueueUpdate
+            loggedUser={this.props.loggedUser}
+            inQueue={this.state.inQueue}
+            toggleQueue={this.toggleQueue}
+            toggleModal={this.toggleModal}
+            modalBusiness={this.state.modalBusiness}
+          />
         </div>
       );
     }
@@ -382,7 +367,7 @@ class User extends Component {
 
         {/* MAP */}
         <Paper className="map">
-          <MapContainer currentLatLng={this.props.currentLatLng} />
+         <MapContainer currentCategory={this.state.currentCategory} currentLatLng={this.props.currentLatLng} />
         </Paper>
       </MuiThemeProvider>
     );

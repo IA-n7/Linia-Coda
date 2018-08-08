@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import db from './config/firebase.js'
 import {initFirestorter, Collection} from 'firestorter';

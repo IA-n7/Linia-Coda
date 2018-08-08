@@ -25,7 +25,7 @@ import db from "./config/firebase.js";
 import { initFirestorter, Collection } from "firestorter";
 import Landing from "./Landing.js";
 import User from "./User.js";
-import CenteredGrid from "./businessForm/gridLayout.js";
+import GridLayout from "./businessForm/gridLayout.js";
 import("./Landing.css");
 const loadingSpinner = require("./img/lg.palette-rotating-ring-loader.gif");
 const auth = firebase.auth();
@@ -51,19 +51,25 @@ class App extends Component {
 
     this.state = {
       loading: true,
+      isBusiness: false,
       currentLatLng: {
         lat: 45.4961,
         lng: -73.5693
-      }
-    };
+      },
+      isBusiness: false,
+    }
+    this.geocodeAddress = this.geocodeAddress.bind(this);
   }
+
 
   geocodeAddress = address => {
     this.geocoder = new window.google.maps.Geocoder();
     this.geocoder.geocode({ address: address }, this.handleResults.bind(this));
   };
 
-  handleResults(results, status) {
+
+  handleResults = (results, status) => {
+
     if (status === window.google.maps.GeocoderStatus.OK) {
       this.setState({
         currentLatLng: {
@@ -72,8 +78,8 @@ class App extends Component {
         }
       });
 
-      // this.map.setCenter(results[0].geometry.location);
-      // this.marker.setPosition(results[0].geometry.location);
+      console.log("APP", this.state.currentLatLng)
+
     } else {
       console.log(
         "Geocode was not successful for the following reason: " + status
@@ -83,20 +89,34 @@ class App extends Component {
 
   authListener = () => {
     auth.onAuthStateChanged(user => {
+      user.isBusiness = true
       if (user) {
         this.setState({ loggedUser: user });
-        console.log(this.state.loggedUser);
+        console.log('logged user', this.state.loggedUser);
       } else {
         this.setState({ loggedUser: null });
-        console.log(this.state.loggedUser);
+        console.log('NO user logged in', this.state.loggedUser);
       }
       this.setState({ loading: false });
     });
   };
 
+
+  businessFormToTrue () {
+    if (this.state.isBusiness === true) {
+      this.setState({
+        isBusiness: false
+      })
+    } else {
+      this.setState({
+        isBusiness: true
+      })
+    }
+  }
+
   componentDidMount() {
     this.authListener();
-  }
+}
 
   render = () => {
     let loading;
@@ -104,6 +124,7 @@ class App extends Component {
     let mapContainer;
     let landing;
     let navbar;
+    let gridLayout;
     if (this.state.loading == false) {
       if (this.state.loggedUser != null) {
         user = (
@@ -117,12 +138,14 @@ class App extends Component {
         navbar = (
           <NavBar
             authListener={this.authListener}
-            geocodeAddress={this.geocodeAddress.bind(this)} />
+            geocodeAddress={this.geocodeAddress.bind(this)}
+            isBusiness={this.state.isBusiness} />
+
         );
+
       } else {
         landing = <Landing loggedUser={this.state.loggedUser} />;
-
-    }
+      }
     } else {
       loading = (
         <img
@@ -133,23 +156,21 @@ class App extends Component {
       );
     }
 
-
     return (
       <MuiThemeProvider theme={theme}>
         <div>
-        {loading}
+     {loading}
         {navbar}
-
-          {landing}
+         {landing}
         </div>
-        {/*<div className="map-size">
+        <div className="map-size">
           {user}
-        </div>*/}
+        </div>
         <div>
-       { (this.state.loggedUser) &&
+            {gridLayout}
+        </div>
+        <div>
             <CenteredGrid loggedUser={this.state.loggedUser}/>
-        }
-
         </div>
       </MuiThemeProvider>
     );
