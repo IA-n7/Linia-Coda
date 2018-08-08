@@ -15,9 +15,11 @@ class MarkerInfoWindow extends Component {
     this.state = {
       isOpen: false,
       loading: true,
+      showInfoIndex: "",
 
     }
     this.onToggleOpen = this.onToggleOpen.bind(this);
+    //this.showInfo = this.showInfo.bind(this);
   }
 
   onToggleOpen() {
@@ -25,14 +27,22 @@ class MarkerInfoWindow extends Component {
       isOpen: !this.state.isOpen
     });
   }
+  // showInfo(a) {
+  //   this.setState({
+  //     showInfoIndex: a
+  //   });
+  // }
 
 
 
   render() {
+    let index = this.props.business.id;
     return(
       <Marker
+        key={index}
         position={this.props.position}
         onClick={this.onToggleOpen}
+        //onClick={ this.showInfo(index)}
         icon={MarkerIcon}
       >
 

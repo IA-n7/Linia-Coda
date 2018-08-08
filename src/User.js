@@ -86,17 +86,14 @@ class User extends Component {
       inQueue: false,
       categories: [
         "Clinics",
-        "Bakery",
-        "Restaurant",
-        "RAMQ",
-        "Bank",
-        "Emergency",
+        "Restaurants",
+        "Banks",
         "Hairdressers",
         "SAAQ",
-        ""
       ],
       currentCategory: "",
       businesses: [],
+      //currentLatLng: this.props.currentLatLng,
       modalBusiness: {}
     };
   }
@@ -382,7 +379,7 @@ class User extends Component {
 
         {/* MAP */}
         <Paper className="map">
-          <MapContainer currentLatLng={this.props.currentLatLng} />
+         <MapContainer currentCategory={this.state.currentCategory} currentLatLng={this.props.currentLatLng} />
         </Paper>
       </MuiThemeProvider>
     );

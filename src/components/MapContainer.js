@@ -12,24 +12,25 @@ class MapContainer extends Component {
     this.state = {
       loading: true,
       isMarkerShown: true,
-        businessInfo: [
-          {
-                  businessName: 'Walk-In Express',
-                  businessLatitude: [],
-                  businessLongitude: []
-                }],
-
-        currentLatLng: this.props.currentLatLng,
-        infoWindowOpen: false
+      currentCategory: this.props.currentCategory,
+      allBusinesses: [],
+      currentLatLng: this.props.currentLatLng,
+      infoWindowOpen: false
     }
     this.getGeoLocation();
     this.getLocationsForMap = this.getLocationsForMap.bind(this);
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps(nextProps,prevState) {
+    if(nextProps.currentCategory !== prevState.currentCategory){
+      this.setState({currentCategory: nextProps.currentCategory})
+    }else{
+      this.setState({currentLatLng: nextProps.currentLatLng})
+    }
 
-    this.setState({currentLatLng: props.currentLatLng})
-
+    if(nextProps.searchValue == prevState.searchValue){
+      this.setState({currentLatLng: nextProps.currentLatLng})
+    }
   }
 
   componentDidMount() {
@@ -65,6 +66,7 @@ class MapContainer extends Component {
         loading: false,
         allBusinesses: allBusinesses
       });
+    console.log(allBusinesses.latitude)
     });
 
    }
@@ -90,12 +92,19 @@ class MapContainer extends Component {
   }
 
   render() {
+    let businesses;
+    if(this.state.currentCategory === undefined || this.state.currentCategory === ''){
+      businesses = this.state.allBusinesses;
+    }else{
+      businesses = this.state.allBusinesses.filter(x=>this.state.currentCategory == x.category)
+    }
     return (
       this.state.loading ? <p>loading...</p> : <MapComponent
        isMarkerShown={this.state.isMarkerShown}
        currentLocation={this.state.currentLatLng}
        businessInfo={this.state.businessInfo}
-       allBusinesses={this.state.allBusinesses}
+       allBusinesses={businesses}
+       currentCategory={this.props.currentCategory}
 
      />
      )

@@ -19,12 +19,13 @@ const styles = theme => ({
     width: '100%',
   },
   heading: {
-    fontSize: theme.typography.pxToRem(15),
+    fontSize: theme.typography.pxToRem(10),
     flexBasis: '33.33%',
     flexShrink: 0,
   },
   secondaryHeading: {
-    fontSize: theme.typography.pxToRem(15),
+
+    fontSize: theme.typography.pxToRem(8),
     color: theme.palette.text.secondary,
   },
 });
