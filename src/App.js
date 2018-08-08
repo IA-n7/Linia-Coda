@@ -123,7 +123,7 @@ class App extends Component {
       } else {
         landing = <Landing loggedUser={this.state.loggedUser} />;
       }
-    } else {
+     } else {
       loading = (
         <img
           src={loadingSpinner}
