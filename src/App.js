@@ -1,3 +1,15 @@
+// import React, { Component } from 'react';
+// import './App.css';
+// import db from './config/firebase.js';
+// import User from "./User.js";
+// import FloatingActionButtons from './button.js';
+// import ComplexGrid from './gridLayout.js';
+// import Graphic from "./Graphic.js";
+// import { createMuiTheme, MuiThemeProvider, getMuiTheme } from '@material-ui/core/styles';
+// import { blueGrey, red } from '@material-ui/core/colors';
+// import QueueSelect from "./QueueSelect.js";
+
+
 import React, { Component } from "react";
 import "./App.css";
 import NavBar from "./components/NavBar";
@@ -23,7 +35,7 @@ const theme = createMuiTheme({
     primary: {
       light: blueGrey[300],
       main: blueGrey[700],
-      dark: blueGrey[900]
+      dark: blueGrey[900],
     },
     secondary: {
       light: red[500],
@@ -111,13 +123,13 @@ class App extends Component {
           <NavBar
             authListener={this.authListener}
             geocodeAddress={this.geocodeAddress.bind(this)}
+
             isBusiness={this.state.isBusiness} />
         );
 
       } else {
         landing = <Landing loggedUser={this.state.loggedUser} />;
-
-    }
+      }
     } else {
       loading = (
         <img
@@ -128,13 +140,11 @@ class App extends Component {
       );
     }
 
-
     return (
       <MuiThemeProvider theme={theme}>
         <div>
      {loading}
         {navbar}
-
          {landing}
 
         </div>
@@ -142,7 +152,9 @@ class App extends Component {
           {user}
         </div>
 
+
       {/* { (this.state.loggedUser) &&
+
             <CenteredGrid loggedUser={this.state.loggedUser}/>
         }*/}
 
@@ -152,5 +164,4 @@ class App extends Component {
 }
 
 export default App;
-
 
