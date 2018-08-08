@@ -390,5 +390,3 @@ class User extends Component {
 }
 
 export default withStyles(styles)(User);
-
-// export default User;
