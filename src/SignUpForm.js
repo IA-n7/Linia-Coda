@@ -14,19 +14,20 @@ class SignUpForm extends Component {
     this.state = {
       fullNameLabel: "Full Name",
       phoneNumberLabel: "Phone Number",
-      passwordConfirmLabel: "Password Confirm"
+      passwordConfirmLabel: "Password Confirm",
+      businessState: false
     }
   }
 
   signInWithGoogle = () => {
     let provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(provider).then(function(result) {
+    firebase.auth().signInWithPopup(provider).then(function (result) {
       // This gives you a Google Access Token. You can use it to access the Google API.
       var token = result.credential.accessToken;
       // The signed-in user info.
       var user = result.user;
       // ...
-    }).catch(function(error) {
+    }).catch(function (error) {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -41,13 +42,13 @@ class SignUpForm extends Component {
 
   signInWithFacebook = () => {
     let provider = new firebase.auth.FacebookAuthProvider();
-    firebase.auth().signInWithPopup(provider).then(function(result) {
+    firebase.auth().signInWithPopup(provider).then(function (result) {
       // This gives you a Facebook Access Token. You can use it to access the Facebook API.
       var token = result.credential.accessToken;
       // The signed-in user info.
       var user = result.user;
       // ...
-    }).catch(function(error) {
+    }).catch(function (error) {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -80,7 +81,7 @@ class SignUpForm extends Component {
         password.value = "";
         passwordConfirm.value = "";
       }).catch((e) => {
-       console.log(e.message);
+        console.log(e.message);
       });
     }
   };
@@ -111,6 +112,7 @@ class SignUpForm extends Component {
     const signInButton = document.getElementById("sign-in-submit");
     const switchToSignIn = document.getElementById("switch-to-signin-submit")
     const switchToSignUp = document.getElementById("switch-to-signup-submit")
+    const switchToBusiness = document.getElementById("switch-to-business")
     this.setState({
       fullNameLabel: null,
       phoneNumberLabel: null,
@@ -125,7 +127,8 @@ class SignUpForm extends Component {
     signInButton.style.display = "inline";
     switchToSignIn.style.display = "none";
     switchToSignUp.style.display = "inline";
-    paperForm.style.marginTop = "100px"
+    paperForm.style.marginTop = "100px";
+    switchToBusiness.style.display = "none";
   }
 
   switchToSignUp = e => {
@@ -139,6 +142,7 @@ class SignUpForm extends Component {
     const signInButton = document.getElementById("sign-in-submit");
     const switchToSignIn = document.getElementById("switch-to-signin-submit")
     const switchToSignUp = document.getElementById("switch-to-signup-submit")
+    const switchToBusiness = document.getElementById("switch-to-business")
     this.setState({
       fullNameLabel: "Full Name",
       phoneNumberLabel: "Phone Number",
@@ -153,7 +157,14 @@ class SignUpForm extends Component {
     signInButton.style.display = "none";
     switchToSignIn.style.display = "inline";
     switchToSignUp.style.display = "none";
-    paperForm.style.marginTop = "40px"
+    paperForm.style.marginTop = "40px";
+    switchToBusiness.style.display = "inline";
+  }
+
+  businessFormToggle = () => {
+    this.setState({
+      businessState: !this.state.businessState
+    })
   }
 
   logout = () => {
@@ -162,116 +173,116 @@ class SignUpForm extends Component {
 
   render() {
     let BusinessOrUser;
-    if (!this.props.businessFormToTrue) {
-      BusinessOrUser = <BusinessSignUp loggedUser={this.props.loggedUser} businessFormToTrue={this.props.businessFormToTrue} isBusiness={this.props.isBusiness}/>
+    if (this.state.businessState === true) {
+      BusinessOrUser = <BusinessSignUp loggedUser={this.props.loggedUser} businessFormToggle={this.businessFormToggle} isBusiness={this.props.isBusiness} />
     } else {
       BusinessOrUser =
         <div>
-      <div>
-      <Paper id="paper-form" elevation="20">
-      <Typography id="form-title" component="h2" variant="display1">Sign Up</Typography>
-      <form autoComplete="off">
-        <TextField
-          name="name"
-          label={this.state.fullNameLabel}
-          id="full-name-field"
-          onChange={this.handleChange}
-          margin="normal"
-          />
-        <br />
-        <TextField
-          name="phoneNumber"
-          label={this.state.phoneNumberLabel}
-          id="phone-number-field"
-          onChange={this.handleChange}
-          margin="normal"
-        />
-        <br />
-        <TextField
-          name="email"
-          label="Email"
-          id="email-field"
-          onChange={this.handleChange}
-          margin="normal"
-        />
-        <br />
-        <TextField
-          name="Password"
-          label="Password"
-          type="password"
-          id="password-field"
-          onChange={this.handleChange}
-          margin="normal"
-        />
-        <br />
-        <TextField
-          name="Password-confirm"
-          label={this.state.passwordConfirmLabel}
-          type="password"
-          id="password-confirm-field"
-          onChange={this.handleChange}
-          margin="normal"
-        />
-        <br />
-        <p>Want to register your business?</p>
-        <Button color="secondary" onChange={this.props.businessFormToTrue}> Register Your Business </Button>
+          <div>
+            <Paper id="paper-form" elevation="20">
+              <Typography id="form-title" component="h2" variant="display1">Sign Up</Typography>
+              <form autoComplete="off">
+                <TextField
+                  name="name"
+                  label={this.state.fullNameLabel}
+                  id="full-name-field"
+                  onChange={this.handleChange}
+                  margin="normal"
+                />
+                <br />
+                <TextField
+                  name="phoneNumber"
+                  label={this.state.phoneNumberLabel}
+                  id="phone-number-field"
+                  onChange={this.handleChange}
+                  margin="normal"
+                />
+                <br />
+                <TextField
+                  name="email"
+                  label="Email"
+                  id="email-field"
+                  onChange={this.handleChange}
+                  margin="normal"
+                />
+                <br />
+                <TextField
+                  name="Password"
+                  label="Password"
+                  type="password"
+                  id="password-field"
+                  onChange={this.handleChange}
+                  margin="normal"
+                />
+                <br />
+                <TextField
+                  name="Password-confirm"
+                  label={this.state.passwordConfirmLabel}
+                  type="password"
+                  id="password-confirm-field"
+                  onChange={this.handleChange}
+                  margin="normal"
+                />
+                <br />
 
-        <br />
-        <Button
-          type="submit"
-          color="secondary"
-          variant="raised"
-          id="sign-up-submit"
-          onClick={this.signUpOnSubmit}
-        >
-          Sign Up
-        </Button>
-        <Button
-          type="submit"
-          color="secondary"
-          variant="raised"
-          id="sign-in-submit"
-          onClick={this.signInOnSubmit}
-        >
-          Sign In
-        </Button>
-        <br />
-        <br/>
-        <Button
-          type="submit"
-          color="primary"
-          variant="raised"
-          id="switch-to-signin-submit"
-          onClick={this.switchToSignIn}
-        >
-          Already have an account?
-        </Button>
-        <Button
-          type="submit"
-          color="primary"
-          variant="raised"
-          id="switch-to-signup-submit"
-          onClick={this.switchToSignUp}
-        >
-          Don't have an account? Sign Up!
-        </Button>
-        <br/>
-      </form>
-      <span className="sign-up-separator">___________________</span>
-      <br/>
-      <GoogleButton className="google-sign-in" onClick={this.signInWithGoogle}/>
-      <span className="sign-up-separator">___________________</span>
-      <br/>
-      <br/>
-      <div className="fb-login-button" onClick={this.signInWithFacebook} data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
+                <Button id="switch-to-business" color="secondary" onClick={this.businessFormToggle}> Register Your Business </Button>
 
-    </Paper>
-      </div>
-      </div>
+                <br />
+                <Button
+                  type="submit"
+                  color="secondary"
+                  variant="raised"
+                  id="sign-up-submit"
+                  onClick={this.signUpOnSubmit}
+                >
+                  Sign Up
+        </Button>
+                <Button
+                  type="submit"
+                  color="secondary"
+                  variant="raised"
+                  id="sign-in-submit"
+                  onClick={this.signInOnSubmit}
+                >
+                  Sign In
+        </Button>
+                <br />
+                <br />
+                <Button
+                  type="submit"
+                  color="primary"
+                  variant="raised"
+                  id="switch-to-signin-submit"
+                  onClick={this.switchToSignIn}
+                >
+                  Already have an account?
+        </Button>
+                <Button
+                  type="submit"
+                  color="primary"
+                  variant="raised"
+                  id="switch-to-signup-submit"
+                  onClick={this.switchToSignUp}
+                >
+                  Don't have an account? Sign Up!
+        </Button>
+                <br />
+              </form>
+              <span className="sign-up-separator">___________________</span>
+              <br />
+              <GoogleButton className="google-sign-in" onClick={this.signInWithGoogle} />
+              <span className="sign-up-separator">___________________</span>
+              <br />
+              <br />
+              <div className="fb-login-button" onClick={this.signInWithFacebook} data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
+
+            </Paper>
+          </div>
+        </div>
     }
     return (
       <div>
-      {BusinessOrUser}
+        {BusinessOrUser}
       </div>
     );
   }
