@@ -55,16 +55,21 @@ class App extends Component {
       currentLatLng: {
         lat: 45.4961,
         lng: -73.5693
-      }
-    };
+      },
+      isBusiness: false,
+    }
+    this.geocodeAddress = this.geocodeAddress.bind(this);
   }
+
 
   geocodeAddress = address => {
     this.geocoder = new window.google.maps.Geocoder();
     this.geocoder.geocode({ address: address }, this.handleResults.bind(this));
   };
 
-  handleResults(results, status) {
+
+  handleResults = (results, status) => {
+
     if (status === window.google.maps.GeocoderStatus.OK) {
       this.setState({
         currentLatLng: {
@@ -73,8 +78,8 @@ class App extends Component {
         }
       });
 
-      // this.map.setCenter(results[0].geometry.location);
-      // this.marker.setPosition(results[0].geometry.location);
+      console.log("APP", this.state.currentLatLng)
+
     } else {
       console.log(
         "Geocode was not successful for the following reason: " + status
@@ -111,7 +116,7 @@ class App extends Component {
 
   componentDidMount() {
     this.authListener();
-  }
+}
 
   render = () => {
     let loading;
@@ -122,23 +127,24 @@ class App extends Component {
     let gridLayout;
     if (this.state.loading == false) {
       if (this.state.loggedUser != null) {
+        user = (
+          <User
+            currentLatLng={this.state.currentLatLng}
+            loggedUser={this.state.loggedUser}
+          />
+        );
 
-            user = (
-              <User
-                currentLatLng={this.state.currentLatLng}
-                loggedUser={'logged user', this.state.loggedUser}
-              />
-            );
-            mapContainer = <MapContainer />;
-            navbar = (
-              <NavBar
-                authListener={this.authListener}
-                geocodeAddress={this.geocodeAddress.bind(this)} />
-            );
-            gridLayout = <GridLayout loggedUser={this.state.loggedUser} />
+        mapContainer = <MapContainer />;
+        navbar = (
+          <NavBar
+            authListener={this.authListener}
+            geocodeAddress={this.geocodeAddress.bind(this)}
+            isBusiness={this.state.isBusiness} />
+
+        );
 
       } else {
-        landing = <Landing loggedUser={this.state.loggedUser} businessFormToTrue={this.businessFormToTrue} isBusiness={this.state.isBusiness}/>;
+        landing = <Landing loggedUser={this.state.loggedUser} />;
       }
     } else {
       loading = (
@@ -150,14 +156,12 @@ class App extends Component {
       );
     }
 
-
     return (
       <MuiThemeProvider theme={theme}>
         <div>
-        {loading}
+     {loading}
         {navbar}
-
-          {landing}
+         {landing}
         </div>
 {/*        <div className="map-size">
           {user}
@@ -165,6 +169,11 @@ class App extends Component {
         <div>
             {gridLayout}
         </div>
+
+     {/*  { (this.state.loggedUser) &&
+            <CenteredGrid loggedUser={this.state.loggedUser}/>
+        }*/}
+
       </MuiThemeProvider>
     );
   };

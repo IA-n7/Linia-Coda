@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Card, CardContent, Button, Typography } from '@material-ui/core';
 import { Business, LocalPhone, Watch, PermIdentity, AddCircle } from '@material-ui/icons';
-
-
+import * as firebase from "firebase";
+import db from "../config/firebase.js";
 
 const styles = {
   header: {
@@ -26,12 +26,35 @@ const styles = {
 
 class InfoWindowCard extends Component {
 
+constructor(props) {
+    super(props);
+
+    this.state = {
+      currentQueueMembers: [],
+      currentQueueNumber: 0,
+      inQueue: false,
+    };
+  }
+
+  joinQueue = () => {
+    let userId = this.props.loggedUser.uid;
+    let businessDocRef = db
+      .collection("Business")
+      .doc(this.props.modalBusiness.id);
+
+    let updatedArray = this.state.currentQueueMembers;
+    updatedArray.push(userId);
+    businessDocRef.update({
+      QueueBoiArray: updatedArray
+    });
+    this.props.toggleQueue();
+  };
+
   render() {
     const { classes } = this.props;
 
     return (
 
-      <div>
           <Card className={classes.card}>
             <div>
               <div>
@@ -64,12 +87,16 @@ class InfoWindowCard extends Component {
                 Wait Time: {this.props.business.averageWait} minutes
               </Typography>
             </CardContent>
-            <Button variant="contained" color="secondary" className={classes.button}>
-              QUEUE
-              <AddCircle className={classes.rightIcon} />
+            <Button
+              color="secondary"
+              className={classes.button}
+              variant="raised"
+              onClick={this.joinQueue}
+            >
+              JOIN Q
+            <AddCircle className={classes.rightIcon} />
             </Button>
           </Card>
-      </div>
       )
      }
     }
@@ -79,28 +106,5 @@ InfoWindowCard.propTypes = {
 };
 
 export default withStyles(styles)(InfoWindowCard);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
