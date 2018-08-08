@@ -89,7 +89,6 @@ class App extends Component {
 
   authListener = () => {
     auth.onAuthStateChanged(user => {
-      user.isBusiness = true
       if (user) {
         this.setState({ loggedUser: user });
       } else {
