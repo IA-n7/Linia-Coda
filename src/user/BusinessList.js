@@ -32,6 +32,11 @@ const styles = theme => ({
     cursor: "pointer",
     "&:hover": {
       backgroundColor: "#DCDCDC"
+    },
+    "&:active": {
+      // boxShadow: "0 5px #666",
+      transform: "translateY(4px)",
+      backgroundColor: "darkgrey"
     }
   }
 });
@@ -54,9 +59,8 @@ const BusinessList = props => {
   };
 
   const populateBusinesses = () => {
-    // console.log(props);
-
     let businesses = props.businesses.map((business, i) => {
+      
       let hours = "";
       let minutes = "";
       let distance = (Math.ceil(business.distance / 5) * 5).toString();
@@ -64,7 +68,7 @@ const BusinessList = props => {
       if (distance.length <= 3) {
         distance = distance + "m Away";
       } else {
-        distance = distance / 1000;
+        distance = Math.round((distance / 1000)*100)/100;
         distance = distance + "km Away";
       }
 
@@ -74,7 +78,7 @@ const BusinessList = props => {
       if (props.currentCategory === business.category) {
         return (
           <div key={i}>
-            <CardContent onClick={onModal}>
+            <CardContent className={classes.touchMe} onClick={onModal}>
               <Typography className={classes.item} align="center">
                 {business.businessName}
               </Typography>
