@@ -49,6 +49,7 @@ class BusinessSignUp extends Component {
         businessPassword.value
       ).then((result) => {
         db.collection("business").doc(result.user.uid).set({
+          id: result.user.uid,
           businessName: businessName.value,
           businessAddress: businessAddress.value,
           businessPhoneNumber: businessPhoneNumber.value,
@@ -56,7 +57,6 @@ class BusinessSignUp extends Component {
           openingHours: openingHours.value,
           closingHours: closingHours.value
         })
-        result.user.isBusiness = true;
         businessPassword.value = "";
         businessConfirmPassword.value = "";
       }).catch((e) => {
