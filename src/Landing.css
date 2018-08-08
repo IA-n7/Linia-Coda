@@ -1,0 +1,147 @@
+#paper-form {
+  background-color: rgb(240, 240, 240) !important;
+  text-align: center;
+  width: 400px;
+  margin-top: 40px;
+  margin-left: 100px;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+}
+
+.img-logo {
+  position: absolute;
+  top: 40px;
+  left: 100px;
+}
+
+.landing-everything {
+  width: 100%;
+  height: 900px;
+  background: rgb(16,32,39);
+  background: linear-gradient(90deg, rgba(16,32,39,1) 0%, rgba(98,114,123,1) 100%);
+}
+
+.landing-title {
+  margin-left: 200px !important;
+  margin-top: 250px !important;
+}
+
+.landing-title-slogan {
+  text-align: center;
+  position: absolute;
+  top: 450px;
+  left: 12rem;
+  font-family: 'Roboto';
+  color: white;
+
+}
+
+.pimg1, .pimg2, .pimg3, .pimg4 {
+  position: relative;
+  opacity: 0.75;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  background-attachment: fixed;
+}
+
+.pimg1 {
+  background-image: url('./img/Photos-Download-Desktop-HD-Wallpapers-Wide.jpg');
+  min-height: 800px;
+}
+
+.pimg2 {
+  background-image: url('./img/queue-1.jpeg');
+  min-height: 400px;
+}
+
+.pimg3 {
+  background-image: url('./img/queue-2.jpg');
+  min-height: 400px;
+}
+
+.pimg4 {
+  background-image: url('./img/Photos-Download-Desktop-HD-Wallpapers-Wide.jpg');
+  min-height: 800px;
+}
+
+.section {
+  text-align: center;
+  padding: 50px 80px;
+}
+
+.section-light {
+  background-color: #62727B
+}
+
+.ptext {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+  color: black;
+  font-size: 27px;
+  letter-spacing: 8px;
+  text-transform: uppercase;
+}
+
+.ptext .border {
+  background-color: #111111;
+  color: #ffffff;
+  padding: 20px;
+}
+
+.ptext .border.trans {
+  background-color: transparent;
+}
+
+.light-text {
+  color: white
+}
+
+#sign-in-submit {
+  display: none;
+}
+
+
+.MuiFormLabel-focused-38 {
+  color: black !important;
+}
+
+#form-title {
+  padding-top: 30px;
+  padding-bottom: -30px;
+}
+
+#switch-to-signup-submit {
+  display: none;
+}
+
+.sign-up-separator {
+  cursor: default;
+  text-decoration: none;
+  user-select: none;
+}
+
+.google-sign-in {
+  margin: auto;
+  margin-top: 20px;
+}
+
+#logout-submit {
+  margin-top: 15px;
+}
+
+@media(max-width:568px){
+  .pimg1, .pimg2, .pimg3, .pimg4 {
+    background-attachment: scroll;
+  }
+  .landing-everything {
+    height: 1400px;
+  }
+  .landing-title {
+    position: relative;
+    left: -100px;
+  }
+}

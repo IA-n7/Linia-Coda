@@ -1,0 +1,141 @@
+.modal-background {
+  background-color: rgba(0,0,0,0.7);
+  height: 100%;
+  width: 100%;
+  display: flex;
+  position: absolute;
+  top: 0;
+  justify-content: center;
+  align-items: center;
+  z-index: 70;
+}
+
+.circle {
+  background-color: transparent;
+  position: absolute;
+  top: 40px;
+  left: 200px;
+  height: 200px;
+  width: 200px;
+  border: 5px solid #102027;
+  border-radius: 50% 30% 50% 30%;
+  -webkit-animation: rotation 4s infinite linear;
+}
+
+.circle-information {
+  position: absolute;
+  left: 230px;
+  top: 95px;
+}
+
+@-webkit-keyframes rotation {
+  from {
+      -webkit-transform: rotate(0deg);
+  }
+  to {
+      -webkit-transform: rotate(359deg);
+  }
+}
+
+#join-queue-button {
+  position: absolute;
+  top: 285px;
+  left: 230px;
+}
+
+#leave-queue-button {
+  position: absolute;
+  top: 285px;
+  left: 230px;
+}
+
+#number-in-queue {
+  font-size: 50px;
+}
+
+.arrow-icon {
+  font-size: 17px;
+}
+
+.modal {
+  background-color: rgb(211, 216, 219);
+  position: relative;
+  justify-content: space-around;
+  width: 600px;
+  height: 650px;
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  border: 10px solid #102027;
+  z-index: 80;
+  display: inline !important;
+}
+
+.close {
+  position: absolute;
+  top: 0;
+  right: 14px;
+  font-size: 42px;
+  transform: rotate(45deg);
+  cursor: pointer;
+}
+
+.bottom-part {
+  position: absolute;
+  z-index: 10;
+  bottom: -1px;
+  left: -1px;
+  right: -1px;
+  background-color: #102027;
+  height: 300px;
+  border-radius: 2px;
+  clip-path: polygon(8% 0, 100% 0, 100% 100%, 0 100%, 0 20%);
+  box-shadow:-3px -1px 25px #000000;
+}
+
+.business-info-container {
+  position: absolute;
+  z-index: 11;
+  bottom: 30px;
+  left: 30px;
+  right: 30px;
+  top: 30px;
+  background-color: rgb(211, 216, 219);
+  border-radius: 2px;
+  clip-path: polygon(7% 0, 100% 0, 100% 100%, 0 100%, 0 20%);
+  box-shadow:-3px -1px 25px #000000;
+}
+
+.business-info-flex {
+  display: flex;
+}
+
+.business-info {
+  position: absolute;
+  left: 20px;
+  bottom: 10px;
+  justify-content: center;
+  text-align: left;
+  z-index: 12;
+}
+
+.queue-modal-phone-number {
+  position: absolute;
+  bottom: 20px;
+  right: 35px;
+}
+
+.wait-time {
+  position: absolute;
+  right: 2.5rem;
+  top: 4.7rem;
+}
+
+.wait-time h4 {
+  font-size: 16px;
+}
+
+#wait-time-number {
+  margin-top: -10px;
+  margin-left: 20px;
+}
