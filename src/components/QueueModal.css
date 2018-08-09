@@ -39,14 +39,15 @@
 }*/
 
 #join-queue-button {
-  position: absolute;
-  top: 230px;
-  left: 230px;
+  position: absolute !important;
+  top: 275px !important;
+  left: 230px !important;
+  bottom: -275px !important;
 }
 
 #leave-queue-button {
   position: absolute;
-  top: 230px;
+  top: 275px;
   left: 230px;
 }
 
@@ -61,8 +62,8 @@
 .modal {
   background-color: rgb(211, 216, 219);
   position: absolute;
-  top: -10px;
-  left: 400px;
+  top: 20px;
+  left: 500px;
   justify-content: space-around;
   width: 600px;
   height: 650px;

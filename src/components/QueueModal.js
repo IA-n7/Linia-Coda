@@ -28,6 +28,9 @@ class QueueModal extends Component {
       QueueBoiArray: updatedArray
     });
     this.props.toggleQueue();
+    let circleText = document.getElementById("circle-text");
+    circleText.innerText = "Your Position:";
+    circleText.style.marginLeft = "10px";
   };
 
   leaveQueue = () => {
@@ -42,6 +45,9 @@ class QueueModal extends Component {
       QueueBoiArray: filteredArr
     });
     this.props.toggleQueue();
+    let circleText = document.getElementById("circle-text");
+    circleText.innerText = "People in Queue:";
+    circleText.style.marginLeft = "-10px";
   };
 
   getCurrentGuestNumber = () => {
@@ -92,6 +98,7 @@ class QueueModal extends Component {
         color="secondary"
         variant="raised"
         onClick={this.joinQueue}
+        style={{top: "255px"}}
       >
         Join Queue
       <ArrowUpward className="arrow-icon" />
@@ -115,8 +122,8 @@ class QueueModal extends Component {
             +
             </div>
             <div className="circle" />
-            <div className="circle-information">
-              <h5>People in Queue:</h5>
+            <div className="circle-information" id="last-thing">
+              <h5 id="circle-text">People in Queue:</h5>
               <Typography id="number-in-queue" component="h1" variant="display1">
                 {this.state.currentQueueNumber}
               </Typography>

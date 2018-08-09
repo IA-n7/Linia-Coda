@@ -166,7 +166,7 @@ class App extends Component {
           {user}
         </div>
         <div>
-            {gridLayout}
+            {/* {gridLayout} */}
         </div>
       </MuiThemeProvider>
     );
