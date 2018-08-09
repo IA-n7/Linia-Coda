@@ -140,10 +140,11 @@ class App extends Component {
             isBusiness={this.state.isBusiness} />
 
         );
-        gridLayout = <GridLayout loggedUser={this.state.loggedUser} />
+        gridLayout = <GridLayout loggedUser={this.state.loggedUser}  />
 
       } else {
-        landing = <Landing loggedUser={this.state.loggedUser} />;
+        landing = <Landing loggedUser={this.state.loggedUser} geocodeAddress={this.geocodeAddress.bind(this)}/>;
+
       }
      } else {
       loading = (
@@ -165,9 +166,9 @@ class App extends Component {
         <div className="map-size">
           {user}
         </div>
-        <div>
-            {/* {gridLayout} */}
-        </div>
+        {/*<div>
+            {gridLayout}
+        </div>*/}
       </MuiThemeProvider>
     );
   };

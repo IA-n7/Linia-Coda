@@ -18,6 +18,7 @@ class QueueModal extends Component {
 
   joinQueue = () => {
     let userId = this.props.loggedUser.uid;
+    this.props.loggedUser.inQueue = this.props.modalBusiness.id
     let businessDocRef = db
       .collection("Business")
       .doc(this.props.modalBusiness.id);
@@ -39,6 +40,7 @@ class QueueModal extends Component {
       .collection("Business")
       .doc(this.props.modalBusiness.id);
 
+    this.props.loggedUser.inQueue = null
     let updatedArray = this.state.currentQueueMembers;
     let filteredArr = updatedArray.filter(e => e !== userId)
     businessDocRef.update({

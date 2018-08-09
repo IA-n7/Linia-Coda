@@ -74,6 +74,7 @@ class SignUpForm extends Component {
         password.value
       ).then((result) => {
         db.collection("Users").doc(result.user.uid).set({
+          id: result.user.uid,
           fullName: fullName.value,
           email: email.value,
           phoneNumber: phoneNumber.value
@@ -173,8 +174,13 @@ class SignUpForm extends Component {
 
   render() {
     let BusinessOrUser;
-    if (this.state.businessState === true) {
-      BusinessOrUser = <BusinessSignUp loggedUser={this.props.loggedUser} businessFormToggle={this.businessFormToggle} isBusiness={this.props.isBusiness} />
+
+    // if (this.state.businessState === true) {
+    //   BusinessOrUser = <BusinessSignUp loggedUser={this.props.loggedUser} businessFormToggle={this.businessFormToggle} isBusiness={this.props.isBusiness} />
+
+    if (this.props.businessFormToTrue) {
+      BusinessOrUser = <BusinessSignUp geocodeAddress={this.props.geocodeAddress} loggedUser={this.props.loggedUser} businessFormToTrue={this.props.businessFormToTrue} isBusiness={this.props.isBusiness}/>
+
     } else {
       BusinessOrUser =
         <div>

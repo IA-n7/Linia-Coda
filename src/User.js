@@ -257,13 +257,7 @@ class User extends Component {
           formatClosing={this.formatClosing}
           formatOpening={this.formatOpening}
         />
-        <QueueUpdate
-          loggedUser={this.props.loggedUser}
-          inQueue={this.state.inQueue}
-          toggleQueue={this.toggleQueue}
-          toggleModal={this.toggleModal}
-          modalBusiness={this.state.modalBusiness}
-        />
+      
       </div>
     )
   }
@@ -276,6 +270,30 @@ class User extends Component {
       classes: PropTypes.object.isRequired
     };
 
+    let modal;
+
+    if (this.state.modalShow === true) {
+      modal = (
+        <div>
+          <QueueModal
+            loggedUser={this.props.loggedUser}
+            inQueue={this.state.inQueue}
+            toggleQueue={this.toggleQueue}
+            toggleModal={this.toggleModal}
+            modalBusiness={this.state.modalBusiness}
+            formatClosing={this.formatClosing}
+            formatOpening={this.formatOpening}
+          />
+        {/*  <QueueUpdate
+            loggedUser={this.props.loggedUser}
+            inQueue={this.state.inQueue}
+            toggleQueue={this.toggleQueue}
+            toggleModal={this.toggleModal}
+            modalBusiness={this.state.modalBusiness}
+          />*/}
+        </div>
+      );
+    }
 
     return (
       <MuiThemeProvider theme={theme}>

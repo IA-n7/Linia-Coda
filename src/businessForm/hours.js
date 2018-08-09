@@ -57,7 +57,7 @@ class OpeningHours extends React.Component {
     var user = firebase.auth().currentUser;
     let openingHours = this.state.openingHours;
 
-    db.collection('business').doc(user.uid).update({
+    db.collection('Business').doc(user.uid).update({
       openingHours: openingHours
     })
     .then(function() {
