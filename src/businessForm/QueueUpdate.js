@@ -151,6 +151,10 @@ class QueueUpdate extends Component {
       marginBottom: '10px',
     }
 
+    let title = {
+      textDecoration: 'underline',
+    }
+
     let getUsers = this.state.userObj
     let user;
 
@@ -164,8 +168,14 @@ class QueueUpdate extends Component {
         // loop through array of user objs and render details
         renderNames = showUser.map((user, index) => {
           if ( index === 0 ) {
+            let firstUserNote = <h5 style={title}> Current guest in queue </h5>
+            let userName = <h6> {user.fullName} </h6>
+
             return <div  variant="raised" key={user.id} className={classes.touchMe} style={firstUserStyle}>
-            <h4> {user.fullName} </h4>
+
+            {firstUserNote}
+            <br />
+            {userName}
               <h6> {user.email}</h6>
               <h6> {user.phoneNumber}</h6>
             </div>
