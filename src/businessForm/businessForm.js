@@ -121,7 +121,7 @@ class BusinessForm extends React.Component {
     let businessPhoneNumber = this.state.businessPhoneNumber
     let businessEmail = this.state.businessEmail
 
-    db.collection('business').doc(this.props.loggedUser.uid).update({
+    db.collection('Business').doc(this.props.loggedUser.uid).update({
       businessName: businessName,
       businessAddress: businessAddress,
       businessPhoneNumber: businessPhoneNumber,
@@ -147,7 +147,7 @@ class BusinessForm extends React.Component {
       let openingHours;
       let closingHours;
       console.log('uuuser', this.props)
-      db.collection('business').doc(this.props.loggedUser.uid).get().then(doc => {
+      db.collection('Business').doc(this.props.loggedUser.uid).get().then(doc => {
         businessName = doc.data().businessName,
         businessAddress = doc.data().businessAddress,
         businessPhoneNumber = doc.data().businessPhoneNumber,

@@ -21,6 +21,8 @@ class Graphic extends Component {
       closingHours: 0,
       labelArray: [],
       queueArr: 0,
+      data: [1, 2, 3, 4, 5, 6, 7],
+      label: "Analytics",
     }
     this.hoursArray = this.hoursArray.bind(this);
     this.daysArray = this.daysArray.bind(this);
@@ -29,7 +31,7 @@ class Graphic extends Component {
 
   getOpeningHours(){
     let openingHours;
-    db.collection("business").doc(this.props.loggedUser.uid).get().then(doc => {
+    db.collection("Business").doc(this.props.loggedUser.uid).get().then(doc => {
       openingHours = doc.data().openingHours;
       this.setState({
        openingHours: openingHours
@@ -37,9 +39,16 @@ class Graphic extends Component {
     });
   }
 
-  getClosingHours(){
+
+  getOpeningHours = () => {
+    db.collection("Business").doc(this.props.loggedUser.uid).get().then(doc => {
+      let openingHours = doc.data().openingHours;
+    })
+  }
+
+  getClosingHours = () => {
     let closingHours;
-    db.collection("business").doc(this.props.loggedUser.uid).get().then(doc => {
+    db.collection("Business").doc(this.props.loggedUser.uid).get().then(doc => {
       closingHours = doc.data().closingHours;
       this.setState({
        closingHours: closingHours
@@ -50,7 +59,7 @@ class Graphic extends Component {
   queueLength(){
     let queueLength;
     let queueArr = [];
-    db.collection("business").doc(this.props.loggedUser.uid).get().then(doc => {
+    db.collection("Business").doc(this.props.loggedUser.uid).get().then(doc => {
       queueLength = doc.data().QueueBoiArray.length;
       for (let i = 0; i < queueLength; i++) {
         queueArr.push(i);
@@ -66,9 +75,12 @@ class Graphic extends Component {
     let closingHoursNum = Number(this.state.closingHours);
     let hoursArray = [];
     for(let i = openingHoursNum; i <= closingHoursNum; i++){
+      let usersPerHour = Math.floor(Math.random() * 10 )
       hoursArray.push(i)
       this.setState({
-        labelArray: hoursArray
+        labelArray: hoursArray,
+        data: [8, 2, 4, 5, 7, 8, 9],
+        label: 'NUMBER OF GUESTS PER HOUR'
       })
     }
   }
@@ -78,7 +90,9 @@ class Graphic extends Component {
       for(let i = 0; i <= 7; i++){
         daysArray.push(i)
         this.setState({
-          labelArray: ['Monday', 'Tuesday', 'Wednesday','Thursday', 'Friday', 'Saturday', 'Sunday']
+          labelArray: ['Monday', 'Tuesday', 'Wednesday','Thursday', 'Friday', 'Saturday', 'Sunday'],
+          data: [4, 3, 2, 6, 3, 7, 8],
+          label: 'NUMBER OF GUESTS PER DAY'
         })
       }
     }
@@ -93,25 +107,25 @@ class Graphic extends Component {
       labels: this.state.labelArray,
       datasets: [
         {
-          label: "Number of Guest Per Hour",
+          label: this.state.label,
           fill: true,
           lineTension: 0.1,
-          color: 'secondary',
-          // borderColor: 'rgba(75,192,192,1)',
-          // borderCapStyle: 'butt',
-          // borderDash: [],
-          // borderDashOffset: 0.0,
-          // borderJoinStyle: 'miter',
-          // pointBorderColor: 'rgba(75,192,192,1)',
-          // pointBackgroundColor: 'primary',
-          // pointBorderWidth: 1,
-          // pointHoverRadius: 5,
-          // pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-          // pointHoverBorderColor: 'rgba(220,220,220,1)',
-          // pointHoverBorderWidth: 2,
-          // pointRadius: 1,
-          // pointHitRadius: 10,
-          data: [1, 3, 2, 6, 3, 7]
+          // color: 'red',
+          // borderColor: 'red',
+          borderCapStyle: 'butt',
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: 'miter',
+          // pointBorderColor: 'blue',
+          // pointBackgroundColor: 'blue',
+          pointBorderWidth: 1,
+          pointHoverRadius: 5,
+          // pointHoverBackgroundColor: 'red',
+          // pointHoverBorderColor: 'blue',
+          pointHoverBorderWidth: 2,
+          pointRadius: 1,
+          pointHitRadius: 10,
+          data: this.state.data
 
         }
       ]
@@ -119,14 +133,15 @@ class Graphic extends Component {
     return (
       <div>
      <Bar
-       data={data}
-
-       options={{
-        maintainAspectRatio: false
+      data={data}
+        color='blue'
+        options={{
+          maintainAspectRatio: true
       }}
     />
-    <Button onClick={this.hoursArray}> Show Guests Per Hour </Button>
-    <Button onClick={this.daysArray}> Show Guests Per Day </Button>
+
+    <Button backgrounColor="primary" onClick={this.hoursArray}> Show Guests Per Hour </Button>
+    <Button backgrounColor="primary" onClick={this.daysArray}> Show Guests Per Day </Button>
     </div>
     )
   }
