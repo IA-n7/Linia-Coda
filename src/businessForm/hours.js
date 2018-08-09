@@ -57,7 +57,7 @@ class OpeningHours extends React.Component {
     var user = firebase.auth().currentUser;
     let openingHours = this.state.openingHours;
 
-    db.collection('business').doc(user.uid).update({
+    db.collection('Business').doc(user.uid).update({
       openingHours: openingHours
     })
     .then(function() {
@@ -115,7 +115,7 @@ class OpeningHours extends React.Component {
             <MenuItem value={23}>11pm</MenuItem>
             <MenuItem value={24}>12pm</MenuItem>
           </Select>
-      <Button
+      {/*<Button
         type="submit"
         color="secondary"
         variant="raised"
@@ -123,7 +123,7 @@ class OpeningHours extends React.Component {
         onClick={this.detailsToDB.bind(this)}
       >
       Confirm Hours
-      </Button>
+      </Button>*/}
         </FormControl>
       </form>
       </div>

@@ -35,27 +35,29 @@ class GridLayout extends Component {
 render() {
   const classes = this.props.classes;
   const getBusinessID = () => {
-    db.collection("business").doc(this.props.loggedUser).get().then(doc => {
+    db.collection("Business").doc(this.props.loggedUser).get().then(doc => {
       console.log(doc.data().businessName)
     });
+    console.log(this.props.loggedUser)
   }
     console.log('IS THIS A THING', this.props.loggedUser)
     return (
       <div className={classes.root}>
         <Grid container spacing={24}>
+{/*
           <Grid item xs={6}>
             <Paper className={classes.paper}> <BusinessForm loggedUser={this.props.loggedUser}/> </Paper>
-          </Grid>
-{/*          <Grid item xs={6}>
-            <Paper className={classes.paper}> <Graphic loggedUser={this.props.loggedUser}/> </Paper>
+          </Grid>*/}
+          <Grid item xs={6}>
+            <Paper className={classes.paper}> <QueueUpdate loggedUser={this.props.loggedUser}/> </Paper>
           </Grid>
           {<Grid item xs={6}>
-            <Paper className={classes.paper}> <QueueUpdate loggedUser={this.props.loggedUser}/> </Paper>
+            <Paper className={classes.paper}> <Graphic loggedUser={this.props.loggedUser}/> </Paper>
           </Grid>}
-          <Grid item xs={6}>
+{/*          <Grid item xs={6}>
             <Paper className={classes.paper}> <GuestWeek loggedUser={this.props.loggedUser}/> </Paper>
-          </Grid>
-          <Grid item xs={6}>
+          </Grid>*/}
+          {/*<Grid item xs={6}>
             <Paper className={classes.paper}> <QueueSelect loggedUser={this.props.loggedUser}/> </Paper>
           </Grid>*/}
 

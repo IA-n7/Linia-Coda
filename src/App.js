@@ -55,16 +55,21 @@ class App extends Component {
       currentLatLng: {
         lat: 45.4961,
         lng: -73.5693
-      }
-    };
+      },
+      isBusiness: false,
+    }
+    this.geocodeAddress = this.geocodeAddress.bind(this);
   }
+
 
   geocodeAddress = address => {
     this.geocoder = new window.google.maps.Geocoder();
     this.geocoder.geocode({ address: address }, this.handleResults.bind(this));
   };
 
-  handleResults(results, status) {
+
+  handleResults = (results, status) => {
+
     if (status === window.google.maps.GeocoderStatus.OK) {
       this.setState({
         currentLatLng: {
@@ -73,8 +78,8 @@ class App extends Component {
         }
       });
 
-      // this.map.setCenter(results[0].geometry.location);
-      // this.marker.setPosition(results[0].geometry.location);
+      console.log("APP", this.state.currentLatLng)
+
     } else {
       console.log(
         "Geocode was not successful for the following reason: " + status
@@ -110,7 +115,7 @@ class App extends Component {
 
   componentDidMount() {
     this.authListener();
-  }
+}
 
   render = () => {
     let loading;
@@ -118,6 +123,7 @@ class App extends Component {
     let mapContainer;
     let landing;
     let navbar;
+    let gridLayout;
     if (this.state.loading == false) {
       if (this.state.loggedUser != null) {
         user = (
@@ -131,12 +137,16 @@ class App extends Component {
         navbar = (
           <NavBar
             authListener={this.authListener}
-            geocodeAddress={this.geocodeAddress.bind(this)} />
-        );
-      } else {
-        landing = <Landing loggedUser={this.state.loggedUser}/>;
+            geocodeAddress={this.geocodeAddress.bind(this)}
+            isBusiness={this.state.isBusiness} />
 
-    }
+        );
+        gridLayout = <GridLayout loggedUser={this.state.loggedUser}  />
+
+      } else {
+        landing = <Landing loggedUser={this.state.loggedUser} geocodeAddress={this.geocodeAddress.bind(this)}/>;
+
+      }
     } else {
       loading = (
         <img
@@ -147,20 +157,18 @@ class App extends Component {
       );
     }
 
-
     return (
       <MuiThemeProvider theme={theme}>
         <div>
-        {loading}
+     {loading}
         {navbar}
-
-          {landing}
+         {landing}
         </div>
-        <div className="map-size">
+        {/*<div className="map-size">
           {user}
-        </div>
+        </div>*/}
         <div>
-            <GridLayout loggedUser={this.state.loggedUser}/>
+            {gridLayout}
         </div>
       </MuiThemeProvider>
     );

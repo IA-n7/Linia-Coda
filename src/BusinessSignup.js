@@ -48,7 +48,9 @@ class BusinessSignUp extends Component {
         businessEmail.value,
         businessPassword.value
       ).then((result) => {
-        db.collection("business").doc(result.user.uid).set({
+        db.collection("Business").doc(result.user.uid).set({
+          id: result.user.uid,
+          QueueBoiArray: [''],
           businessName: businessName.value,
           businessAddress: businessAddress.value,
           businessPhoneNumber: businessPhoneNumber.value,
@@ -61,6 +63,10 @@ class BusinessSignUp extends Component {
       }).catch((e) => {
        console.log(e.message);
       });
+      let isBusiness = this.props.isBusiness;
+      this.setState({
+        isBusiness: true
+      })
     }
   };
 
@@ -82,7 +88,7 @@ class BusinessSignUp extends Component {
           name="name"
           label= "Business Address"
           id="business-full-name-field"
-          onChange={this.handleChange}
+          onChange={this.props.geocodeAddress}
           margin="normal"
           />
         <br />
@@ -119,8 +125,8 @@ class BusinessSignUp extends Component {
           onChange={this.handleChange}
           margin="normal"
         />
-<Select
-            value={this.state.openingHours}
+        <br />
+          <Select
             id='business-opening-hours-field'
             onChange={this.handleOpening}
             displayEmpty
@@ -154,10 +160,11 @@ class BusinessSignUp extends Component {
             <MenuItem value={23}>11pm</MenuItem>
             <MenuItem value={24}>12pm</MenuItem>
           </Select>
+          <br />
           <Select
-            value={this.state.closingHours}
             id='business-closing-hours-field'
             onChange={this.handleClosing}
+            displayEmpty
             name="Closing Hours"
           >
             <MenuItem>
@@ -188,10 +195,9 @@ class BusinessSignUp extends Component {
             <MenuItem value={23}>11pm</MenuItem>
             <MenuItem value={24}>12pm</MenuItem>
           </Select>
-
-{/*. DONT FORGET THE LCOAITON nchajcsk */}
         <br />
-        <Switch color="secondary" checked="true" onChange={this.props.businessFormToTrue}/>
+        <Button color="secondary" checked="true" onChange={this.props.businessFormToTrue}> Sign up as a user
+        </Button>
 
         <br />
         <Button
