@@ -56,7 +56,7 @@ render() {
           </Grid>}
 {/*          <Grid item xs={6}>
             <Paper className={classes.paper}> <GuestWeek loggedUser={this.props.loggedUser}/> </Paper>
-          </Grid>*/}
+          </Grid>
           {/*<Grid item xs={6}>
             <Paper className={classes.paper}> <QueueSelect loggedUser={this.props.loggedUser}/> </Paper>
           </Grid>*/}

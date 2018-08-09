@@ -44,10 +44,11 @@ const styles = theme => ({
       display: 'flex',
       marginTop: theme.spacing.unit * 2,
     },
-    borderRadius: '6px',
-    border: '.5px solid #e5e5e5',
+    borderBottom: '.5px solid #e5e5e5',
     marginLeft: '18px',
-    marginRight: '18px'
+    marginRight: '18px',
+    marginTop: '10px',
+    marginBottom: '10px',
   }
 });
 
@@ -64,12 +65,12 @@ class QueueUpdate extends Component {
   }
 
 
-// set state of currentQueue to queboiArr
+// set state of currentQueueMembers to queboiArr
   guestInfo(event) {
     event.preventDefault()
     let QueueBoiArray;
-      db.collection("Business").doc(this.props.loggedUser.uid).onSnapshot(doc => {
-        // set state to the array value of QBoi
+      db.collection("Business").doc(this.props.loggedUser.uid).get().then(doc => {
+        // set state to value of QBoi Arr
         QueueBoiArray = doc.data().QueueBoiArray;
         this.setState({
          currentQueueMembers: QueueBoiArray
@@ -81,11 +82,12 @@ class QueueUpdate extends Component {
 
   callNextQuest() {
     let currentQueueMembers = this.state.currentQueueMembers;
-    console.log('CUU', currentQueueMembers)
     let removeQueueMember = currentQueueMembers.shift()
+    // set the state to the new shortened QArr
     this.setState({
       currentQueueMembers: currentQueueMembers
     })
+    // update state of qArr with new arr details
     db.collection('Business').doc(this.props.loggedUser.uid).update({
         QueueBoiArray: currentQueueMembers
       })
@@ -95,6 +97,7 @@ class QueueUpdate extends Component {
       .catch(function(error) {
         console.error("Error writing document: ", error);
     });
+    this.showQueue()
   }
 
   showQueue() {
@@ -105,7 +108,8 @@ class QueueUpdate extends Component {
     var documentRef;
     var userObj;
     var arrayOfUsers = [];
-    db.collection("Business").doc(this.props.loggedUser.uid).onSnapshot(doc => {
+
+    db.collection("Business").doc(this.props.loggedUser.uid).get().then(doc => {
       // setting currentQueueMemebers to the array of queuers in the business doc
       currentQueueMembers = doc.data().QueueBoiArray;
       // looping through the array of current queue members, and pulling out the user id to fetch the doc
@@ -143,6 +147,8 @@ class QueueUpdate extends Component {
       borderRadius: '5px',
       marginLeft: '18px',
       marginRight: '18px',
+      marginTop: '10px',
+      marginBottom: '10px',
     }
 
     let getUsers = this.state.userObj
@@ -152,27 +158,24 @@ class QueueUpdate extends Component {
 
     let renderNames;
 
+    // loop through array of user obj, push each userObj to showUser arr.
       for (user in getUsers) {
-
         showUser.push(getUsers[user])
-
+        // loop through array of user objs and render details
         renderNames = showUser.map((user, index) => {
-
           if ( index === 0 ) {
-            return <div className={classes.touchMe} style={firstUserStyle}>
-            <h4 key={user.email}> {user.fullName} </h4>
-              <p> {user.email}</p>
-              <p> {user.phoneNumber}</p>
+            return <div  variant="raised" key={user.id} className={classes.touchMe} style={firstUserStyle}>
+            <h4> {user.fullName} </h4>
+              <h6> {user.email}</h6>
+              <h6> {user.phoneNumber}</h6>
             </div>
-
-          } else {
-            return <div className={classes.touchMe} key={user.email} color='primary'> {user.fullName}
-                <p> {user.email} </p>
-                <p> {user.phoneNumber} </p>
+          } else if (index > 0) {
+            return <div className={classes.touchMe} key={user.id} color='primary'> {user.fullName}
+                <h6> {user.email} </h6>
+                <h6> {user.phoneNumber} </h6>
               </div>
           }
         })
-
       }
 
     return (
@@ -186,7 +189,6 @@ class QueueUpdate extends Component {
         >
           Call Next Guest
         </Button>
-        <br />
         <br />
     {renderNames}
         <br/>
